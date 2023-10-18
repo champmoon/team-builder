@@ -1,0 +1,13 @@
+from sqlalchemy.orm import Mapped
+
+from app.db.base_class import Base
+from app.db.mixins import UUIDAsIDMixin
+
+
+class Trainers(Base, UUIDAsIDMixin):
+    __tablename__ = "trainers"
+
+    email: Mapped[str]
+    hashed_password: Mapped[str]
+
+    name: Mapped[str]
