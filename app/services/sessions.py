@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from uuid import UUID, uuid4
 
 from app.conf.settings import settings
+from app.consts import UsersTypes
 from app.models import Sessions
 from app.repositories import SessionsRepository
 from app.schemas import CreateSessionIn
@@ -14,10 +15,11 @@ class SessionsService:
     async def get_by_refresh_token(self, refresh_token: UUID) -> Sessions | None:
         return await self.repository.get_by_refresh_token(refresh_token=refresh_token)
 
-    async def create(self, user_id: UUID) -> Sessions:
+    async def create(self, user_id: UUID, user_type: UsersTypes) -> Sessions:
         create_session_in = CreateSessionIn(
             user_id=user_id,
             refresh_token=uuid4(),
+            user_type=user_type,
         )
         return await self.repository.create(schema_in=create_session_in)
 

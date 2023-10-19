@@ -10,28 +10,13 @@ class RefreshTokenIn(BaseSchema):
     refresh_token: UUID
 
 
-class RegisterTrainerIn(BaseSchema):
+class RegisterIn(BaseSchema):
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)
     name: str
+    is_trainer: bool
 
 
-class LoginTrainerIn(BaseSchema):
-    email: EmailStr
-    password: Password = Field(min_length=5, max_length=30)
-
-
-class RegisterSportsmenIn(BaseSchema):
-    email: EmailStr
-    password: Password = Field(min_length=5, max_length=30)
-    name: str
-
-
-class LoginSportsmenIn(BaseSchema):
-    email: EmailStr
-    password: Password = Field(min_length=5, max_length=30)
-
-
-class LoginrAdminIn(BaseSchema):
+class LoginIn(BaseSchema):
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)

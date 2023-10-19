@@ -1,20 +1,21 @@
 from .base_docs import Docs
 
-sportsman_register: Docs = {
-    "summary": "Регистрация спортсмена",
+register: Docs = {
+    "summary": "Регистрация тренера / спортсмена",
     "description": """
     ```
     Request Body:
-        email - почта спортсмена.(string)(unique=True)
-        password - пароль спортсмена.(string)
-        name - имя спортсмена.(string)
+        email - почта тренера / спортсмена.(string)(unique=True)
+        password - пароль тренера / спортсмена.(string)
+        name - имя тренера / спортсмена.(string)
+        isTrainer - флаг, который отвечает за тип пользователя.(bool)
 
     Auth:
         Этот запрос публичный.
     """,
     "responses": {
         201: {
-            "description": "Успешная регистрация нового спортсмена.",
+            "description": "Успешная регистрация нового тренера / спортсмена.",
             "content": {
                 "application/json": {
                     "example": {
@@ -26,10 +27,10 @@ sportsman_register: Docs = {
             },
         },
         409: {
-            "description": "Спортсмен с таким `email` уже существует.",
+            "description": "Тренер / спортсмен с таким `email` уже существует.",
             "content": {
                 "application/json": {
-                    "example": {"detail": "Sportsman with email {email} already exists"}
+                    "example": {"detail": "User with email {email} already exists"}
                 }
             },
         },
@@ -58,14 +59,14 @@ sportsman_register: Docs = {
 }
 
 
-sportsman_login: Docs = {
-    "summary": "Авторизация спортсмена",
+login: Docs = {
+    "summary": "Авторизация тренера / спортсмена",
     "description": """
     ```
     Request Body:
-        email - почта спортсмена.(string)(unique=True)
-        password - пароль спортсмена.(string)
-        name - имя спортсмена.(string)
+        email - почта тренера / спортсмена.(string)(unique=True)
+        password - пароль тренера / спортсмена.(string)
+        name - имя тренера / спортсмена.(string)
 
     Auth:
         Этот запрос публичный.
@@ -78,32 +79,47 @@ sportsman_login: Docs = {
             ),
             "content": {
                 "application/json": {
-                    "example": {
-                        "accessToken": (
-                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                            ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
-                            ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
-                        ),
-                        "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
-                        "userType": "sportsman",
+                    "examples": {
+                        "trainer": {
+                            "summary": "Авторизация тренера",
+                            "value": {
+                                "accessToken": (
+                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                    ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
+                                    ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
+                                ),
+                                "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
+                                "userType": "trainer",
+                            },
+                        },
+                        "sportsman": {
+                            "summary": "Авторизация смортсмена",
+                            "value": {
+                                "accessToken": (
+                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                    ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
+                                    ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
+                                ),
+                                "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
+                                "userType": "sportsman",
+                            },
+                        },
                     }
                 }
             },
         },
         404: {
-            "description": "Спортсмен с таким `email` не найден.",
+            "description": "Тренер / спортсмен с таким `email` не найден.",
             "content": {
                 "application/json": {
-                    "example": {"detail": "Sportsman with email {email} not found"}
+                    "example": {"detail": "User with email {email} not found"}
                 }
             },
         },
         409: {
             "description": "Неверный `password`.",
             "content": {
-                "application/json": {
-                    "example": {"detail": "Sportsman password didnt match"}
-                }
+                "application/json": {"example": {"detail": "User password didnt match"}}
             },
         },
         422: {
@@ -130,15 +146,15 @@ sportsman_login: Docs = {
     },
 }
 
-sportsman_logout: Docs = {
-    "summary": "Выход с аккаунта спортсмена",
+logout: Docs = {
+    "summary": "Выход с аккаунта тренера / спортсмена",
     "description": """
     ```
     Request Body:
         refreshToken - рефреш токен авторизации.(uuid)
 
     Auth:
-        Этот запрос требует авторизации типа пользователя - спортсмен.
+        Этот запрос требует авторизации любого типа пользователей.
 
     P.S.:
         accessToken передаётся в хедере - Authorization: Bearer <accessToken>,
@@ -189,7 +205,7 @@ sportsman_logout: Docs = {
     },
 }
 
-sportsman_refresh: Docs = {
+refresh: Docs = {
     "summary": "Получение новой пары токенов с помощью refreshToken.",
     "description": """
     ```
@@ -222,12 +238,6 @@ sportsman_refresh: Docs = {
                 "application/json": {"example": {"detail": "Refresh token expired"}}
             },
         },
-        403: {
-            "description": "`refreshToken` другого типа пользователя, например тренера.",
-            "content": {
-                "application/json": {"example": {"detail": "Forbidden"}}
-            },
-        },
         404: {
             "description": "Сессия пользователя с таким `refreshToken` не найдена.",
             "content": {
@@ -254,12 +264,12 @@ sportsman_refresh: Docs = {
     },
 }
 
-sportsman_verify: Docs = {
+verify: Docs = {
     "summary": "Проверка валидности accessToken.",
     "description": """
     ```
     Auth:
-        Этот запрос требует авторизации любой групп пользователей.
+        Этот запрос требует авторизации любого типа пользователей.
 
     P.S.:
         accessToken передаётся в хедере - Authorization: Bearer <accessToken>,
@@ -273,12 +283,6 @@ sportsman_verify: Docs = {
         401: {
             "description": "`accessToken` не был передан, или просросен.",
             "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
-        },
-        403: {
-            "description": "`accessToken` другого типа пользователя, например тренара.",
-            "content": {
-                "application/json": {"example": {"detail": "Forbidden"}}
-            },
         },
     },
 }

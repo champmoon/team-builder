@@ -1,8 +1,8 @@
 """create_tables
 
-Revision ID: 2fecbd7bb20b
+Revision ID: b15ef23cd1d9
 Revises:
-Create Date: 2023-10-18 16:38:02.616150
+Create Date: 2023-10-19 15:47:02.327973
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "2fecbd7bb20b"
+revision: str = "b15ef23cd1d9"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -33,6 +33,11 @@ def upgrade() -> None:
         "sessions",
         sa.Column("user_id", sa.Uuid(), nullable=False),
         sa.Column("refresh_token", sa.Uuid(), nullable=False),
+        sa.Column(
+            "user_type",
+            sa.Enum("TRAINER", "SPORTSMAN", "ADMIN", name="userstypes"),
+            nullable=False,
+        ),
         sa.Column(
             "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
         ),

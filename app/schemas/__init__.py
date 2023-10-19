@@ -1,12 +1,5 @@
 from .admins import CreateAdminIn, CreateAdminInDB
-from .auth import (
-    LoginrAdminIn,
-    LoginSportsmenIn,
-    LoginTrainerIn,
-    RefreshTokenIn,
-    RegisterSportsmenIn,
-    RegisterTrainerIn,
-)
+from .auth import LoginIn, RefreshTokenIn, RegisterIn
 from .groups import CreateGroupIn, GroupOut, UpdateGroupIn
 from .sessions import CreateSessionIn
 from .sportsmans import (
