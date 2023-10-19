@@ -1,20 +1,20 @@
 from .base_docs import Docs
 
-trainer_register: Docs = {
-    "summary": "Регистрация тренера",
+sportsman_register: Docs = {
+    "summary": "Регистрация спортсмена",
     "description": """
     ```
     Request Body:
-        email - почта тренера.(string)(unique=True)
-        password - пароль тренера.(string)
-        name - имя тренера.(string)
+        email - почта спортсмена.(string)(unique=True)
+        password - пароль спортсмена.(string)
+        name - имя спортсмена.(string)
 
     Auth:
         Этот запрос публичный.
     """,
     "responses": {
         201: {
-            "description": "Успешная регистрация нового тренера.",
+            "description": "Успешная регистрация нового спортсмена.",
             "content": {
                 "application/json": {
                     "example": {
@@ -26,10 +26,10 @@ trainer_register: Docs = {
             },
         },
         409: {
-            "description": "Тренер с таким `email` уже существует.",
+            "description": "Спортсмен с таким `email` уже существует.",
             "content": {
                 "application/json": {
-                    "example": {"detail": "Trainer with email {email} already exists"}
+                    "example": {"detail": "Sportsman with email {email} already exists"}
                 }
             },
         },
@@ -58,14 +58,14 @@ trainer_register: Docs = {
 }
 
 
-trainer_login: Docs = {
-    "summary": "Авторизация тренера",
+sportsman_login: Docs = {
+    "summary": "Авторизация спортсмена",
     "description": """
     ```
     Request Body:
-        email - почта тренера.(string)(unique=True)
-        password - пароль тренера.(string)
-        name - имя тренера.(string)
+        email - почта спортсмена.(string)(unique=True)
+        password - пароль спортсмена.(string)
+        name - имя спортсмена.(string)
 
     Auth:
         Этот запрос публичный.
@@ -73,7 +73,7 @@ trainer_login: Docs = {
     "responses": {
         200: {
             "description": (
-                "Успешная авторизация нового тренера, получение пары `jwt"
+                "Успешная авторизация нового спортсмена, получение пары `jwt"
                 " access/refresh токенов`."
             ),
             "content": {
@@ -85,16 +85,16 @@ trainer_login: Docs = {
                             ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
                         ),
                         "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
-                        "userType": "trainer",
+                        "userType": "sportsman",
                     }
                 }
             },
         },
         404: {
-            "description": "Тренер с таким `email` не найден.",
+            "description": "Спортсмен с таким `email` не найден.",
             "content": {
                 "application/json": {
-                    "example": {"detail": "Trainer with email {email} not found"}
+                    "example": {"detail": "Sportsman with email {email} not found"}
                 }
             },
         },
@@ -102,7 +102,7 @@ trainer_login: Docs = {
             "description": "Неверный `password`.",
             "content": {
                 "application/json": {
-                    "example": {"detail": "Trainer password didnt match"}
+                    "example": {"detail": "Sportsman password didnt match"}
                 }
             },
         },
@@ -130,15 +130,15 @@ trainer_login: Docs = {
     },
 }
 
-trainer_logout: Docs = {
-    "summary": "Выход с аккаунта тренера",
+sportsman_logout: Docs = {
+    "summary": "Выход с аккаунта спортсмена",
     "description": """
     ```
     Request Body:
         refreshToken - рефреш токен авторизации.(uuid)
 
     Auth:
-        Этот запрос требует авторизации типа пользователя - тренера.
+        Этот запрос требует авторизации типа пользователя - спортсмен.
 
     P.S.:
         accessToken передаётся в хедере - Authorization: Bearer <accessToken>,
@@ -189,7 +189,7 @@ trainer_logout: Docs = {
     },
 }
 
-trainer_refresh: Docs = {
+sportsman_refresh: Docs = {
     "summary": "Получение новой пары токенов с помощью refreshToken.",
     "description": """
     ```
@@ -223,7 +223,7 @@ trainer_refresh: Docs = {
             },
         },
         403: {
-            "description": "`refreshToken` другого типа пользователя, например спортсмена.",
+            "description": "`refreshToken` другого типа пользователя, например тренера.",
             "content": {
                 "application/json": {"example": {"detail": "Forbidden"}}
             },
@@ -254,7 +254,7 @@ trainer_refresh: Docs = {
     },
 }
 
-trainer_verify: Docs = {
+sportsman_verify: Docs = {
     "summary": "Проверка валидности accessToken.",
     "description": """
     ```
@@ -275,7 +275,7 @@ trainer_verify: Docs = {
             "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
         },
         403: {
-            "description": "`accessToken` другого типа пользователя, например спортсмена.",
+            "description": "`accessToken` другого типа пользователя, например тренара.",
             "content": {
                 "application/json": {"example": {"detail": "Forbidden"}}
             },

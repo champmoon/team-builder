@@ -126,9 +126,7 @@ async def refresh(
 
     sportsman_out = await sportmans_service.get_by_id(id=session_out.user_id)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
     await session_service.delete_by_refresh_token(
         refresh_token=session_out.refresh_token

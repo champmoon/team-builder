@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api import openapi_tags, urls_router
+from .api import urls_router
 from .conf.settings import settings
 from .containers import wire_containers
 from .docs import app_docs

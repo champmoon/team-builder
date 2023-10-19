@@ -115,12 +115,10 @@ async def refresh(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Refresh token not found",
         )
-    
+
     trainer_out = await trainer_service.get_by_id(id=session_out.user_id)
     if not trainer_out:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
     await session_service.delete_by_refresh_token(
         refresh_token=session_out.refresh_token
