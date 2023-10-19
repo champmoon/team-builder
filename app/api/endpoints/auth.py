@@ -24,18 +24,18 @@ async def register(
     sportmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service],
     ),
-    trainer_service: Services.trainers = Depends(
+    trainers_service: Services.trainers = Depends(
         Provide[Containers.trainers.service],
     ),
 ) -> Any:
     if register_in.is_trainer:
-        trainer_out = await trainer_service.get_by_email(email=register_in.email)
+        trainer_out = await trainers_service.get_by_email(email=register_in.email)
         if trainer_out:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail=f"User with email {register_in.email} already exists",
             )
-        return await trainer_service.create(
+        return await trainers_service.create(
             schema_in=schemas.CreateTrainerIn(
                 email=register_in.email,
                 password=register_in.password,
@@ -69,14 +69,14 @@ async def login(
     sportmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service]
     ),
-    trainer_service: Services.trainers = Depends(
+    trainers_service: Services.trainers = Depends(
         Provide[Containers.trainers.service],
     ),
     session_service: Services.sessions = Depends(Provide[Containers.sessions.service]),
 ) -> Any:
     sportsman_out = await sportmans_service.get_by_email(email=login_in.email)
     if not sportsman_out:
-        trainer_out = await trainer_service.get_by_email(email=login_in.email)
+        trainer_out = await trainers_service.get_by_email(email=login_in.email)
         if not trainer_out:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,

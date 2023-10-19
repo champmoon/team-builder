@@ -93,7 +93,7 @@ login: Docs = {
                             },
                         },
                         "sportsman": {
-                            "summary": "Авторизация смортсмена",
+                            "summary": "Авторизация спортсмена",
                             "value": {
                                 "accessToken": (
                                     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
@@ -223,8 +223,8 @@ refresh: Docs = {
                     "example": {
                         "accessToken": (
                             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                            ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
-                            ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
+                            ".eyJleHAiOjE2OTc3Mzc5OTAsInN1YiI6IntcInVzZXJfaWRcIjogXCIwYjcwNzRhZi03NTJlLTQxM2ItOTU1Zi1jMDU1ZDliNDg4YzZcIiwgXCJ1c2VyX3R5cGVcIjogXCJ0cmFpbmVyXCJ9In0"
+                            ".FFqw9AZlajts1GjWKO_c4JwS8G6sX6GbJA2-51SEBQg"
                         ),
                         "refreshToken": "0b31b17f-2513-4dcc-899d-debfca437cdc",
                         "userType": "trainer",

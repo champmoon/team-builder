@@ -26,6 +26,14 @@ class TeamsRepository:
 
         return getted_Team.scalars().first()
 
+    async def get_by_trainer_id(self, trainer_id: UUID) -> Teams | None:
+        stmt = select(self.model).where(self.model.trainer_id == trainer_id)
+
+        async with self.session_factory() as session:
+            getted_Team = await session.execute(stmt)
+
+        return getted_Team.scalars().first()
+
     async def get_all(self) -> Sequence[Teams]:
         stmt = select(self.model)
 

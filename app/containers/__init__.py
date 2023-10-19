@@ -5,6 +5,7 @@ from .auth import AuthContainer
 from .base_class import BaseContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
+from .teams import TeamsContainer
 from .trainers import TrainersContainer
 
 
@@ -14,6 +15,7 @@ class Containers:
     trainers = TrainersContainer
     sessions = SessionsContainer
     auth = AuthContainer
+    teams = TeamsContainer
 
     @classmethod
     def get_all_containers(cls) -> list[Type[BaseContainer]]:

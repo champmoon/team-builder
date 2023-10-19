@@ -27,3 +27,9 @@ class SportsmanOut(BaseSchemaFromDB):
     email: str
     name: str
     team_id: UUID | None = None
+
+
+class SportsmanForTeamOut(BaseSchemaFromDB):
+    id: UUID
+    email: str
+    name: str
