@@ -18,4 +18,7 @@ class Teams(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    sportsmans: Mapped[list[Sportsmans]] = relationship(lazy="immediate")
+    sportsmans: Mapped[list[Sportsmans]] = relationship(
+        lazy="immediate",
+        viewonly=True,
+    )

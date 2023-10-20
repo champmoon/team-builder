@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy import delete, insert, join, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Sportsmans, SportsmansGroups
+from app.models import Sportsmans
 from app.schemas.sportsmans import CreateSportsmanInDB, UpdateSportsmanIn
 
 
@@ -13,11 +13,9 @@ class SportsmansRepository:
     def __init__(
         self,
         model: Type[Sportsmans],
-        association_model: Type[SportsmansGroups],
         session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]],
     ) -> None:
         self.model = model
-        self.association_model = association_model
         self.session_factory = session_factory
 
     async def get_by_id(self, id: UUID) -> Sportsmans | None:
@@ -94,3 +92,31 @@ class SportsmansRepository:
             await session.commit()
 
         return deleted_sportsman.scalars().one()
+
+    async def add_to_team(self, id: UUID, team_id: UUID) -> Sportsmans:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(team_id=team_id)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_sportsman = await session.execute(stmt)
+            await session.commit()
+
+        return updated_sportsman.scalars().one()
+
+    async def kick_off_team(self, id: UUID) -> Sportsmans:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(team_id=None)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_sportsman = await session.execute(stmt)
+            await session.commit()
+
+        return updated_sportsman.scalars().one()

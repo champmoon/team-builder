@@ -1,7 +1,7 @@
-import uuid
 from functools import wraps
 from inspect import Parameter, signature
 from typing import Any, Callable
+from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
@@ -9,7 +9,7 @@ from fastapi.security.http import HTTPAuthorizationCredentials, HTTPBearer
 
 from app import consts, schemas
 from app.containers import Containers
-from app.models import Admins
+from app.models import Admins, Sportsmans, Trainers
 from app.services import Services
 from app.utils import JWTManager
 
@@ -69,11 +69,37 @@ def auth_required(*, users: list[consts.UsersTypes] | None = None) -> Callable:
 @inject
 async def self_admin(
     token_data: schemas.TokensDecodedSchema = Depends(get_authorization_data),
-    admin_service: Services.admins = Depends(Provide[Containers.admins.service]),
+    admin_service: Services.admins = Depends(
+        Provide[Containers.admins.service],
+    ),
 ) -> Admins:
-    admin_out = await admin_service.get_by_id(uuid.UUID(token_data.user_id))
-    if not admin_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Admin not found"
-        )
-    return admin_out
+    admin_out = await admin_service.get_by_id(id=UUID(token_data.user_id))
+    if admin_out:
+        return admin_out
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+
+
+@inject
+async def self_trainer(
+    token_data: schemas.TokensDecodedSchema = Depends(get_authorization_data),
+    trainers_service: Services.trainers = Depends(
+        Provide[Containers.trainers.service],
+    ),
+) -> Trainers:
+    trainer_out = await trainers_service.get_by_id(id=UUID(token_data.user_id))
+    if trainer_out:
+        return trainer_out
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+
+
+@inject
+async def self_sportsman(
+    token_data: schemas.TokensDecodedSchema = Depends(get_authorization_data),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service]
+    ),
+) -> Sportsmans:
+    sportsman_out = await sportsmans_service.get_by_id(id=UUID(token_data.user_id))
+    if sportsman_out:
+        return sportsman_out
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)

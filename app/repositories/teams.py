@@ -22,17 +22,17 @@ class TeamsRepository:
         stmt = select(self.model).where(self.model.id == id)
 
         async with self.session_factory() as session:
-            getted_Team = await session.execute(stmt)
+            getted_team = await session.execute(stmt)
 
-        return getted_Team.scalars().first()
+        return getted_team.scalars().first()
 
     async def get_by_trainer_id(self, trainer_id: UUID) -> Teams | None:
         stmt = select(self.model).where(self.model.trainer_id == trainer_id)
 
         async with self.session_factory() as session:
-            getted_Team = await session.execute(stmt)
+            getted_team = await session.execute(stmt)
 
-        return getted_Team.scalars().first()
+        return getted_team.scalars().first()
 
     async def get_all(self) -> Sequence[Teams]:
         stmt = select(self.model)
@@ -44,20 +44,20 @@ class TeamsRepository:
 
     async def create(self, schema_in: CreateTeamIn) -> Teams:
         async with self.session_factory() as session:
-            created_Team = await session.execute(
+            created_team = await session.execute(
                 insert(self.model)
                 .values(**schema_in.model_dump())
                 .returning(self.model)
             )
             await session.commit()
 
-        return created_Team.scalars().one()
+        return created_team.scalars().one()
 
     async def delete(self, id: UUID) -> Teams:
         stmt = delete(self.model).where(self.model.id == id).returning(self.model)
 
         async with self.session_factory() as session:
-            deleted_Team = await session.execute(stmt)
+            deleted_team = await session.execute(stmt)
             await session.commit()
 
-        return deleted_Team.scalars().one()
+        return deleted_team.scalars().one()

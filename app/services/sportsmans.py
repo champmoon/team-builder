@@ -24,3 +24,9 @@ class SportsmansService:
                 name=schema_in.name,
             )
         )
+
+    async def add_to_team(self, sportsman_id: UUID, team_id: UUID) -> Sportsmans:
+        return await self.repository.add_to_team(id=sportsman_id, team_id=team_id)
+
+    async def kick_off_team(self, sportsman_id: UUID) -> Sportsmans:
+        return await self.repository.kick_off_team(id=sportsman_id)

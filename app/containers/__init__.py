@@ -3,8 +3,10 @@ from typing import Type
 from .admins import AdminsContainer
 from .auth import AuthContainer
 from .base_class import BaseContainer
+from .groups import GroupsContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
+from .sportsmans_groups import SportsmansGroupsContainer
 from .teams import TeamsContainer
 from .trainers import TrainersContainer
 
@@ -16,6 +18,8 @@ class Containers:
     sessions = SessionsContainer
     auth = AuthContainer
     teams = TeamsContainer
+    groups = GroupsContainer
+    sportsmans_groups = SportsmansGroupsContainer
 
     @classmethod
     def get_all_containers(cls) -> list[Type[BaseContainer]]:

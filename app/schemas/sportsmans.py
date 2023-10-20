@@ -33,3 +33,17 @@ class SportsmanForTeamOut(BaseSchemaFromDB):
     id: UUID
     email: str
     name: str
+
+
+class SportsmanForGroupOut(BaseSchemaFromDB):
+    id: UUID
+    email: str
+    name: str
+
+
+class ListSportsmansEmailsIn(BaseSchema):
+    sportsmans_emails: list[EmailStr]
+
+
+class SportsmansEmailIn(BaseSchema):
+    sportsman_email: EmailStr
