@@ -22,7 +22,7 @@ class Sportsmans(Base, UUIDAsIDMixin):
     hashed_password: Mapped[str]
     name: Mapped[str]
 
-    groups: Mapped[list["Groups"]] = relationship(
+    groups: Mapped[list["Groups"]] = relationship(  # type: ignore  # noqa
         secondary="sportsmans_groups",
         lazy="immediate",
         viewonly=True,

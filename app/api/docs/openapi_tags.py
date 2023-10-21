@@ -1,27 +1,15 @@
 tags_mapper = {
     "auth": "Авторизация / регистрация для тренеров / спортсменов",
-    ...: ...,
+    ...: ...,  # noqa
+    "trainers_profile": "Тренеры → Профиль",
+    "sportsmans_profile": "Спортсмены → Профиль",
+    ...: ...,  # noqa
     "trainers_teams": "Тренеры → Команды",
-    "trainers_groups": "Тренеры → Группы",
     "sportsmans_teams": "Спортсмены → Команды",
+    ...: ...,  # noqa
+    "trainers_groups": "Тренеры → Группы",
+    "sportsmans_groups": "Спортсмены → Группы",
 }
 
 
-openapi_tags = [
-    {
-        "name": tags_mapper["auth"],
-        "description": "Запросы для авторизацию/регистрацию тренеров / спортсменов",
-    },
-    {
-        "name": tags_mapper["trainers_teams"],
-        "description": "",
-    },
-    {
-        "name": tags_mapper["trainers_groups"],
-        "description": "",
-    },
-    {
-        "name": tags_mapper["sportsmans_teams"],
-        "description": "",
-    },
-]
+openapi_tags = [{"name": tag_value} for tag_value in tags_mapper.values()]

@@ -14,5 +14,7 @@ class BaseSchema(BaseModel):
 
 class BaseSchemaFromDB(BaseModel):
     model_config = ConfigDict(
-        from_attributes=True, alias_generator=to_camel, populate_by_name=True
+        from_attributes=True,
+        alias_generator=to_camel,
+        populate_by_name=True,
     )

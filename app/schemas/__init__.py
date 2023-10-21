@@ -1,11 +1,12 @@
 from .admins import CreateAdminIn, CreateAdminInDB
 from .auth import LoginIn, RefreshTokenIn, RegisterIn
 from .groups import (
-    AddSportsmansToGroupIn,
-    AddSportsmanToGroupIn,
     CreateGroupIn,
     CreateGroupInDB,
     GroupOut,
+    OnlyGroupOut,
+    SportsmansToGroupIn,
+    SportsmanToGroupIn,
     UpdateGroupIn,
 )
 from .sessions import CreateSessionIn
@@ -15,6 +16,7 @@ from .sportsmans import (
     ListSportsmansEmailsIn,
     SportsmanOut,
     SportsmansEmailIn,
+    SportsmanWithGroupsOut,
     UpdateSportsmanIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn

@@ -12,6 +12,11 @@ class GroupsService:
     async def get_by_id(self, id: UUID) -> Groups | None:
         return await self.repository.get_by_id(id=id)
 
+    async def get_by_sportsman_id(self, id: UUID, sportsman_id: UUID) -> Groups | None:
+        return await self.repository.get_by_sportsman_id(
+            id=id, sportsman_id=sportsman_id
+        )
+
     async def get_all_by_trainer_id(self, trainer_id: UUID) -> Groups | None:
         return await self.repository.get_all_by_trainer_id(trainer_id=trainer_id)
 
@@ -24,6 +29,9 @@ class GroupsService:
                 name=schema_in.name,
             )
         )
+
+    async def update(self, id: UUID, schema_in: schemas.UpdateGroupIn) -> Groups:
+        return await self.repository.update(id=id, schema_in=schema_in)
 
     async def delete(self, id: UUID) -> Groups:
         return await self.repository.delete(id=id)

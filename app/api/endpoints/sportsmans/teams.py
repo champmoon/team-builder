@@ -69,11 +69,5 @@ async def out_off_team(
             detail="Team must exist",
         )
 
-    if self_sportsman.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {self_sportsman.email} not be on a team",
-        )
-
     await sportsmans_service.kick_off_team(sportsman_id=self_sportsman.id)
     return await sportsmans_service.get_by_id(id=self_sportsman.id)

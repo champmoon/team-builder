@@ -11,12 +11,12 @@ class CreateGroupIn(BaseSchema):
     sportsmans_emails: list[EmailStr] | None = None
 
 
-class AddSportsmansToGroupIn(BaseSchema):
+class SportsmansToGroupIn(BaseSchema):
     group_id: UUID
     sportsmans_emails: list[EmailStr] | None = None
 
 
-class AddSportsmanToGroupIn(BaseSchema):
+class SportsmanToGroupIn(BaseSchema):
     group_id: UUID
     sportsman_email: EmailStr
 
@@ -35,3 +35,9 @@ class GroupOut(BaseSchemaFromDB):
     trainer_id: UUID
     name: str
     sportsmans: list[SportsmanForGroupOut]
+
+
+class OnlyGroupOut(BaseSchemaFromDB):
+    id: UUID
+    trainer_id: UUID
+    name: str

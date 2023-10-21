@@ -47,3 +47,17 @@ class ListSportsmansEmailsIn(BaseSchema):
 
 class SportsmansEmailIn(BaseSchema):
     sportsman_email: EmailStr
+
+
+class OnlyGroupOut(BaseSchemaFromDB):
+    id: UUID
+    trainer_id: UUID
+    name: str
+
+
+class SportsmanWithGroupsOut(BaseSchemaFromDB):
+    id: UUID
+    email: str
+    name: str
+    team_id: UUID | None = None
+    groups: list[OnlyGroupOut]

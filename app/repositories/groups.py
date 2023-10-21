@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Groups
+from app.models import Groups, SportsmansGroups
 from app.schemas.groups import CreateGroupInDB, UpdateGroupIn
 
 
@@ -20,6 +20,21 @@ class GroupsRepository:
 
     async def get_by_id(self, id: UUID) -> Groups | None:
         stmt = select(self.model).where(self.model.id == id)
+
+        async with self.session_factory() as session:
+            getted_group = await session.execute(stmt)
+
+        return getted_group.scalars().first()
+
+    async def get_by_sportsman_id(self, id: UUID, sportsman_id: UUID) -> Groups | None:
+        stmt = (
+            select(self.model)
+            .join(SportsmansGroups, SportsmansGroups.group_id == self.model.id)
+            .where(
+                self.model.id == id,
+                SportsmansGroups.sportsman_id == sportsman_id,
+            )
+        )
 
         async with self.session_factory() as session:
             getted_group = await session.execute(stmt)
