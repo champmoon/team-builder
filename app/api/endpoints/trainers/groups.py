@@ -263,7 +263,7 @@ async def adds_sportsmans_to_group(
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
-async def kick_sportsman_to_group(
+async def kick_sportsman_off_group(
     kick_sportsman_to_group_in: schemas.SportsmanToGroupIn,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(
@@ -325,7 +325,7 @@ async def kick_sportsman_to_group(
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
-async def kicks_sportsmans_to_group(
+async def kicks_sportsmans_off_group(
     kicks_sportsmans_to_group_in: schemas.SportsmansToGroupIn,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(

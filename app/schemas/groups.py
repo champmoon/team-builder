@@ -41,3 +41,7 @@ class OnlyGroupOut(BaseSchemaFromDB):
     id: UUID
     trainer_id: UUID
     name: str
+
+
+class ListGroupsIDsIn(BaseSchema):
+    groups_ids: list[UUID]

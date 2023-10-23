@@ -56,6 +56,41 @@ async def get_self_group(
 )
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
 @inject
+async def outs_off_groups(
+    groups_ids_in: schemas.ListGroupsIDsIn,
+    self_sportsman: Sportsmans = Depends(deps.self_sportsman),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+    groups_service: Services.groups = Depends(
+        Provide[Containers.groups.service],
+    ),
+    sportsmans_groups_service: Services.sportsmans_groups = Depends(
+        Provide[Containers.sportsmans_groups.service],
+    ),
+) -> Any:
+    for group_id in groups_ids_in:
+        group_out = await groups_service.get_by_sportsman_id(
+            id=group_id, sportsman_id=self_sportsman.id
+        )
+        if not group_out:
+            continue
+
+        await sportsmans_groups_service.delete(
+            schema_in=schemas.DeleteSportsmanGroupIn(
+                sportsman_id=self_sportsman.id,
+                group_id=group_out.id,
+            )
+        )
+    return await sportsmans_service.get_by_id(id=self_sportsman.id)
+
+
+@router(
+    response_model=schemas.SportsmanWithGroupsOut,
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.SPORTSMAN])
+@inject
 async def out_off_group(
     id: UUID,
     self_sportsman: Sportsmans = Depends(deps.self_sportsman),

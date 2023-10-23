@@ -67,7 +67,7 @@ async def add_sportsman_to_team(
             detail="Team must exist",
         )
 
-    if sportsman_out.team_id == team_out.id:
+    if sportsman_out.team_id:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Sportsman with email {sportsman_email} already on the team",
@@ -87,7 +87,7 @@ async def add_sportsman_to_team(
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def adds_sportsmans_to_team(
-    sportsman_emails_in: schemas.ListSportsmansEmailsIn,
+    sportsmans_emails_in: schemas.ListSportsmansEmailsIn,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
@@ -103,7 +103,7 @@ async def adds_sportsmans_to_team(
             detail="Team must exist",
         )
 
-    sportsman_emails = sportsman_emails_in.sportsmans_emails
+    sportsman_emails = sportsmans_emails_in.sportsmans_emails
     for sportsman_email in sportsman_emails:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out:
@@ -169,7 +169,7 @@ async def kick_sportsman_off_team(
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def kicks_sportsmans_off_team(
-    sportsman_emails_in: schemas.ListSportsmansEmailsIn,
+    sportsmans_emails_in: schemas.ListSportsmansEmailsIn,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
@@ -185,8 +185,8 @@ async def kicks_sportsmans_off_team(
             detail="Team must exist",
         )
 
-    sportsman_emails = sportsman_emails_in.sportsmans_emails
-    for sportsman_email in sportsman_emails.emails:
+    sportsmans_emails = sportsmans_emails_in.sportsmans_emails
+    for sportsman_email in sportsmans_emails:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out:
             continue

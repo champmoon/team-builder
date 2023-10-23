@@ -4,6 +4,7 @@ from .groups import (
     CreateGroupIn,
     CreateGroupInDB,
     GroupOut,
+    ListGroupsIDsIn,
     OnlyGroupOut,
     SportsmansToGroupIn,
     SportsmanToGroupIn,
