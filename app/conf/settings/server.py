@@ -19,6 +19,8 @@ class ServerSettings(BaseSettings):
 
     DEBUG: bool
 
+    FILES_DIR: str = "files"
+
     @validator("VERSION", pre=True)
     def get_app_version(cls, v: str | None, values: dict[str, str]) -> str:
         if v:

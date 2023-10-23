@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .api import urls_router
 from .conf.settings import settings
@@ -9,7 +10,6 @@ from .docs import app_docs
 
 app = FastAPI(
     version=settings.VERSION,
-    # openapi_tags=openapi_tags,
     title=app_docs["title"],
     description=app_docs["description"],
     debug=settings.DEBUG,
@@ -22,6 +22,8 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"],
     allow_headers=["*"],
 )
+
+app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
 
 app.include_router(urls_router, prefix=settings.API_PREFIX)
 wire_containers()

@@ -439,7 +439,7 @@ add_sportsman_to_group: Docs = {
 
 
 adds_sportsmans_to_group: Docs = {
-    "summary": "Добавление спортсменов в группу",
+    "summary": "Добавление спортсменов в группы",
     "description": """
     ```
     Request Body:
