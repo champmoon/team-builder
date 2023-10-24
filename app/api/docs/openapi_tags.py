@@ -9,6 +9,8 @@ tags_mapper = {
     #
     "trainers_groups": "Тренеры → Группы",
     "sportsmans_groups": "Спортсмены → Группы",
+    #
+    "exercises": "Упражнения",
 }
 
 

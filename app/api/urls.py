@@ -53,6 +53,8 @@ url.GET("     /sportsman/groups/{id}        ", endpoint=sportsmans_groups.get_se
 url.POST("    /sportsman/groups/outs        ", endpoint=sportsmans_groups.outs_off_groups, docs=docs.sportsmans.outs_off_groups)
 url.POST("    /sportsman/groups/out/{id}    ", endpoint=sportsmans_groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
+url.GET("     /exercises/types              ", endpoint=general.exercises_types.get_exercises_types)
+
 
 urls_router.include_router(general.auth.router, tags=[docs.tags_mapper["auth"]])
 
@@ -64,3 +66,5 @@ urls_router.include_router(sportsmans_teams.router, tags=[docs.tags_mapper["spor
 
 urls_router.include_router(trainers_groups.router, tags=[docs.tags_mapper["trainers_groups"]])
 urls_router.include_router(sportsmans_groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])
+
+urls_router.include_router(general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])

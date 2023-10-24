@@ -2,6 +2,7 @@ from typing import TypeAlias
 
 from .admins import AdminsService
 from .auth import AuthService
+from .exercises_types import ExercisesTypesService
 from .groups import GroupsService
 from .sessions import SessionsService
 from .sportsmans import SportsmansService
@@ -19,3 +20,4 @@ class Services:
     teams: TypeAlias = TeamsService
     groups: TypeAlias = GroupsService
     sportsmans_groups: TypeAlias = SportsmansGroupsService
+    exercises_types: TypeAlias = ExercisesTypesService
