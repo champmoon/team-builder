@@ -24,7 +24,8 @@ class Exercises(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    repetitions: Mapped[int | None]
+    reps: Mapped[int | None]
+    sets: Mapped[int | None]
     rest_sets: Mapped[int | None]
     order: Mapped[int]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())

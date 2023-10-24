@@ -4,15 +4,17 @@ from enum import IntEnum
 class ExercisesTypesEnum(IntEnum):
     REST = 1
     WARM_UP = 2
-    PUSH_UPS = 3
-    PULL_UPS = 4
-    SQUATS = 5
-    BURPEE = 6
+    HITCH = 3
+    PUSH_UPS = 4
+    PULL_UPS = 5
+    SQUATS = 6
+    BURPEE = 7
 
 
 EXERCISES_TYPES_DESC: dict[ExercisesTypesEnum, str] = {
     ExercisesTypesEnum.REST: "Отдых",
     ExercisesTypesEnum.WARM_UP: "Разминка",
+    ExercisesTypesEnum.HITCH: "Заминка",
     ExercisesTypesEnum.PUSH_UPS: "Отжимания",
     ExercisesTypesEnum.PULL_UPS: "Подтягивания",
     ExercisesTypesEnum.SQUATS: "Приседания",
