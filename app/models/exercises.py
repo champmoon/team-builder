@@ -12,9 +12,9 @@ from app.db.mixins import UUIDAsIDMixin
 class Exercises(Base, UUIDAsIDMixin):
     __tablename__ = "exercises"
 
-    trainig_id: Mapped[UUID] = mapped_column(
+    workout_id: Mapped[UUID] = mapped_column(
         ForeignKey(
-            column="trainigs.id",
+            column="workouts.id",
             ondelete="CASCADE",
         )
     )

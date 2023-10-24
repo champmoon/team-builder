@@ -8,8 +8,8 @@ from .groups import Groups
 from .sessions import Sessions
 from .sportsmans import Sportsmans
 from .sportsmans_groups import SportsmansGroups
-from .sportsmans_trainigs import SportsmansTrainigs
+from .sportsmans_workouts import SportsmansWorkouts
 from .teams import Teams
 from .trainers import Trainers
-from .trainigs import Trainigs
-from .trainigs_statuses import TrainigsStatuses
+from .workouts import Workouts
+from .workouts_statuses import WorkoutsStatuses

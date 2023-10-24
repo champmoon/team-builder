@@ -4,7 +4,7 @@ from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
 
 
-class TrainigsStatuses(Base, UUIDAsIDMixin):
-    __tablename__ = "trainigs_statuses"
+class WorkoutsStatuses(Base, UUIDAsIDMixin):
+    __tablename__ = "workouts_statuses"
 
     status: Mapped[int]

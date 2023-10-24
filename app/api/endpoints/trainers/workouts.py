@@ -18,7 +18,8 @@ router = EndPointRouter()
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
-async def get_profile(
+async def create_training(
+    create_training_in,
     self_trainer: Trainers = Depends(deps.self_trainer),
 ) -> Any:
     return self_trainer

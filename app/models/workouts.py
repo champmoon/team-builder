@@ -7,8 +7,8 @@ from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
 
 
-class Trainigs(Base, UUIDAsIDMixin):
-    __tablename__ = "trainigs"
+class Workouts(Base, UUIDAsIDMixin):
+    __tablename__ = "workouts"
 
     name: Mapped[str]
     estimated_time: Mapped[int]
