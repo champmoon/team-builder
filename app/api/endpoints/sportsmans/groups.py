@@ -69,7 +69,7 @@ async def outs_off_groups(
         Provide[Containers.sportsmans_groups.service],
     ),
 ) -> Any:
-    for group_id in groups_ids_in:
+    for group_id in groups_ids_in.groups_ids:
         group_out = await groups_service.get_by_sportsman_id(
             id=group_id, sportsman_id=self_sportsman.id
         )

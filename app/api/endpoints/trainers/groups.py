@@ -242,7 +242,7 @@ async def adds_sportsmans_to_group(
             detail="Team must exist",
         )
 
-    for sportsman_email in sportsmans_emails:
+    for sportsman_email in sportsmans_emails or []:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
             continue
@@ -358,7 +358,7 @@ async def kicks_sportsmans_off_group(
             detail="Team must exist",
         )
 
-    for sportsman_email in sportsmans_emails:
+    for sportsman_email in sportsmans_emails or []:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
             continue

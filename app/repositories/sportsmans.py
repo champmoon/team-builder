@@ -2,7 +2,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, join, select, update
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Sportsmans
@@ -37,23 +37,6 @@ class SportsmansRepository:
     async def get_all(self) -> Sequence[Sportsmans]:
         stmt = select(self.model)
 
-        async with self.session_factory() as session:
-            getted_sportsmans = await session.execute(stmt)
-
-        return getted_sportsmans.scalars().all()
-
-    async def get_all_for_group(self, group_id: UUID) -> Sequence[Sportsmans]:
-        stmt = (
-            select(self.model)
-            .select_from(
-                join(
-                    left=self.model,
-                    right=self.association_model,
-                    onclause=self.model.id == self.association_model.sportsman_id,
-                )
-            )
-            .where(self.association_model.group_id == group_id)
-        )
         async with self.session_factory() as session:
             getted_sportsmans = await session.execute(stmt)
 
