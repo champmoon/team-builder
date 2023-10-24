@@ -53,9 +53,9 @@ class GroupsRepository:
         stmt = select(self.model)
 
         async with self.session_factory() as session:
-            getted_Groups = await session.execute(stmt)
+            getted_groups = await session.execute(stmt)
 
-        return getted_Groups.scalars().all()
+        return getted_groups.scalars().all()
 
     async def create(self, schema_in: CreateGroupInDB) -> Groups:
         async with self.session_factory() as session:

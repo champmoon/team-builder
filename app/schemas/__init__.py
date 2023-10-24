@@ -1,5 +1,6 @@
 from .admins import CreateAdminIn, CreateAdminInDB
 from .auth import LoginIn, RefreshTokenIn, RegisterIn
+from .exercises_types import CreateExercisesTypeIn, ExercisesTypesOut
 from .groups import (
     CreateGroupIn,
     CreateGroupInDB,

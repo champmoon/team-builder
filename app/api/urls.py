@@ -1,7 +1,7 @@
 from app.utils.router import EndPointRouter, url
 
 from . import docs
-from .endpoints import auth
+from .endpoints import general
 
 from .endpoints.trainers import (
     teams as trainers_teams,
@@ -17,11 +17,11 @@ from .endpoints.sportsmans import (
 urls_router = EndPointRouter()
 
 
-url.POST("    /auth/register                ", endpoint=auth.register, docs=docs.register)
-url.POST("    /auth/login                   ", endpoint=auth.login, docs=docs.login)
-url.POST("    /auth/logout                  ", endpoint=auth.logout, docs=docs.logout)
-url.POST("    /auth/refresh                 ", endpoint=auth.refresh, docs=docs.refresh)
-url.POST("    /auth/verify                  ", endpoint=auth.verify, docs=docs.verify)
+url.POST("    /auth/register                ", endpoint=general.auth.register, docs=docs.register)
+url.POST("    /auth/login                   ", endpoint=general.auth.login, docs=docs.login)
+url.POST("    /auth/logout                  ", endpoint=general.auth.logout, docs=docs.logout)
+url.POST("    /auth/refresh                 ", endpoint=general.auth.refresh, docs=docs.refresh)
+url.POST("    /auth/verify                  ", endpoint=general.auth.verify, docs=docs.verify)
 
 url.GET("     /trainer/profile              ", endpoint=trainers_profile.get_profile, docs=docs.trainers.get_profile)
 url.PATCH("   /trainer/profile              ", endpoint=trainers_profile.update_profile, docs=docs.trainers.update_profile)
@@ -54,7 +54,7 @@ url.POST("    /sportsman/groups/outs        ", endpoint=sportsmans_groups.outs_o
 url.POST("    /sportsman/groups/out/{id}    ", endpoint=sportsmans_groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
 
-urls_router.include_router(auth.router, tags=[docs.tags_mapper["auth"]])
+urls_router.include_router(general.auth.router, tags=[docs.tags_mapper["auth"]])
 
 urls_router.include_router(trainers_profile.router, tags=[docs.tags_mapper["trainers_profile"]])
 urls_router.include_router(sportsmans_profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])
