@@ -12,4 +12,5 @@ class Trainigs(Base, UUIDAsIDMixin):
 
     name: Mapped[str]
     estimated_time: Mapped[int]
+    date: Mapped[datetime]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
