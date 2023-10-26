@@ -11,7 +11,7 @@ export PYTHONPATH=.
 python app/scripts/pre_start/check_health.py
 
 # Run migrations
-alembic revision --autogenerate -m 'create_tables'
+# alembic revision --autogenerate -m 'create_tables'
 alembic upgrade head
 
 #Run scripts to fill db
