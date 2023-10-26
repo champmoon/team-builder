@@ -17,8 +17,8 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 # builder-base is used to build dependencies
 FROM python-base AS builder-base
-RUN printf 'Acquire::http::Proxy "%s";' "$HTTP_PROXY" > /etc/apt/apt.conf
-RUN printf 'Acquire::https::Proxy "%s";' "$HTTPS_PROXY" >> /etc/apt/apt.conf
+#RUN printf 'Acquire::http::Proxy "%s";' "$HTTP_PROXY" > /etc/apt/apt.conf
+#RUN printf 'Acquire::https::Proxy "%s";' "$HTTPS_PROXY" >> /etc/apt/apt.conf
 
 RUN buildDeps="build-essential" \
     && apt-get update \
