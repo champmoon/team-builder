@@ -1,6 +1,6 @@
 import logging
-from pprint import pformat
-from typing import Any
+import pprint as pp
+from typing import Any, Literal
 
 from fastapi import Request, Response
 from pydantic import Json
@@ -18,21 +18,43 @@ IGNORE_URLS = (
     "/openapi.json",
 )
 
+HttpType = Literal["REQUEST", "RESPONSE"]
 
-class RequestInfo(BaseSchema):
+
+class LogInfo(BaseSchema):
+    type: HttpType
+
+    def log_format(self) -> str:
+        string = pp.pformat(self.__dict__, width=1)[1:]
+
+        new_str = ""
+        for num, line in enumerate(string.split("\n")):
+            if num == 0:
+                new_str += " " * 4 + line + "\n"
+            else:
+                new_str += " " * 3 + line + "\n"
+
+        return self.type + " = {\n" + new_str
+
+
+class RequestInfo(LogInfo):
+    type: HttpType = "REQUEST"
+
     path: str
     headers: dict
-    body: Json
+    body: Json | None = None
 
 
-class ResponseInfo(BaseSchema):
+class ResponseInfo(LogInfo):
+    type: HttpType = "RESPONSE"
+
     status_code: int
-    body: Json
+    body: Json | None = None
 
 
 def log_info(request_info: RequestInfo, response_info: ResponseInfo) -> None:
-    logger.info(pformat(request_info.model_dump()))
-    logger.info(pformat(response_info.model_dump()))
+    logger.info(request_info.log_format())
+    logger.info(response_info.log_format())
 
 
 async def log_middleware(request: Request, call_next: Any) -> Response:
@@ -47,17 +69,17 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
         response_body += chunk
 
     log_task = None
-    if not request.url.path in IGNORE_URLS:
+    if request.url.path not in IGNORE_URLS:
         log_task = BackgroundTask(
             log_info,
             RequestInfo(
                 path=request.url.path,
                 headers=request.headers,
-                body=request_body,
+                body=request_body or None,
             ),
             ResponseInfo(
                 status_code=response.status_code,
-                body=response_body,
+                body=response_body or None,
             ),
         )
 
