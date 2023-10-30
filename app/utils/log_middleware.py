@@ -16,6 +16,7 @@ logger = logging.getLogger("log")
 IGNORE_URLS = (
     "/docs",
     "/openapi.json",
+    "/files/database.png",
 )
 
 HttpType = Literal["REQUEST", "RESPONSE"]
