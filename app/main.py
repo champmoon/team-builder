@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -39,3 +39,14 @@ if not settings.DEBUG:
 
     fastapi_logger.handlers = gunicorn_error_logger.handlers
     fastapi_logger.setLevel(gunicorn_logger.level)
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    print(f"REQUEST BODY - {await request.body()}")
+
+    response = await call_next(request)
+
+    print(f"RESPONSE BODY - {response.__dict__}")
+
+    return response
