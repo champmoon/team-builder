@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -23,10 +23,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
-
 app.include_router(urls_router, prefix=settings.API_PREFIX)
 wire_containers()
+
+if settings.DEBUG:
+    app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
+
+    from .utils import log_middleware
+
+    app.middleware("http")(log_middleware)
 
 if not settings.DEBUG:
     import logging
@@ -39,14 +44,3 @@ if not settings.DEBUG:
 
     fastapi_logger.handlers = gunicorn_error_logger.handlers
     fastapi_logger.setLevel(gunicorn_logger.level)
-
-
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    print(f"REQUEST BODY - {await request.body()}")
-
-    response = await call_next(request)
-
-    print(f"RESPONSE BODY - {response.__dict__}")
-
-    return response
