@@ -26,7 +26,7 @@ class LogInfo(BaseSchema):
     type: HttpType
 
     def log_format(self) -> str:
-        attrs = self.__dict__
+        attrs = self.__dict__.copy()
         attrs.pop("type")
 
         log_string = pp.pformat(attrs, width=1)[1:]
