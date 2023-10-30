@@ -32,8 +32,8 @@ class ResponseInfo(BaseSchema):
 
 
 def log_info(request_info: RequestInfo, response_info: ResponseInfo) -> None:
-    logger.info(f"\nREQUEST - {request_info.model_dump_json()}\n")
-    logger.info(f"\nREQUEST - {response_info.model_dump_json()}\n")
+    logger.info(f"\nREQUEST:  {request_info.model_dump_json()}\n")
+    logger.info(f"\nRESPONSE: {response_info.model_dump_json()}\n")
 
 
 async def log_middleware(request: Request, call_next: Any) -> Response:
