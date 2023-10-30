@@ -13,6 +13,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("log")
 
 
+IGNORE_URLS = (
+    "/docs",
+    "/openapi.json",
+)
+
+
 class RequestInfo(BaseSchema):
     path: str
     headers: dict
@@ -40,17 +46,20 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
     async for chunk in response.body_iterator:
         response_body += chunk
 
-    request_info = RequestInfo(
-        path=request.url.path,
-        headers=request.headers,
-        body=request_body,
-    )
-    response_info = ResponseInfo(
-        status_code=response.status_code,
-        body=response_body,
-    )
-
-    log_task = BackgroundTask(log_info, request_info, response_info)
+    log_task = None
+    if not request.url.path in IGNORE_URLS:
+        log_task = BackgroundTask(
+            log_info,
+            RequestInfo(
+                path=request.url.path,
+                headers=request.headers,
+                body=request_body,
+            ),
+            ResponseInfo(
+                status_code=response.status_code,
+                body=response_body,
+            ),
+        )
 
     return Response(
         content=response_body,
