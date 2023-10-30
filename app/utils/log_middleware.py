@@ -19,46 +19,21 @@ IGNORE_URLS = (
     "/files/database.png",
 )
 
-HttpType = Literal["REQUEST", "RESPONSE"]
 
-
-class LogInfo(BaseSchema):
-    type: HttpType
-
-    def log_format(self) -> str:
-        attrs = self.__dict__.copy()
-        attrs.pop("type")
-
-        log_string = pp.pformat(attrs, width=1)[1:]
-
-        new_str = ""
-        for num, line in enumerate(log_string.split("\n")):
-            if num == 0:
-                new_str += " " * 4 + line + "\n"
-            else:
-                new_str += " " * 3 + line + "\n"
-
-        return self.type + " = {\n" + new_str
-
-
-class RequestInfo(LogInfo):
-    type: HttpType = "REQUEST"
-
+class RequestInfo(BaseSchema):
     path: str
     headers: dict
     body: Json | None = None
 
 
-class ResponseInfo(LogInfo):
-    type: HttpType = "RESPONSE"
-
+class ResponseInfo(BaseSchema):
     status_code: int
     body: Json | None = None
 
 
 def log_info(request_info: RequestInfo, response_info: ResponseInfo) -> None:
-    logger.info(request_info.log_format())
-    logger.info(response_info.log_format())
+    logger.info(f"\nREQUEST - {request_info.model_dump_json()}\n")
+    logger.info(f"\nREQUEST - {response_info.model_dump_json()}\n")
 
 
 async def log_middleware(request: Request, call_next: Any) -> Response:
