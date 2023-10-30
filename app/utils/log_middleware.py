@@ -26,10 +26,13 @@ class LogInfo(BaseSchema):
     type: HttpType
 
     def log_format(self) -> str:
-        string = pp.pformat(self.__dict__, width=1)[1:]
+        attrs = self.__dict__
+        attrs.pop("type")
+
+        log_string = pp.pformat(attrs, width=1)[1:]
 
         new_str = ""
-        for num, line in enumerate(string.split("\n")):
+        for num, line in enumerate(log_string.split("\n")):
             if num == 0:
                 new_str += " " * 4 + line + "\n"
             else:
