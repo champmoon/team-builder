@@ -23,10 +23,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
-
 app.include_router(urls_router, prefix=settings.API_PREFIX)
 wire_containers()
+
+if settings.DEBUG:
+    app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
+
+    from .utils import log_middleware
+
+    app.middleware("http")(log_middleware)
 
 if not settings.DEBUG:
     import logging
