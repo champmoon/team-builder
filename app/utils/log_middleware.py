@@ -1,6 +1,6 @@
+import json
 import logging
-import pprint as pp
-from typing import Any, Literal
+from typing import Any
 
 from fastapi import Request, Response
 from pydantic import Json
@@ -21,7 +21,6 @@ IGNORE_URLS = (
 
 
 class RequestInfo(BaseSchema):
-    path: str
     headers: dict
     body: Json | None = None
 
@@ -31,9 +30,13 @@ class ResponseInfo(BaseSchema):
     body: Json | None = None
 
 
-def log_info(request_info: RequestInfo, response_info: ResponseInfo) -> None:
-    logger.info(f"\nREQUEST:  {request_info.model_dump_json()}\n")
-    logger.info(f"\nRESPONSE: {response_info.model_dump_json()}\n")
+def log_info(request_info: RequestInfo, response_info: ResponseInfo, path: str) -> None:
+    full_info = {
+        "PATH": path,
+        "REQUEST": request_info.model_dump(),
+        "RESPONSE": response_info.model_dump(),
+    }
+    logger.info(f"\n\n {json.dumps(full_info)} \n\n")
 
 
 async def log_middleware(request: Request, call_next: Any) -> Response:
@@ -52,7 +55,6 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
         log_task = BackgroundTask(
             log_info,
             RequestInfo(
-                path=request.url.path,
                 headers=request.headers,
                 body=request_body or None,
             ),
@@ -60,6 +62,7 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
                 status_code=response.status_code,
                 body=response_body or None,
             ),
+            request.url.path,
         )
 
     return Response(
