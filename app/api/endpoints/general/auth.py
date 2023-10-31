@@ -177,7 +177,7 @@ async def refresh(
 
     return await auth_service.create_tokens(
         tokens_data=schemas.TokensEncodedSchema(
-            user_id=str(new_session_out.id),
+            user_id=str(new_session_out.user_id),
             user_type=session_out.user_type,
         ),
         refresh_token=session_out.refresh_token,
