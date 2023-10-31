@@ -180,7 +180,7 @@ async def refresh(
             user_id=str(new_session_out.user_id),
             user_type=session_out.user_type,
         ),
-        refresh_token=session_out.refresh_token,
+        refresh_token=new_session_out.refresh_token,
     )
 
 
