@@ -135,6 +135,9 @@ async def kick_sportsman_off_team(
     sportsmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service],
     ),
+    sportsmans_groups_service: Services.sportsmans_groups = Depends(
+        Provide[Containers.sportsmans_groups.service],
+    ),
 ) -> Any:
     sportsman_email = sportsman_email_in.sportsman_email
 
@@ -159,6 +162,18 @@ async def kick_sportsman_off_team(
         )
 
     await sportsmans_service.kick_off_team(sportsman_id=sportsman_out.id)
+
+    sportsmans_groups = await sportsmans_groups_service.get_all_groups_by_sportsman_id(
+        sportsman_id=sportsman_out.id
+    )
+    for sportsman_group in sportsmans_groups:
+        await sportsmans_groups_service.delete(
+            schema_in=schemas.DeleteSportsmanGroupIn(
+                sportsman_id=sportsman_out.id,
+                group_id=sportsman_group.group_id,
+            )
+        )
+
     return await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
 
 
@@ -176,6 +191,9 @@ async def kicks_sportsmans_off_team(
     ),
     sportsmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service],
+    ),
+    sportsmans_groups_service: Services.sportsmans_groups = Depends(
+        Provide[Containers.sportsmans_groups.service],
     ),
 ) -> Any:
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
@@ -195,5 +213,18 @@ async def kicks_sportsmans_off_team(
             continue
 
         await sportsmans_service.kick_off_team(sportsman_id=sportsman_out.id)
+
+        sportsmans_groups = (
+            await sportsmans_groups_service.get_all_groups_by_sportsman_id(
+                sportsman_id=sportsman_out.id
+            )
+        )
+        for sportsman_group in sportsmans_groups:
+            await sportsmans_groups_service.delete(
+                schema_in=schemas.DeleteSportsmanGroupIn(
+                    sportsman_id=sportsman_out.id,
+                    group_id=sportsman_group.group_id,
+                )
+            )
 
     return await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
