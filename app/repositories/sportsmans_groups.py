@@ -1,7 +1,8 @@
 from contextlib import AbstractAsyncContextManager
-from typing import Callable, Type
+from typing import Callable, Sequence, Type
+from uuid import UUID
 
-from sqlalchemy import delete, insert
+from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import SportsmansGroups
@@ -16,6 +17,16 @@ class SportsmansGroupsRepository:
     ) -> None:
         self.model = model
         self.session_factory = session_factory
+
+    async def get_all_groups_by_sportsman_id(
+        self, sportsman_id: UUID
+    ) -> Sequence[SportsmansGroups]:
+        stmt = select(self.model).where(self.model.sportsman_id == sportsman_id)
+
+        async with self.session_factory() as session:
+            getted_groups = await session.execute(stmt)
+
+        return getted_groups.scalars().all()
 
     async def create(self, schema_in: CreateSportsmanGroupIn) -> SportsmansGroups:
         async with self.session_factory() as session:
