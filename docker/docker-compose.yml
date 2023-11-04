@@ -22,6 +22,7 @@ services:
       - tb_db
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    tty: true
 
   tb_db:
     image: postgres:15-alpine
