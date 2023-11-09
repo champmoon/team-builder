@@ -6,9 +6,9 @@ services:
       context: ..
       target: development
       dockerfile: docker/Dockerfile
-      args:
-        - HTTP_PROXY=http://antipov:911@proxy.bolid.ru:3128
-        - HTTPS_PROXY=http://antipov:911@proxy.bolid.ru:3128
+      # args:
+      #   - HTTP_PROXY=http://antipov:911@proxy.bolid.ru:3128
+      #   - HTTPS_PROXY=http://antipov:911@proxy.bolid.ru:3128
     container_name: tb_api
     volumes:
       - ../app:/tb/app

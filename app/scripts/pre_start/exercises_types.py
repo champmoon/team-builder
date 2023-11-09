@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from app.consts import EXERCISES_TYPES_DESC, ExercisesTypesEnum
+from app import consts
 from app.db.session import DB
 from app.models import ExercisesTypes
 from app.repositories import ExercisesTypesRepository
@@ -13,22 +13,35 @@ logger = logging.getLogger(__name__)
 
 
 async def create_exercises_types() -> None:
+    basic_exercises_names = [
+        exercise.name for exercise in consts.BasicExercisesTypesEnum
+    ]
+
     repository = ExercisesTypesRepository(
         model=ExercisesTypes,
         session_factory=DB().session,
     )
 
-    for exercises_type in ExercisesTypesEnum:
+    for exercises_type in consts.ExercisesTypesEnum:
         exercises_type_out = await repository.get_by_type(type=exercises_type)
-        if not exercises_type_out:
-            await repository.create(
-                schema_in=CreateExercisesTypeIn(
-                    type=exercises_type,
-                )
+        if exercises_type_out:
+            continue
+
+        average_time = None
+        if exercises_type.name in basic_exercises_names:
+            average_time = consts.BasicExercisesTypesAverageTimeEnum[
+                exercises_type.name
+            ]
+
+        await repository.create(
+            schema_in=CreateExercisesTypeIn(
+                type=exercises_type,
+                average_time=average_time,
             )
-            logger.info(
-                f"Exercises type created - {EXERCISES_TYPES_DESC[exercises_type]}"
-            )
+        )
+        logger.info(
+            f"Exercises type created - {consts.EXERCISES_TYPES_DESC[exercises_type]}"
+        )
 
 
 if __name__ == "__main__":

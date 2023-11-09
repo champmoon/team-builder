@@ -18,8 +18,8 @@ router = EndPointRouter()
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
-async def create_training(
-    create_training_in,
+async def create_workout(
+    # create_workout_in: schemas.CreateWorkoutIn,
     self_trainer: Trainers = Depends(deps.self_trainer),
 ) -> Any:
     return self_trainer

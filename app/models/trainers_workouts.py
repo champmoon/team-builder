@@ -7,12 +7,12 @@ from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
 
 
-class SportsmansWorkouts(Base, UUIDAsIDMixin):
-    __tablename__ = "sportsmans_workouts"
+class TrainersWorkouts(Base, UUIDAsIDMixin):
+    __tablename__ = "trainers_workouts"
 
-    sportsman_id: Mapped[UUID] = mapped_column(
+    trainer_id: Mapped[UUID] = mapped_column(
         ForeignKey(
-            column="sportsmans.id",
+            column="trainers.id",
             ondelete="CASCADE",
         )
     )
@@ -28,4 +28,3 @@ class SportsmansWorkouts(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    execution_time: Mapped[float | None] = mapped_column(default=None)

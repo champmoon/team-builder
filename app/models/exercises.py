@@ -1,9 +1,7 @@
-from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.sql import func
 
 from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
@@ -26,6 +24,6 @@ class Exercises(Base, UUIDAsIDMixin):
     )
     reps: Mapped[int | None]
     sets: Mapped[int | None]
-    rest_sets: Mapped[int | None]
+    rest: Mapped[int | None]
+    time: Mapped[int | None]
     order: Mapped[int]
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now())

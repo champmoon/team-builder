@@ -9,10 +9,12 @@ from .base_class import BaseSchema, BaseSchemaFromDB
 
 class CreateExercisesTypeIn(BaseSchema):
     type: ExercisesTypesEnum
+    average_time: float | None
 
 
 class ExercisesTypesOut(BaseSchemaFromDB):
     type: int
+    average_time: float
     description: str
 
     @model_validator(mode="before")  # type: ignore

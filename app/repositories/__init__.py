@@ -1,6 +1,7 @@
 from typing import TypeAlias
 
 from .admins import AdminsRepository
+from .exercises import ExercisesRepository
 from .exercises_types import ExercisesTypesRepository
 from .groups import GroupsRepository
 from .sessions import SessionsRepository
@@ -8,6 +9,9 @@ from .sportsmans import SportsmansRepository
 from .sportsmans_groups import SportsmansGroupsRepository
 from .teams import TeamsRepository
 from .trainers import TrainersRepository
+from .workouts import WorkoutsRepository
+from .sportsmans_workouts import SportsmansWorkoutsRepository
+from .trainers_workouts import TrainersWorkoutsRepository
 
 
 class Repositories:
@@ -19,3 +23,7 @@ class Repositories:
     groups: TypeAlias = GroupsRepository
     sportsmans_groups: TypeAlias = SportsmansGroupsRepository
     exercises_types: TypeAlias = ExercisesTypesRepository
+    workouts: TypeAlias = WorkoutsRepository
+    exercises: TypeAlias = ExercisesRepository
+    sportsmans_workouts: TypeAlias = SportsmansWorkoutsRepository
+    trainers_workouts: TypeAlias = TrainersWorkoutsRepository
