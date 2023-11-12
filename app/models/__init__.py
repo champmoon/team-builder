@@ -13,3 +13,4 @@ from .teams import Teams
 from .trainers import Trainers
 from .workouts import Workouts
 from .workouts_statuses import WorkoutsStatuses
+from .trainers_workouts import TrainersWorkouts

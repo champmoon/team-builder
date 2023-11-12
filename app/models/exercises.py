@@ -24,6 +24,6 @@ class Exercises(Base, UUIDAsIDMixin):
     )
     reps: Mapped[int | None]
     sets: Mapped[int | None]
-    rest: Mapped[int | None]
+    rest: Mapped[float | None]
     time: Mapped[int | None]
     order: Mapped[int]

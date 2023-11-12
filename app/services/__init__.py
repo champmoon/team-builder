@@ -9,7 +9,11 @@ from .sportsmans import SportsmansService
 from .sportsmans_groups import SportsmansGroupsService
 from .teams import TeamsService
 from .trainers import TrainersService
-
+from .trainers_workouts import TrainersWorkoutsService
+from .workouts import WorkoutsService
+from .exercises import ExercisesService 
+from .sportsmans_workouts import SportsmansWorkoutsService
+from .workouts_statuses import WorkoutsStatusesService
 
 class Services:
     admins: TypeAlias = AdminsService
@@ -21,3 +25,8 @@ class Services:
     groups: TypeAlias = GroupsService
     sportsmans_groups: TypeAlias = SportsmansGroupsService
     exercises_types: TypeAlias = ExercisesTypesService
+    trainers_workouts: TypeAlias = TrainersWorkoutsService
+    workouts: TypeAlias = WorkoutsService
+    exercises: TypeAlias = ExercisesService
+    sportsmans_workouts: TypeAlias = SportsmansWorkoutsService
+    workouts_statuses: TypeAlias = WorkoutsStatusesService

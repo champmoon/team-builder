@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import NaiveDatetime, field_validator
+from pydantic import NaiveDatetime, model_validator
 
 from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
@@ -13,7 +13,7 @@ class CreateWorkoutInDB(BaseSchema):
     date: NaiveDatetime
 
     # TODO
-    @field_validator("date")
+    @model_validator(mode="after")
     def check_date(self):
         if self.date <= (now := datetime.utcnow()):
             raise ValueError(f"date - {self.date} less then now - {now}")
@@ -22,7 +22,7 @@ class CreateWorkoutInDB(BaseSchema):
 class BaseCreateWorkoutIn(BaseSchema):
     name: str
     date: NaiveDatetime
-    exercices: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
+    exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
 
 
 class CreateWorkoutForSportsmanIn(BaseCreateWorkoutIn):

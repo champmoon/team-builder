@@ -39,6 +39,6 @@ from .workouts import (
     CreateWorkoutForTeamIn,
     CreateWorkoutInDB,
 )
-from .workouts_statuses import WorkoutsStatusesOut
+from .workouts_statuses import WorkoutsStatusesOut, CreateWorkoutStatusesIn
 from .sportsmans_workouts import CreateSportsmansWorkoutIn
-from .trainers_workouts import CreateTrainerWorkoutIn
+from .trainers_workouts import CreateTrainerWorkoutIn, TrainerWorkoutOut

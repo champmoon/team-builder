@@ -20,12 +20,12 @@ class TrainersWorkoutsRepository:
 
     async def create(self, schema_in: CreateTrainerWorkoutIn) -> TrainersWorkouts:
         async with self.session_factory() as session:
-            created_Trainer_workout = await session.execute(
+            created_trainer_workout = await session.execute(
                 insert(self.model)
                 .values(**schema_in.model_dump())
                 .returning(self.model)
             )
             await session.commit()
 
-        return created_Trainer_workout.scalars().one()
+        return created_trainer_workout.scalars().one()
     

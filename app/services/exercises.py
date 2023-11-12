@@ -20,17 +20,15 @@ class ExercisesService:
     async def create(
         self,
         workout_id: UUID,
+        type_id: UUID,
         exercise_in: schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn,
     ) -> Exercises:
-        type_out = await self.exercises_types_service.get_by_type(
-            type=consts.ExercisesTypesEnum[exercise_in.type.name]
-        )
         match type(exercise_in):
             case schemas.CreateBasicExerciseIn:
                 return await self.repository.create(
                     schema_in=schemas.CreateExerciseInDB(
                         workout_id=workout_id,
-                        type_id=type_out.id,
+                        type_id=type_id,
                         reps=exercise_in.reps,
                         sets=exercise_in.sets,
                         rest=exercise_in.rest,
@@ -42,7 +40,7 @@ class ExercisesService:
                 return await self.repository.create(
                     schema_in=schemas.CreateExerciseInDB(
                         workout_id=workout_id,
-                        type_id=type_out.id,
+                        type_id=type_id,
                         time=exercise_in.time,
                         order=exercise_in.order,
                     )
@@ -53,13 +51,12 @@ class ExercisesService:
 
     async def count_estimated_time(
         self,
-        exercices: list[
+        exercises: list[
             schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         ],
     ) -> float:
         estimated_time = 0
-
-        for exercise in exercices:
+        for exercise in exercises:
 
             match type(exercise):
                 case schemas.CreateBasicExerciseIn:

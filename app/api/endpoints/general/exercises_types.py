@@ -25,5 +25,4 @@ async def get_exercises_types(
     )
 ) -> Any:
     exercises_types_out = await exercises_types_service.get_all()
-    print(len(consts.ExercisesTypesEnum))
     return exercises_types_out
