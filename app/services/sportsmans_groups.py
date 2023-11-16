@@ -17,6 +17,11 @@ class SportsmansGroupsService:
             sportsman_id=sportsman_id
         )
 
+    async def get_all_sportsmans_by_group_id(
+        self, group_id: UUID
+    ) -> Sequence[SportsmansGroups]:
+        return await self.repository.get_all_sportsmans_by_group_id(group_id=group_id)
+
     async def create(
         self, schema_in: schemas.CreateSportsmanGroupIn
     ) -> SportsmansGroups:

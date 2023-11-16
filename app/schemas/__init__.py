@@ -33,12 +33,20 @@ from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut
 from .trainers import CreateTrainerIn, CreateTrainerInDB, TrainerOut, UpdateTrainerIn
 from .trainers_workouts import CreateTrainerWorkoutIn, TrainerWorkoutOut
 from .workouts import (
-    BaseCreateWorkoutIn,
+    CreateWorkoutIn,
     CreateWorkoutForGroupIn,
     CreateWorkoutForSportsmanIn,
     CreateWorkoutForTeamIn,
     CreateWorkoutInDB,
+    UpdateWorkoutIn,
 )
 from .workouts_statuses import WorkoutsStatusesOut, CreateWorkoutStatusesIn
 from .sportsmans_workouts import CreateSportsmansWorkoutIn
-from .trainers_workouts import CreateTrainerWorkoutIn, TrainerWorkoutOut
+from .trainers_workouts import (
+    CreateTrainerWorkoutIn,
+    TrainerWorkoutOut,
+    TrainerTeamWorkoutOut,
+    TrainerSportsmanWorkoutOut,
+    TrainerGroupWorkoutOut,
+)
+from .teams_groups_workouts import CreateTeamGroupWorkoutIn

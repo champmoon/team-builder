@@ -7,3 +7,4 @@ from .exercises_types import (
 )
 from .users_types import UsersTypes
 from .workouts_statuses import WORKOUTS_STATUSES_DESC, WorkoutsStatusesEnum
+from .workouts_types import WorkoutsTypes

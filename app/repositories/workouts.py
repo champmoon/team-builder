@@ -1,7 +1,8 @@
 from contextlib import AbstractAsyncContextManager
 from typing import Callable, Type
+from uuid import UUID
 
-from sqlalchemy import insert
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import schemas
@@ -17,6 +18,14 @@ class WorkoutsRepository:
         self.model = model
         self.session_factory = session_factory
 
+    async def get_by_id(self, id: UUID) -> Workouts | None:
+        stmt = select(self.model).where(self.model.id == id)
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().first()
+    
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         async with self.session_factory() as session:
             created_workout = await session.execute(
@@ -27,3 +36,26 @@ class WorkoutsRepository:
             await session.commit()
 
         return created_workout.scalars().one()
+    
+    async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(**schema_in.model_dump(exclude_none=True))
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_workout = await session.execute(stmt)
+            await session.commit()
+
+        return updated_workout.scalars().one()
+    
+    async def delete(self, id: UUID) -> Workouts:
+        stmt = delete(self.model).where(self.model.id == id).returning(self.model)
+
+        async with self.session_factory() as session:
+            deleted_workout = await session.execute(stmt)
+            await session.commit()
+
+        return deleted_workout.scalars().one()

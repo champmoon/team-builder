@@ -1,3 +1,4 @@
+from typing import Sequence
 from uuid import UUID
 
 from app import schemas
@@ -9,6 +10,11 @@ from app.utils import Hasher
 class TrainersWorkoutsService:
     def __init__(self, repository: TrainersWorkoutsRepository) -> None:
         self.repository = repository
+
+    async def get_all_by_trainer_id(
+        self, trainer_id: UUID
+    ) -> Sequence[TrainersWorkouts]:
+        return await self.repository.get_all_by_trainer_id(trainer_id=trainer_id)
 
     async def create(
         self, schema_in: schemas.CreateTrainerWorkoutIn

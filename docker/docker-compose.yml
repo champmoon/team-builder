@@ -6,9 +6,9 @@ services:
       context: ..
       target: development
       dockerfile: docker/Dockerfile
-      # args:
-      #   - HTTP_PROXY=http://antipov:911@proxy.bolid.ru:3128
-      #   - HTTPS_PROXY=http://antipov:911@proxy.bolid.ru:3128
+      args:
+        - HTTP_PROXY=http://antipov:911@proxy.bolid.ru:3128
+        - HTTPS_PROXY=http://antipov:911@proxy.bolid.ru:3128
     container_name: tb_api
     volumes:
       - ../app:/tb/app
@@ -29,7 +29,7 @@ services:
     container_name: tb_db
     command: -p ${POSTGRES_PORT}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - tb_postgres_data:/var/lib/postgresql/data
     env_file:
       - ../.env
     ports:
@@ -44,4 +44,4 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
 
 volumes:
-  postgres_data:
+  tb_postgres_data:

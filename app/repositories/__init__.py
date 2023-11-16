@@ -13,6 +13,7 @@ from .workouts import WorkoutsRepository
 from .sportsmans_workouts import SportsmansWorkoutsRepository
 from .trainers_workouts import TrainersWorkoutsRepository
 from .workouts_statuses import WorkoutsStatusesRepository
+from .teams_groups_workouts import TeamsGroupsWorkoutsRepository
 
 class Repositories:
     admins: TypeAlias = AdminsRepository
@@ -28,3 +29,4 @@ class Repositories:
     sportsmans_workouts: TypeAlias = SportsmansWorkoutsRepository
     trainers_workouts: TypeAlias = TrainersWorkoutsRepository
     workouts_statuses: TypeAlias = WorkoutsStatusesRepository
+    teams_groups_workouts: TypeAlias = TeamsGroupsWorkoutsRepository
