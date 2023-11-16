@@ -33,6 +33,14 @@ class SportsmansRepository:
             getted_sportsman = await session.execute(stmt)
 
         return getted_sportsman.scalars().first()
+    
+    async def get_by_team_id(self, team_id: UUID) -> Sequence[Sportsmans]:
+        stmt = select(self.model).where(self.model.team_id == team_id)
+
+        async with self.session_factory() as session:
+            getted_sportsman = await session.execute(stmt)
+
+        return getted_sportsman.scalars().all()
 
     async def get_all(self) -> Sequence[Sportsmans]:
         stmt = select(self.model)

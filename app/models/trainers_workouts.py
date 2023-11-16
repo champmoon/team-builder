@@ -5,31 +5,32 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
-from .exercises_types import ExercisesTypes
+from .workouts_statuses import WorkoutsStatuses
 
-class Exercises(Base, UUIDAsIDMixin):
-    __tablename__ = "exercises"
 
+class TrainersWorkouts(Base, UUIDAsIDMixin):
+    __tablename__ = "trainers_workouts"
+
+    trainer_id: Mapped[UUID] = mapped_column(
+        ForeignKey(
+            column="trainers.id",
+            ondelete="CASCADE",
+        )
+    )
     workout_id: Mapped[UUID] = mapped_column(
         ForeignKey(
             column="workouts.id",
             ondelete="CASCADE",
         )
     )
-    type_id: Mapped[UUID] = mapped_column(
+    status_id: Mapped[UUID] = mapped_column(
         ForeignKey(
-            column="exercises_types.id",
+            column="workouts_statuses.id",
             ondelete="CASCADE",
         )
     )
-    reps: Mapped[int | None]
-    sets: Mapped[int | None]
-    rest: Mapped[float | None]
-    time: Mapped[int | None]
-    order: Mapped[int]
 
-    type: Mapped[ExercisesTypes] = relationship(
+    status: Mapped[WorkoutsStatuses] = relationship(
         lazy="immediate",
         viewonly=True,
     )
-

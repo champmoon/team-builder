@@ -36,11 +36,11 @@ class ExercisesTypesRepository:
 
     async def create(self, schema_in: CreateExercisesTypeIn) -> ExercisesTypes:
         async with self.session_factory() as session:
-            created_group = await session.execute(
+            created_exercises_type = await session.execute(
                 insert(self.model)
                 .values(**schema_in.model_dump())
                 .returning(self.model)
             )
             await session.commit()
 
-        return created_group.scalars().one()
+        return created_exercises_type.scalars().one()

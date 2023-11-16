@@ -55,6 +55,9 @@ async def out_off_team(
     sportsmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service],
     ),
+    sportsmans_groups_service: Services.sportsmans_groups = Depends(
+        Provide[Containers.sportsmans_groups.service],
+    ),
 ) -> Any:
     if not self_sportsman.team_id:
         raise HTTPException(
@@ -70,4 +73,16 @@ async def out_off_team(
         )
 
     await sportsmans_service.kick_off_team(sportsman_id=self_sportsman.id)
+
+    sportsmans_groups = await sportsmans_groups_service.get_all_groups_by_sportsman_id(
+        sportsman_id=self_sportsman.id
+    )
+    for sportsman_group in sportsmans_groups:
+        await sportsmans_groups_service.delete(
+            schema_in=schemas.DeleteSportsmanGroupIn(
+                sportsman_id=self_sportsman.id,
+                group_id=sportsman_group.group_id,
+            )
+        )
+
     return await sportsmans_service.get_by_id(id=self_sportsman.id)

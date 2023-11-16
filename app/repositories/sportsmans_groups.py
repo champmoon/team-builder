@@ -27,6 +27,16 @@ class SportsmansGroupsRepository:
             getted_groups = await session.execute(stmt)
 
         return getted_groups.scalars().all()
+    
+    async def get_all_sportsmans_by_group_id(
+        self, group_id: UUID
+    ) -> Sequence[SportsmansGroups]:
+        stmt = select(self.model).where(self.model.group_id == group_id)
+
+        async with self.session_factory() as session:
+            getted_sportsmans = await session.execute(stmt)
+
+        return getted_sportsmans.scalars().all()
 
     async def create(self, schema_in: CreateSportsmanGroupIn) -> SportsmansGroups:
         async with self.session_factory() as session:

@@ -7,6 +7,7 @@ from .endpoints.trainers import (
     teams as trainers_teams,
     groups as trainers_groups,
     profile as trainers_profile,
+    workouts as trainers_workouts,
 )
 from .endpoints.sportsmans import (
     teams as sportsmans_teams,
@@ -55,6 +56,10 @@ url.POST("    /sportsman/groups/out/{id}    ", endpoint=sportsmans_groups.out_of
 
 url.GET("     /exercises/types              ", endpoint=general.exercises_types.get_exercises_types)
 
+url.POST("    /trainer/workout/sportsman    ", endpoint=trainers_workouts.create_workout_for_sportsman)
+url.POST("    /trainer/workout/group        ", endpoint=trainers_workouts.create_workout_for_group)
+url.POST("    /trainer/workout/team         ", endpoint=trainers_workouts.create_workout_for_team)
+
 
 urls_router.include_router(general.auth.router, tags=[docs.tags_mapper["auth"]])
 
@@ -68,3 +73,7 @@ urls_router.include_router(trainers_groups.router, tags=[docs.tags_mapper["train
 urls_router.include_router(sportsmans_groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])
 
 urls_router.include_router(general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])
+
+
+urls_router.include_router(trainers_workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
+

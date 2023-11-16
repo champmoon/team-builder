@@ -31,7 +31,7 @@ if settings.DEBUG:
 
     from .utils import log_middleware
 
-    app.middleware("http")(log_middleware)
+    # app.middleware("http")(log_middleware)
 
 if not settings.DEBUG:
     import logging

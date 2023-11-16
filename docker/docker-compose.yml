@@ -22,13 +22,14 @@ services:
       - tb_db
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    tty: true
 
   tb_db:
     image: postgres:15-alpine
     container_name: tb_db
     command: -p ${POSTGRES_PORT}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - tb_postgres_data:/var/lib/postgresql/data
     env_file:
       - ../.env
     ports:
@@ -43,4 +44,4 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
 
 volumes:
-  postgres_data:
+  tb_postgres_data:

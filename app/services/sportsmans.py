@@ -1,3 +1,4 @@
+from typing import Sequence
 from uuid import UUID
 
 from app import schemas
@@ -15,6 +16,9 @@ class SportsmansService:
 
     async def get_by_id(self, id: UUID) -> Sportsmans | None:
         return await self.repository.get_by_id(id=id)
+    
+    async def get_by_team_id(self, team_id: UUID) -> Sequence[Sportsmans]:
+        return await self.repository.get_by_team_id(team_id=team_id)
 
     async def create(self, schema_in: schemas.CreateSportsmanIn) -> Sportsmans:
         return await self.repository.create(
