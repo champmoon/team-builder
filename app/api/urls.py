@@ -59,6 +59,7 @@ url.GET("     /exercises/types              ", endpoint=general.exercises_types.
 url.POST("    /trainer/workout/sportsman    ", endpoint=trainers_workouts.create_workout_for_sportsman)
 url.POST("    /trainer/workout/group        ", endpoint=trainers_workouts.create_workout_for_group)
 url.POST("    /trainer/workout/team         ", endpoint=trainers_workouts.create_workout_for_team)
+url.GET("     /trainer/workouts             ", endpoint=trainers_workouts.get_workouts)
 
 
 urls_router.include_router(general.auth.router, tags=[docs.tags_mapper["auth"]])

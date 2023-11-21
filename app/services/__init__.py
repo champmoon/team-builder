@@ -14,7 +14,7 @@ from .workouts import WorkoutsService
 from .exercises import ExercisesService
 from .sportsmans_workouts import SportsmansWorkoutsService
 from .workouts_statuses import WorkoutsStatusesService
-from .teams_groups_workouts import TeamsGroupsWorkoutsService
+from .tgs_workouts import TGSWorkoutsService
 
 
 class Services:
@@ -32,4 +32,4 @@ class Services:
     exercises: TypeAlias = ExercisesService
     sportsmans_workouts: TypeAlias = SportsmansWorkoutsService
     workouts_statuses: TypeAlias = WorkoutsStatusesService
-    teams_groups_workouts: TypeAlias = TeamsGroupsWorkoutsService
+    tgs_workouts: TypeAlias = TGSWorkoutsService

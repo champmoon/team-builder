@@ -5,20 +5,20 @@ from uuid import UUID
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import TeamsGroupsWorkouts
-from app.schemas import CreateTeamGroupWorkoutIn
+from app.models import TGSWorkouts
+from app.schemas import CreateTGSWorkoutIn
 
 
-class TeamsGroupsWorkoutsRepository:
+class TGSWorkoutsRepository:
     def __init__(
         self,
-        model: Type[TeamsGroupsWorkouts],
+        model: Type[TGSWorkouts],
         session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]],
     ) -> None:
         self.model = model
         self.session_factory = session_factory
 
-    async def get_by_workout_id(self, workout_id: UUID) -> TeamsGroupsWorkouts | None:
+    async def get_by_workout_id(self, workout_id: UUID) -> TGSWorkouts | None:
         stmt = select(self.model).where(self.model.workout_id == workout_id)
 
         async with self.session_factory() as session:
@@ -26,14 +26,14 @@ class TeamsGroupsWorkoutsRepository:
 
         return getted.scalars().first()
     
-    async def create(self, schema_in: CreateTeamGroupWorkoutIn) -> TeamsGroupsWorkouts:
+    async def create(self, schema_in: CreateTGSWorkoutIn) -> TGSWorkouts:
         async with self.session_factory() as session:
-            created_team_group_workout = await session.execute(
+            created_tgs_workout = await session.execute(
                 insert(self.model)
                 .values(**schema_in.model_dump())
                 .returning(self.model)
             )
             await session.commit()
 
-        return created_team_group_workout.scalars().one()
+        return created_tgs_workout.scalars().one()
     

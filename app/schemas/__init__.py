@@ -49,4 +49,4 @@ from .trainers_workouts import (
     TrainerSportsmanWorkoutOut,
     TrainerGroupWorkoutOut,
 )
-from .teams_groups_workouts import CreateTeamGroupWorkoutIn
+from .tgs_workouts import CreateTGSWorkoutIn

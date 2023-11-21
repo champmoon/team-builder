@@ -44,6 +44,9 @@ async def create_workout_for_sportsman(
     trainers_workouts_service: Services.trainers_workouts = Depends(
         Provide[Containers.trainers_workouts.service]
     ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
 ) -> Any:
     sportsman_email = create_workout_in.sportsman_email
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
@@ -111,6 +114,13 @@ async def create_workout_for_sportsman(
         )
     )
 
+    await tgs_workouts_service.create(
+        schema_in=schemas.CreateTGSWorkoutIn(
+            sportsman_id=sportsman_out.id,
+            workout_id=new_workout_out.id,
+        )
+    )
+
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
         name=new_workout_out.name,
@@ -157,8 +167,8 @@ async def create_workout_for_group(
     groups_service: Services.groups = Depends(
         Provide[Containers.groups.service],
     ),
-    teams_groups_workouts_service: Services.teams_groups_workouts = Depends(
-        Provide[Containers.teams_groups_workouts.service]
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
     ),
 ) -> Any:
     group_id = create_workout_in.group_id
@@ -229,8 +239,8 @@ async def create_workout_for_group(
             )
         )
 
-    await teams_groups_workouts_service.create(
-        schema_in=schemas.CreateTeamGroupWorkoutIn(
+    await tgs_workouts_service.create(
+        schema_in=schemas.CreateTGSWorkoutIn(
             group_id=group_id,
             workout_id=new_workout_out.id,
         )
@@ -287,8 +297,8 @@ async def create_workout_for_team(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
-    teams_groups_workouts_service: Services.teams_groups_workouts = Depends(
-        Provide[Containers.teams_groups_workouts.service]
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
     ),
     sportsmans_service: Services.sportsmans = Depends(
         Provide[Containers.sportsmans.service],
@@ -359,8 +369,8 @@ async def create_workout_for_team(
             )
         )
 
-    await teams_groups_workouts_service.create(
-        schema_in=schemas.CreateTeamGroupWorkoutIn(
+    await tgs_workouts_service.create(
+        schema_in=schemas.CreateTGSWorkoutIn(
             team_id=team_out.id,
             workout_id=new_workout_out.id,
         )
@@ -390,120 +400,129 @@ async def create_workout_for_team(
     )
 
 
-# @router(
-#     response_model=list[
-#         schemas.TrainerSportsmanWorkoutOut
-#         | schemas.TrainerGroupWorkoutOut
-#         | schemas.TrainerTeamWorkoutOut
-#     ],
-#     status_code=status.HTTP_200_OK,
-# )
-# @deps.auth_required(users=[UsersTypes.TRAINER])
-# @inject
-# async def get_workouts(
-#     self_trainer: Trainers = Depends(deps.self_trainer),
-#     exercises_service: Services.exercises = Depends(
-#         Provide[Containers.exercises.service]
-#     ),
-#     workouts_service: Services.workouts = Depends(
-#         Provide[Containers.workouts.service],
-#     ),
-#     workouts_statuses_service: Services.workouts_statuses = Depends(
-#         Provide[Containers.workouts_statuses.service]
-#     ),
-#     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
-#         Provide[Containers.sportsmans_workouts.service]
-#     ),
-#     trainers_workouts_service: Services.trainers_workouts = Depends(
-#         Provide[Containers.trainers_workouts.service]
-#     ),
-#     teams_service: Services.teams = Depends(
-#         Provide[Containers.teams.service],
-#     ),
-#     teams_groups_workouts_service: Services.teams_groups_workouts = Depends(
-#         Provide[Containers.teams_groups_workouts.service]
-#     ),
-#     sportsmans_service: Services.sportsmans = Depends(
-#         Provide[Containers.sportsmans.service],
-#     ),
-# ) -> Any:
-#     trainers_workouts_out = await trainers_workouts_service.get_all_by_trainer_id(
-#         trainer_id=self_trainer.id
-#     )
-#     if len(trainers_workouts_out) == 0:
-#         return []
+@router(
+    response_model=list[
+        schemas.TrainerSportsmanWorkoutOut
+        | schemas.TrainerGroupWorkoutOut
+        | schemas.TrainerTeamWorkoutOut
+    ],
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def get_workouts(
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    exercises_service: Services.exercises = Depends(
+        Provide[Containers.exercises.service]
+    ),
+    workouts_service: Services.workouts = Depends(
+        Provide[Containers.workouts.service],
+    ),
+    workouts_statuses_service: Services.workouts_statuses = Depends(
+        Provide[Containers.workouts_statuses.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
+    ),
+    trainers_workouts_service: Services.trainers_workouts = Depends(
+        Provide[Containers.trainers_workouts.service]
+    ),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+) -> Any:
+    trainers_workouts_out = await trainers_workouts_service.get_all_by_trainer_id(
+        trainer_id=self_trainer.id
+    )
+    if len(trainers_workouts_out) == 0:
+        return []
 
-#     workouts: list[
-#         schemas.TrainerSportsmanWorkoutOut
-#         | schemas.TrainerGroupWorkoutOut
-#         | schemas.TrainerTeamWorkoutOut
-#     ] = []
-#     for trainer_workout_out in trainers_workouts_out:
-#         workout_out = await workouts_service.get_by_id(
-#             id=trainer_workout_out.workout_id
-#         )
-#         if not workout_out:
-#             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    workouts: list[
+        schemas.TrainerSportsmanWorkoutOut
+        | schemas.TrainerGroupWorkoutOut
+        | schemas.TrainerTeamWorkoutOut
+    ] = []
+    for trainer_workout_out in trainers_workouts_out:
+        workout_out = await workouts_service.get_by_id(
+            id=trainer_workout_out.workout_id
+        )
+        if not workout_out:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#         exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-#             workout_id=workout_out.id
-#         )
-#         exercises_schemas: list[schemas.ExerciseOut] = []
-#         for exercise_out in exercises_out:
-#             exercises_schemas.append(
-#                 schemas.ExerciseOut(
-#                     type=schemas.ExercisesTypesOut(
-#                         type=exercise_out.type.type,
-#                         average_time=exercise_out.type.average_time,
-#                     ),
-#                     reps=exercise_out.reps,
-#                     sets=exercise_out.sets,
-#                     rest=exercise_out.rest,
-#                     time=exercise_out.time,
-#                     order=exercise_out.order,
-#                 )
-#             )
-#         base_workouts_schemas = schemas.TrainerWorkoutOut(
-#             workout_id=workout_out.id,
-#             name=workout_out.name,
-#             estimated_time=workout_out.estimated_time,
-#             status=schemas.WorkoutsStatusesOut(
-#                 status=trainer_workout_out.status.status,
-#                 description=consts.WORKOUTS_STATUSES_DESC[
-#                     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-#                 ],
-#             ),
-#             date=workout_out.date,
-#             created_at=workout_out.created_at,
-#             exercises=exercises_schemas,
-#         )
+        exercises_out = await exercises_service.get_all_exercises_by_workout_id(
+            workout_id=workout_out.id
+        )
+        exercises_schemas: list[schemas.ExerciseOut] = []
+        for exercise_out in exercises_out:
+            exercises_schemas.append(
+                schemas.ExerciseOut(
+                    type=schemas.ExercisesTypesOut(
+                        type=exercise_out.type.type,
+                        average_time=exercise_out.type.average_time,
+                    ),
+                    reps=exercise_out.reps,
+                    sets=exercise_out.sets,
+                    rest=exercise_out.rest,
+                    time=exercise_out.time,
+                    order=exercise_out.order,
+                )
+            )
+        base_workouts_schemas = schemas.TrainerWorkoutOut(
+            workout_id=workout_out.id,
+            name=workout_out.name,
+            estimated_time=workout_out.estimated_time,
+            status=schemas.WorkoutsStatusesOut(
+                status=trainer_workout_out.status.status,
+                description=consts.WORKOUTS_STATUSES_DESC[
+                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                ],
+            ),
+            date=workout_out.date,
+            created_at=workout_out.created_at,
+            exercises=exercises_schemas,
+        )
 
-#         teams_groups_workouts_out = (
-#             await teams_groups_workouts_service.get_by_workout_id(
-#                 workout_id=trainer_workout_out.workout_id
-#             )
-#         )
-#         workout_schema: (
-#             schemas.TrainerSportsmanWorkoutOut
-#             | schemas.TrainerGroupWorkoutOut
-#             | schemas.TrainerTeamWorkoutOut
-#         )
-#         if teams_groups_workouts_out:
-#             team_id = teams_groups_workouts_out.team_id
-#             group_id = teams_groups_workouts_out.group_id
-#             if team_id:
-#                 workout_schema = schemas.TrainerTeamWorkoutOut(
-#                     **base_workouts_schemas.model_dump(),
-#                     workout_type=consts.WorkoutsTypes.TEAM,
-#                     team_id=team_id,
-#                 )
-#             elif group_id:
-#                 workout_schema = schemas.TrainerGroupWorkoutOut(
-#                     **base_workouts_schemas.model_dump(),
-#                     workout_type=consts.WorkoutsTypes.GROUP,
-#                     group_id=group_id,
-#                 )
-#             else:
-#                 raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-#         else:
-#             await sportsmans_workouts_service.
+        tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
+            workout_id=trainer_workout_out.workout_id
+        )
+        if not tgs_workouts_out:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        workout_schema: (
+            schemas.TrainerSportsmanWorkoutOut
+            | schemas.TrainerGroupWorkoutOut
+            | schemas.TrainerTeamWorkoutOut
+        )
+        team_id = tgs_workouts_out.team_id
+        group_id = tgs_workouts_out.group_id
+        sportsman_id = tgs_workouts_out.sportsman_id
+        if team_id:
+            workout_schema = schemas.TrainerTeamWorkoutOut(
+                **base_workouts_schemas.model_dump(),
+                workout_type=consts.WorkoutsTypes.TEAM,
+                team_id=team_id,
+            )
+        elif group_id:
+            workout_schema = schemas.TrainerGroupWorkoutOut(
+                **base_workouts_schemas.model_dump(),
+                workout_type=consts.WorkoutsTypes.GROUP,
+                group_id=group_id,
+            )
+        elif sportsman_id:
+            workout_schema = schemas.TrainerSportsmanWorkoutOut(
+                **base_workouts_schemas.model_dump(),
+                workout_type=consts.WorkoutsTypes.INDIVIDUAL,
+                sportsman_id=sportsman_id,
+            )
+        else:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        workouts.append(workout_schema)
+
+    return workouts
