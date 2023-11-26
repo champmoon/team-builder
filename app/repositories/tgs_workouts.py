@@ -1,8 +1,8 @@
 from contextlib import AbstractAsyncContextManager
-from typing import Callable, Sequence, Type
+from typing import Callable, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TGSWorkouts
@@ -25,7 +25,7 @@ class TGSWorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().first()
-    
+
     async def create(self, schema_in: CreateTGSWorkoutIn) -> TGSWorkouts:
         async with self.session_factory() as session:
             created_tgs_workout = await session.execute(
@@ -36,4 +36,3 @@ class TGSWorkoutsRepository:
             await session.commit()
 
         return created_tgs_workout.scalars().one()
-    

@@ -18,7 +18,9 @@ class WorkoutsStatusesRepository:
         self.model = model
         self.session_factory = session_factory
 
-    async def get_by_status(self, status: WorkoutsStatusesEnum) -> WorkoutsStatuses | None:
+    async def get_by_status(
+        self, status: WorkoutsStatusesEnum
+    ) -> WorkoutsStatuses | None:
         stmt = select(self.model).where(self.model.status == status)
 
         async with self.session_factory() as session:

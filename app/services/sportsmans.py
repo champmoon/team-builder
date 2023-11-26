@@ -16,7 +16,7 @@ class SportsmansService:
 
     async def get_by_id(self, id: UUID) -> Sportsmans | None:
         return await self.repository.get_by_id(id=id)
-    
+
     async def get_by_team_id(self, team_id: UUID) -> Sequence[Sportsmans]:
         return await self.repository.get_by_team_id(team_id=team_id)
 

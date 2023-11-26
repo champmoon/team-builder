@@ -5,8 +5,8 @@ from pydantic import NaiveDatetime
 from app import consts
 
 from .base_class import BaseSchema, BaseSchemaFromDB
-from .workouts_statuses import WorkoutsStatusesOut
 from .exercises import ExerciseOut
+from .workouts_statuses import WorkoutsStatusesOut
 
 
 class CreateTrainerWorkoutIn(BaseSchema):

@@ -33,7 +33,7 @@ class SportsmansRepository:
             getted_sportsman = await session.execute(stmt)
 
         return getted_sportsman.scalars().first()
-    
+
     async def get_by_team_id(self, team_id: UUID) -> Sequence[Sportsmans]:
         stmt = select(self.model).where(self.model.team_id == team_id)
 

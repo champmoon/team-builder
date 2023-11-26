@@ -1,18 +1,16 @@
 from typing import Any
-from uuid import uuid4
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import Depends, HTTPException, status, Response
-from pydantic import TypeAdapter
-from app import schemas
-from app import consts
+from fastapi import Depends, HTTPException, status
+
+from app import consts, schemas
 from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers
 from app.models import Trainers
 from app.services import Services
-from app.utils.router import EndPointRouter
 from app.services.exercises import InvalidOrderExercisesException
+from app.utils.router import EndPointRouter
 
 router = EndPointRouter()
 
@@ -81,7 +79,7 @@ async def create_workout_for_sportsman(
     except InvalidOrderExercisesException:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Exercises order must be sequance as 1, 2, 3, ...",
+            detail="Exercises order must be sequance as 1, 2, 3, ...",
         )
     except ValueError as e:
         await workouts_service.delete(id=new_workout_out.id)
@@ -213,7 +211,7 @@ async def create_workout_for_group(
     except InvalidOrderExercisesException:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Exercises order must be sequance as 1, 2, 3, ...",
+            detail="Exercises order must be sequance as 1, 2, 3, ...",
         )
     except ValueError as e:
         await workouts_service.delete(id=new_workout_out.id)
@@ -343,7 +341,7 @@ async def create_workout_for_team(
     except InvalidOrderExercisesException:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Exercises order must be sequance as 1, 2, 3, ...",
+            detail="Exercises order must be sequance as 1, 2, 3, ...",
         )
     except ValueError as e:
         await workouts_service.delete(id=new_workout_out.id)
@@ -418,23 +416,11 @@ async def get_workouts(
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
     ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
-    ),
-    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
-        Provide[Containers.sportsmans_workouts.service]
-    ),
     trainers_workouts_service: Services.trainers_workouts = Depends(
         Provide[Containers.trainers_workouts.service]
     ),
-    teams_service: Services.teams = Depends(
-        Provide[Containers.teams.service],
-    ),
     tgs_workouts_service: Services.tgs_workouts = Depends(
         Provide[Containers.tgs_workouts.service]
-    ),
-    sportsmans_service: Services.sportsmans = Depends(
-        Provide[Containers.sportsmans.service],
     ),
 ) -> Any:
     trainers_workouts_out = await trainers_workouts_service.get_all_by_trainer_id(
@@ -464,7 +450,6 @@ async def get_workouts(
                 schemas.ExerciseOut(
                     type=schemas.ExercisesTypesOut(
                         type=exercise_out.type.type,
-                        average_time=exercise_out.type.average_time,
                     ),
                     reps=exercise_out.reps,
                     sets=exercise_out.sets,

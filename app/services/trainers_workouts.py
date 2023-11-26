@@ -4,7 +4,6 @@ from uuid import UUID
 from app import schemas
 from app.models import TrainersWorkouts
 from app.repositories import TrainersWorkoutsRepository
-from app.utils import Hasher
 
 
 class TrainersWorkoutsService:

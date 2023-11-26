@@ -1,16 +1,15 @@
 """create_tables
 
 Revision ID: fa18ba5aa0d8
-Revises: 
+Revises:
 Create Date: 2023-11-21 14:29:40.335178
 
 """
 
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "fa18ba5aa0d8"

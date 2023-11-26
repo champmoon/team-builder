@@ -14,7 +14,6 @@ class CreateBasicExerciseIn(BaseSchema):
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
     rest: float | None = Field(..., gt=0)
-    order: int = Field(..., gt=0)
 
     @model_validator(mode="after")
     def check_sets_rest(self) -> Self:
@@ -26,7 +25,6 @@ class CreateBasicExerciseIn(BaseSchema):
 class CreateSupportExerciseIn(BaseSchema):
     type: SupportExercisesTypesEnum
     time: int = Field(..., gt=0)
-    order: int
 
 
 class ExerciseOut(BaseSchema):

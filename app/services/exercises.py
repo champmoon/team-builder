@@ -27,7 +27,7 @@ class ExercisesService:
         return await self.repository.get_all_exercises_by_workout_id(
             workout_id=workout_id
         )
-    
+
     async def create(
         self,
         workout_id: UUID,
@@ -36,10 +36,7 @@ class ExercisesService:
         ],
     ) -> list[schemas.ExerciseOut]:
         exercises_schemas: list[schemas.ExerciseOut] = []
-        for true_order, exercise_in in enumerate(exercises_in):
-            if exercise_in.order != (true_order + 1):
-                raise InvalidOrderExercisesException
-
+        for order, exercise_in in enumerate(exercises_in):
             exercise_type_out = await self.exercises_types_service.get_by_type(
                 type=consts.ExercisesTypesEnum[exercise_in.type.name]
             )
@@ -57,7 +54,7 @@ class ExercisesService:
                             reps=exercise_in.reps,  # type: ignore
                             sets=exercise_in.sets,  # type: ignore
                             rest=exercise_in.rest,  # type: ignore
-                            order=exercise_in.order,
+                            order=order + 1,
                         )
                     )
 
@@ -67,7 +64,7 @@ class ExercisesService:
                             workout_id=workout_id,
                             type_id=exercise_type_out.id,
                             time=exercise_in.time,  # type: ignore
-                            order=exercise_in.order,
+                            order=order + 1,
                         )
                     )
 
@@ -80,13 +77,12 @@ class ExercisesService:
                 schemas.ExerciseOut(
                     type=schemas.ExercisesTypesOut(
                         type=exercise_type_out.type,
-                        average_time=exercise_type_out.average_time,
                     ),
                     reps=new_exercise_out.reps,
                     sets=new_exercise_out.sets,
                     rest=new_exercise_out.rest,
                     time=new_exercise_out.time,
-                    order=new_exercise_out.order,
+                    order=order + 1,
                 )
             )
 
@@ -106,19 +102,19 @@ class ExercisesService:
                     exercise_type_out = await self.exercises_types_service.get_by_type(
                         type=consts.ExercisesTypesEnum[exercise.type.name]
                     )
-                    if exercise_type_out.average_time is None: # type: ignore
+                    if exercise_type_out.average_time is None:  # type: ignore
                         raise ValueError(
                             "Impossible not average_time in basic exercises types"
                         )
 
-                    full_rest_time = (exercise.sets - 1) * exercise.rest # type: ignore
-                    full_execution_time = (
-                        exercise.sets * exercise.reps * exercise_type_out.average_time # type: ignore
+                    full_rest_time = (exercise.sets - 1) * exercise.rest  # type: ignore # noqa
+                    full_execution_time = exercise.sets * (
+                        exercise.reps * exercise_type_out.average_time  # type: ignore
                     )
-                    estimated_time += full_rest_time + full_execution_time # type: ignore
+                    estimated_time += full_rest_time + full_execution_time  # type: ignore # noqa
 
                 case schemas.CreateSupportExerciseIn:
-                    estimated_time += exercise.time # type: ignore
+                    estimated_time += exercise.time  # type: ignore
 
                 case _:
                     raise ValueError(

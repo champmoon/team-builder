@@ -1,9 +1,6 @@
-from uuid import UUID
-
 from app import schemas
 from app.models import SportsmansWorkouts
 from app.repositories import SportsmansWorkoutsRepository
-from app.utils import Hasher
 
 
 class SportsmansWorkoutsService:

@@ -7,13 +7,14 @@ from .groups import GroupsRepository
 from .sessions import SessionsRepository
 from .sportsmans import SportsmansRepository
 from .sportsmans_groups import SportsmansGroupsRepository
-from .teams import TeamsRepository
-from .trainers import TrainersRepository
-from .workouts import WorkoutsRepository
 from .sportsmans_workouts import SportsmansWorkoutsRepository
-from .trainers_workouts import TrainersWorkoutsRepository
-from .workouts_statuses import WorkoutsStatusesRepository
+from .teams import TeamsRepository
 from .tgs_workouts import TGSWorkoutsRepository
+from .trainers import TrainersRepository
+from .trainers_workouts import TrainersWorkoutsRepository
+from .workouts import WorkoutsRepository
+from .workouts_statuses import WorkoutsStatusesRepository
+
 
 class Repositories:
     admins: TypeAlias = AdminsRepository

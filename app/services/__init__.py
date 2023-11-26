@@ -2,19 +2,19 @@ from typing import TypeAlias
 
 from .admins import AdminsService
 from .auth import AuthService
+from .exercises import ExercisesService
 from .exercises_types import ExercisesTypesService
 from .groups import GroupsService
 from .sessions import SessionsService
 from .sportsmans import SportsmansService
 from .sportsmans_groups import SportsmansGroupsService
+from .sportsmans_workouts import SportsmansWorkoutsService
 from .teams import TeamsService
+from .tgs_workouts import TGSWorkoutsService
 from .trainers import TrainersService
 from .trainers_workouts import TrainersWorkoutsService
 from .workouts import WorkoutsService
-from .exercises import ExercisesService
-from .sportsmans_workouts import SportsmansWorkoutsService
 from .workouts_statuses import WorkoutsStatusesService
-from .tgs_workouts import TGSWorkoutsService
 
 
 class Services:

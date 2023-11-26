@@ -14,7 +14,6 @@ class CreateExercisesTypeIn(BaseSchema):
 
 class ExercisesTypesOut(BaseSchemaFromDB):
     type: int
-    average_time: float | None
     description: str | None = None
 
     @model_validator(mode="after")

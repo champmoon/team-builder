@@ -1,8 +1,7 @@
 from contextlib import AbstractAsyncContextManager
-from typing import Callable, Sequence, Type
-from uuid import UUID
+from typing import Callable, Type
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import SportsmansWorkouts
@@ -28,4 +27,3 @@ class SportsmansWorkoutsRepository:
             await session.commit()
 
         return created_sportsman_workout.scalars().one()
-    

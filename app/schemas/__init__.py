@@ -28,25 +28,24 @@ from .sportsmans import (
     UpdateSportsmanIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
+from .sportsmans_workouts import CreateSportsmansWorkoutIn
 from .teams import CreateTeamIn, TeamOut
+from .tgs_workouts import CreateTGSWorkoutIn
 from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut
 from .trainers import CreateTrainerIn, CreateTrainerInDB, TrainerOut, UpdateTrainerIn
-from .trainers_workouts import CreateTrainerWorkoutIn, TrainerWorkoutOut
+from .trainers_workouts import (
+    CreateTrainerWorkoutIn,
+    TrainerGroupWorkoutOut,
+    TrainerSportsmanWorkoutOut,
+    TrainerTeamWorkoutOut,
+    TrainerWorkoutOut,
+)
 from .workouts import (
-    CreateWorkoutIn,
     CreateWorkoutForGroupIn,
     CreateWorkoutForSportsmanIn,
     CreateWorkoutForTeamIn,
+    CreateWorkoutIn,
     CreateWorkoutInDB,
     UpdateWorkoutIn,
 )
-from .workouts_statuses import WorkoutsStatusesOut, CreateWorkoutStatusesIn
-from .sportsmans_workouts import CreateSportsmansWorkoutIn
-from .trainers_workouts import (
-    CreateTrainerWorkoutIn,
-    TrainerWorkoutOut,
-    TrainerTeamWorkoutOut,
-    TrainerSportsmanWorkoutOut,
-    TrainerGroupWorkoutOut,
-)
-from .tgs_workouts import CreateTGSWorkoutIn
+from .workouts_statuses import CreateWorkoutStatusesIn, WorkoutsStatusesOut

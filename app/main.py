@@ -29,8 +29,6 @@ wire_containers()
 if settings.DEBUG:
     app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
 
-    from .utils import log_middleware
-
     # app.middleware("http")(log_middleware)
 
 if not settings.DEBUG:

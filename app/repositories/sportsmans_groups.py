@@ -27,7 +27,7 @@ class SportsmansGroupsRepository:
             getted_groups = await session.execute(stmt)
 
         return getted_groups.scalars().all()
-    
+
     async def get_all_sportsmans_by_group_id(
         self, group_id: UUID
     ) -> Sequence[SportsmansGroups]:

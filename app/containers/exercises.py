@@ -25,4 +25,3 @@ class ExercisesContainer(BaseContainer):
             ),
         ),
     )
-

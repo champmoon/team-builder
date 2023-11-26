@@ -1,6 +1,5 @@
 from uuid import UUID
 
-
 from .base_class import BaseSchema
 
 

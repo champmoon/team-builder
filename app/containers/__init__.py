@@ -3,19 +3,19 @@ from typing import Type
 from .admins import AdminsContainer
 from .auth import AuthContainer
 from .base_class import BaseContainer
+from .exercises import ExercisesContainer
 from .exercises_types import ExercisesTypesContainer
 from .groups import GroupsContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
 from .sportsmans_groups import SportsmansGroupsContainer
-from .teams import TeamsContainer
-from .trainers import TrainersContainer
-from .workouts import WorkoutContainer
-from .exercises import ExercisesContainer
-from .workouts_statuses import WorkoutsStatusesContainer
 from .sportsmans_workouts import SportsmansWorkoutsContainer
-from .trainers_workouts import TrainersWorkoutsContainer
+from .teams import TeamsContainer
 from .tgs_workouts import TGSContainer
+from .trainers import TrainersContainer
+from .trainers_workouts import TrainersWorkoutsContainer
+from .workouts import WorkoutContainer
+from .workouts_statuses import WorkoutsStatusesContainer
 
 
 class Containers:

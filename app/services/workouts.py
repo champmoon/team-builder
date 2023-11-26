@@ -1,16 +1,8 @@
 from uuid import UUID
 
-from sqlalchemy import select
 from app import schemas
-from app.models.exercises import Exercises
 from app.models.workouts import Workouts
 from app.repositories import WorkoutsRepository
-from app import consts
-from .exercises import ExercisesService
-from .sportsmans_workouts import SportsmansWorkoutsService
-from .trainers_workouts import TrainersWorkoutsService
-from .workouts_statuses import WorkoutsStatusesService
-from .exercises_types import ExercisesTypesService
 
 
 class WorkoutsService:
