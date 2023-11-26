@@ -28,7 +28,7 @@ class WorkoutsStatusesRepository:
 
         return getted_workout_status.scalars().first()
 
-    async def get_all(self) -> Sequence[WorkoutsStatusesEnum]:
+    async def get_all(self) -> Sequence[WorkoutsStatuses]:
         stmt = select(self.model)
 
         async with self.session_factory() as session:

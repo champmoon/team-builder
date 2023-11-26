@@ -8,9 +8,6 @@ from app.repositories import ExercisesRepository
 from .exercises_types import ExercisesTypesService
 
 
-class InvalidOrderExercisesException(Exception): ...
-
-
 class ExercisesService:
     def __init__(
         self,
@@ -108,7 +105,7 @@ class ExercisesService:
                         )
 
                     full_rest_time = (exercise.sets - 1) * exercise.rest  # type: ignore # noqa
-                    full_execution_time = exercise.sets * (
+                    full_execution_time = exercise.sets * (  # type: ignore
                         exercise.reps * exercise_type_out.average_time  # type: ignore
                     )
                     estimated_time += full_rest_time + full_execution_time  # type: ignore # noqa

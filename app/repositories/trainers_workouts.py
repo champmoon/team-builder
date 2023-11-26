@@ -28,6 +28,14 @@ class TrainersWorkoutsRepository:
 
         return getted.scalars().all()
 
+    async def get_by_workout_id(self, workout_id: UUID) -> TrainersWorkouts | None:
+        stmt = select(self.model).where(self.model.workout_id == workout_id)
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().first()
+
     async def create(self, schema_in: CreateTrainerWorkoutIn) -> TrainersWorkouts:
         async with self.session_factory() as session:
             created_trainer_workout = await session.execute(

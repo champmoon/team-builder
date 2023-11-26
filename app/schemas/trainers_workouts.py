@@ -26,15 +26,15 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
 
 
 class TrainerSportsmanWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.INDIVIDUAL
     sportsman_id: UUID
 
 
 class TrainerGroupWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.GROUP
     group_id: UUID
 
 
 class TrainerTeamWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.TEAM
     team_id: UUID
