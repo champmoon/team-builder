@@ -18,7 +18,7 @@ router = EndPointRouter()
 
 @router(
     response_model=schemas.TrainerWorkoutOut,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
@@ -150,7 +150,7 @@ async def create_workout_for_sportsman(
 
 @router(
     response_model=schemas.TrainerWorkoutOut,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
@@ -278,7 +278,7 @@ async def create_workout_for_group(
 
 @router(
     response_model=schemas.TrainerWorkoutOut,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject

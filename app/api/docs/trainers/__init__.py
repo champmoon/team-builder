@@ -17,3 +17,9 @@ from .teams import (
     kick_sportsman_off_team,
     kicks_sportsmans_off_team,
 )
+from .workouts import (
+    create_workout_for_group,
+    create_workout_for_sportsman,
+    create_workout_for_team,
+    get_workouts
+)

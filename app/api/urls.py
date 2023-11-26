@@ -3,6 +3,7 @@ from app.utils.router import EndPointRouter, url
 from . import docs
 from .endpoints import general
 
+
 from .endpoints.trainers import (
     teams as trainers_teams,
     groups as trainers_groups,
@@ -18,11 +19,11 @@ from .endpoints.sportsmans import (
 urls_router = EndPointRouter()
 
 
-url.POST("    /auth/register                        ", endpoint=general.auth.register, docs=docs.register)
-url.POST("    /auth/login                           ", endpoint=general.auth.login, docs=docs.login)
-url.POST("    /auth/logout                          ", endpoint=general.auth.logout, docs=docs.logout)
-url.POST("    /auth/refresh                         ", endpoint=general.auth.refresh, docs=docs.refresh)
-url.POST("    /auth/verify                          ", endpoint=general.auth.verify, docs=docs.verify)
+url.POST("    /auth/register                        ", endpoint=general.auth.register, docs=docs.general.register)
+url.POST("    /auth/login                           ", endpoint=general.auth.login, docs=docs.general.login)
+url.POST("    /auth/logout                          ", endpoint=general.auth.logout, docs=docs.general.logout)
+url.POST("    /auth/refresh                         ", endpoint=general.auth.refresh, docs=docs.general.refresh)
+url.POST("    /auth/verify                          ", endpoint=general.auth.verify, docs=docs.general.verify)
 
 url.GET("     /trainer/profile                      ", endpoint=trainers_profile.get_profile, docs=docs.trainers.get_profile)
 url.PATCH("   /trainer/profile                      ", endpoint=trainers_profile.update_profile, docs=docs.trainers.update_profile)
@@ -54,15 +55,15 @@ url.GET("     /sportsman/groups/{id}                ", endpoint=sportsmans_group
 url.POST("    /sportsman/groups/outs                ", endpoint=sportsmans_groups.outs_off_groups, docs=docs.sportsmans.outs_off_groups)
 url.POST("    /sportsman/groups/out/{id}            ", endpoint=sportsmans_groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
-url.GET("     /exercises/types                      ", endpoint=general.exercises_types.get_exercises_types)
+url.GET("     /exercises/types                      ", endpoint=general.exercises_types.get_exercises_types, docs=docs.general.get_exercises_types)
 
-url.POST("    /trainer/workout/sportsman            ", endpoint=trainers_workouts.create_workout_for_sportsman)
+url.POST("    /trainer/workout/sportsman            ", endpoint=trainers_workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
 url.GET("     /trainer/workout/sportsman/{email}    ", endpoint=trainers_workouts.get_workouts_for_sportsman)
-url.POST("    /trainer/workout/group                ", endpoint=trainers_workouts.create_workout_for_group)
+url.POST("    /trainer/workout/group                ", endpoint=trainers_workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
 url.GET("     /trainer/workout/group/{id}           ", endpoint=trainers_workouts.get_workouts_for_group)
-url.POST("    /trainer/workout/team                 ", endpoint=trainers_workouts.create_workout_for_team)
+url.POST("    /trainer/workout/team                 ", endpoint=trainers_workouts.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
 url.GET("     /trainer/workout/team                 ", endpoint=trainers_workouts.get_workouts_for_team)
-url.GET("     /trainer/workouts                     ", endpoint=trainers_workouts.get_workouts)
+url.GET("     /trainer/workouts                     ", endpoint=trainers_workouts.get_workouts, docs=docs.trainers.get_workouts)
 url.GET("     /trainer/workouts/{id}                ", endpoint=trainers_workouts.get_workout)
 url.DELETE("  /trainer/workouts/{id}                ", endpoint=trainers_workouts.delete_workout)
 

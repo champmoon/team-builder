@@ -56,7 +56,7 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
             log_task = BackgroundTask(
                 log_info,
                 RequestInfo(
-                    headers=request.headers, #type: ignore
+                    headers=request.headers,  # type: ignore
                     body=request_body or None,
                 ),
                 ResponseInfo(
