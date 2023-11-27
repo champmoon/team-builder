@@ -52,18 +52,21 @@ async def log_middleware(request: Request, call_next: Any) -> Response:
 
     log_task = None
     if request.url.path not in IGNORE_URLS:
-        log_task = BackgroundTask(
-            log_info,
-            RequestInfo(
-                headers=request.headers,
-                body=request_body or None,
-            ),
-            ResponseInfo(
-                status_code=response.status_code,
-                body=response_body or None,
-            ),
-            request.url.path,
-        )
+        try:
+            log_task = BackgroundTask(
+                log_info,
+                RequestInfo(
+                    headers=request.headers,  # type: ignore
+                    body=request_body or None,
+                ),
+                ResponseInfo(
+                    status_code=response.status_code,
+                    body=response_body or None,
+                ),
+                request.url.path,
+            )
+        except Exception as e:
+            logger.error(f"\n\n {str(e)} \n\n")
 
     return Response(
         content=response_body,

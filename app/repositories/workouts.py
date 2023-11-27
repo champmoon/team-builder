@@ -25,7 +25,7 @@ class WorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().first()
-    
+
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         async with self.session_factory() as session:
             created_workout = await session.execute(
@@ -36,7 +36,7 @@ class WorkoutsRepository:
             await session.commit()
 
         return created_workout.scalars().one()
-    
+
     async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
         stmt = (
             update(self.model)
@@ -50,7 +50,7 @@ class WorkoutsRepository:
             await session.commit()
 
         return updated_workout.scalars().one()
-    
+
     async def delete(self, id: UUID) -> Workouts:
         stmt = delete(self.model).where(self.model.id == id).returning(self.model)
 

@@ -5,8 +5,8 @@ from pydantic import NaiveDatetime
 from app import consts
 
 from .base_class import BaseSchema, BaseSchemaFromDB
-from .workouts_statuses import WorkoutsStatusesOut
 from .exercises import ExerciseOut
+from .workouts_statuses import WorkoutsStatusesOut
 
 
 class CreateTrainerWorkoutIn(BaseSchema):
@@ -26,15 +26,15 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
 
 
 class TrainerSportsmanWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.INDIVIDUAL
     sportsman_id: UUID
 
 
 class TrainerGroupWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.GROUP
     group_id: UUID
 
 
 class TrainerTeamWorkoutOut(TrainerWorkoutOut):
-    workout_type: consts.WorkoutsTypes
+    workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.TEAM
     team_id: UUID

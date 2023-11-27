@@ -1,4 +1,4 @@
-from .base_docs import Docs
+from ..base_docs import Docs
 
 register: Docs = {
     "summary": "Регистрация тренера / спортсмена",

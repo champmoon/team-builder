@@ -3,19 +3,19 @@ from typing import Type
 from .admins import AdminsContainer
 from .auth import AuthContainer
 from .base_class import BaseContainer
+from .exercises import ExercisesContainer
 from .exercises_types import ExercisesTypesContainer
 from .groups import GroupsContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
 from .sportsmans_groups import SportsmansGroupsContainer
-from .teams import TeamsContainer
-from .trainers import TrainersContainer
-from .workouts import WorkoutContainer
-from .exercises import ExercisesContainer
-from .workouts_statuses import WorkoutsStatusesContainer
 from .sportsmans_workouts import SportsmansWorkoutsContainer
+from .teams import TeamsContainer
+from .tgs_workouts import TGSContainer
+from .trainers import TrainersContainer
 from .trainers_workouts import TrainersWorkoutsContainer
-from .teams_groups_workouts import TeamsGroupsWorkoutsContainer
+from .workouts import WorkoutContainer
+from .workouts_statuses import WorkoutsStatusesContainer
 
 
 class Containers:
@@ -33,7 +33,7 @@ class Containers:
     workouts_statuses = WorkoutsStatusesContainer
     sportsmans_workouts = SportsmansWorkoutsContainer
     trainers_workouts = TrainersWorkoutsContainer
-    teams_groups_workouts = TeamsGroupsWorkoutsContainer
+    tgs_workouts = TGSContainer
 
     @classmethod
     def get_all_containers(cls) -> list[Type[BaseContainer]]:

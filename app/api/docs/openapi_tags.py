@@ -12,7 +12,7 @@ tags_mapper = {
     #
     "exercises": "Упражнения",
     #
-    "trainers_workouts": "Тренеры → Тренировки"
+    "trainers_workouts": "Тренеры → Тренировки",
 }
 
 

@@ -7,8 +7,8 @@ from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
 
 
-class TeamsGroupsWorkouts(Base, UUIDAsIDMixin):
-    __tablename__ = "teams_groups_workouts"
+class TGSWorkouts(Base, UUIDAsIDMixin):
+    __tablename__ = "tgs_workouts"
 
     team_id: Mapped[UUID | None] = mapped_column(
         ForeignKey(
@@ -19,6 +19,12 @@ class TeamsGroupsWorkouts(Base, UUIDAsIDMixin):
     group_id: Mapped[UUID | None] = mapped_column(
         ForeignKey(
             column="groups.id",
+            ondelete="CASCADE",
+        )
+    )
+    sportsman_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey(
+            column="sportsmans.id",
             ondelete="CASCADE",
         )
     )

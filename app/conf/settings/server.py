@@ -11,7 +11,7 @@ def get_version() -> str:
 
 
 class ServerSettings(BaseSettings):
-    VERSION: str | None = None
+    VERSION: str = ""
     API_PREFIX: str = "/api"
 
     SERVER_HOST: str

@@ -10,8 +10,8 @@ from .sportsmans import Sportsmans
 from .sportsmans_groups import SportsmansGroups
 from .sportsmans_workouts import SportsmansWorkouts
 from .teams import Teams
+from .tgs_workouts import TGSWorkouts
 from .trainers import Trainers
+from .trainers_workouts import TrainersWorkouts
 from .workouts import Workouts
 from .workouts_statuses import WorkoutsStatuses
-from .trainers_workouts import TrainersWorkouts
-from .teams_groups_workouts import TeamsGroupsWorkouts 

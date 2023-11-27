@@ -1,0 +1,10 @@
+[Unit]
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/antipov/team-builder/logs/tb_log.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

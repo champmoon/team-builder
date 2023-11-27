@@ -27,7 +27,7 @@ class ExercisesRepository:
             getted_exercises = await session.execute(stmt)
 
         return getted_exercises.scalars().all()
-    
+
     async def create(self, schema_in: schemas.CreateExerciseInDB) -> Exercises:
         async with self.session_factory() as session:
             created_exercise = await session.execute(
