@@ -72,42 +72,18 @@ async def create_workout_for_sportsman(
             detail=f"Sportsman with email {sportsman_email} not be on a team",
         )
 
-    try:
-        estimated_time = await exercises_service.count_estimated_time(
-            exercises=create_workout_in.exercises
-        )
-        new_workout_out = await workouts_service.create(
-            schema_in=schemas.CreateWorkoutInDB(
-                name=create_workout_in.name,
-                estimated_time=estimated_time,
-                date=create_workout_in.date,
-            ),
-        )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e),
-        )
+    new_workout_out = await workouts_service.create(
+        schema_in=schemas.CreateWorkoutInDB(
+            name=create_workout_in.name,
+            estimated_time=create_workout_in.estimated_time,
+            date=create_workout_in.date,
+        ),
+    )
 
-    try:
-        new_exercises_schemas = await exercises_service.create(
-            workout_id=new_workout_out.id,
-            exercises_in=create_workout_in.exercises,
-        )
-    except ValueError as e:
-        await workouts_service.delete(id=new_workout_out.id)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
 
     workout_status_out = await workouts_statuses_service.get_by_status(
         status=consts.WorkoutsStatusesEnum.PLANNED
     )
-    if not workout_status_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Workout status not found",
-        )
 
     await sportsmans_workouts_service.create(
         schema_in=schemas.CreateSportsmansWorkoutIn(
@@ -132,10 +108,14 @@ async def create_workout_for_sportsman(
         )
     )
 
+    new_exercises_schemas = await exercises_service.create(
+        workout_id=new_workout_out.id,
+        exercises_in=create_workout_in.exercises,
+    )
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
         name=new_workout_out.name,
-        estimated_time=estimated_time,
+        estimated_time=create_workout_in.estimated_time,
         status=schemas.WorkoutsStatusesOut(
             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
             description=consts.WORKOUTS_STATUSES_DESC[

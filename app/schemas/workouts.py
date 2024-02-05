@@ -17,6 +17,7 @@ class CreateWorkoutInDB(BaseSchema):
 class CreateWorkoutIn(BaseSchema):
     name: str
     date: NaiveDatetime
+    estimated_time: float
     exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
 
     @model_validator(mode="after")

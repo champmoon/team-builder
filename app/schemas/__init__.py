@@ -4,7 +4,8 @@ from .exercises import (
     CreateBasicExerciseIn,
     CreateExerciseInDB,
     CreateSupportExerciseIn,
-    ExerciseOut,
+    BasicExerciseOut,
+    SupportExerciseOut,
 )
 from .exercises_types import CreateExercisesTypeIn, ExercisesTypesOut
 from .groups import (

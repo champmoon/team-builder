@@ -45,13 +45,19 @@ if not settings.DEBUG:
     fastapi_logger.handlers = gunicorn_error_logger.handlers
     fastapi_logger.setLevel(gunicorn_logger.level)
 
-# TODO make sportman and trainer with same email?
-# TODO when sportsman added to group, group workout should be on new sportsman
+# TODO remove count estimated time
+# TODO remove average time for exercise
+# TODO workouts simplify
 
+# TODO when sportsman added to group, group workout should be on new sportsman
 # TODO make workouts statuses api
-# TODO update workouts, exercisese with recount estimated time
+# TODO update workouts
 # TODO delete workouts when deletinig group, sportsman from team
 # TODO bind workout to other categories
 # TODO create workouts api for sportsman
 # TODO make trainers -> sportsmans api
-# TODO make update workouts statuses
+# TODO make update workouts statuses(cache)
+
+# TODO make transaction
+# TODO make tests
+
