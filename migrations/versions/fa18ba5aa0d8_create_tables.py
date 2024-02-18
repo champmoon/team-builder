@@ -32,7 +32,6 @@ def upgrade() -> None:
     op.create_table(
         "exercises_types",
         sa.Column("type", sa.Integer(), nullable=False),
-        sa.Column("average_time", sa.Float(), nullable=True),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
         ),

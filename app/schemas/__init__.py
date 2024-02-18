@@ -1,10 +1,10 @@
 from .admins import CreateAdminIn, CreateAdminInDB
 from .auth import LoginIn, RefreshTokenIn, RegisterIn
 from .exercises import (
+    BasicExerciseOut,
     CreateBasicExerciseIn,
     CreateExerciseInDB,
     CreateSupportExerciseIn,
-    BasicExerciseOut,
     SupportExerciseOut,
 )
 from .exercises_types import CreateExercisesTypeIn, ExercisesTypesOut

@@ -6,7 +6,6 @@ from pydantic import Field, model_validator
 from app.consts import BasicExercisesTypesEnum, SupportExercisesTypesEnum
 
 from .base_class import BaseSchema
-from .exercises_types import ExercisesTypesOut
 
 
 class CreateBasicExerciseIn(BaseSchema):

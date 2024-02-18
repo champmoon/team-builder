@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 async def create_exercises_types() -> None:
-    basic_exercises_names = [
-        exercise.name for exercise in consts.BasicExercisesTypesEnum
-    ]
+    [exercise.name for exercise in consts.BasicExercisesTypesEnum]
 
     repository = ExercisesTypesRepository(
         model=ExercisesTypes,
@@ -27,18 +25,8 @@ async def create_exercises_types() -> None:
         if exercises_type_out:
             continue
 
-        average_time = None
-        if exercises_type.name in basic_exercises_names:
-            average_time = consts.BasicExercisesTypesAverageTimeEnum[
-                exercises_type.name
-            ]
+        await repository.create(schema_in=CreateExercisesTypeIn(type=exercises_type))
 
-        await repository.create(
-            schema_in=CreateExercisesTypeIn(
-                type=exercises_type,
-                average_time=average_time,
-            )
-        )
         logger.info(
             f"Exercises type created - {consts.EXERCISES_TYPES_DESC[exercises_type]}"
         )

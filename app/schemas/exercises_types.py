@@ -10,7 +10,6 @@ from .base_class import BaseSchema, BaseSchemaFromDB
 
 class CreateExercisesTypeIn(BaseSchema):
     type: ExercisesTypesEnum
-    average_time: float | None
 
 
 class ExercisesTypesOut(BaseSchemaFromDB):

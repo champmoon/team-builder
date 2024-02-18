@@ -1,12 +1,14 @@
-from typing import Sequence, cast
+import logging
+from typing import Sequence
 from uuid import UUID
+
+from pydantic import ValidationError
 
 from app import consts, schemas
 from app.models import Exercises
 from app.repositories import ExercisesRepository
 
 from .exercises_types import ExercisesTypesService
-import logging
 
 logging.basicConfig(level=logging.INFO)
 
@@ -91,3 +93,32 @@ class ExercisesService:
             exercises_schemas_out.append(exercise_schema_out)
 
         return exercises_schemas_out
+
+    async def get_schemas_by_orm_models(
+        self,
+        exercises_out: Sequence[Exercises],
+    ) -> list[schemas.BasicExerciseOut | schemas.SupportExerciseOut]:
+        exercises_schemas: list[
+            schemas.BasicExerciseOut | schemas.SupportExerciseOut
+        ] = []
+        exercise_schema: schemas.BasicExerciseOut | schemas.SupportExerciseOut
+        for exercise_out in exercises_out:
+            try:
+                exercise_schema = schemas.BasicExerciseOut(
+                    id=exercise_out.id,
+                    type=consts.BasicExercisesTypesEnum(exercise_out.type.type),
+                    reps=exercise_out.reps,
+                    sets=exercise_out.sets,
+                    rest=exercise_out.rest,
+                    order=exercise_out.order,
+                )
+            except ValidationError:
+                exercise_schema = schemas.SupportExerciseOut(
+                    id=exercise_out.id,
+                    type=consts.SupportExercisesTypesEnum(exercise_out.type.type),
+                    time=exercise_out.time,
+                    order=exercise_out.order,
+                )
+            exercises_schemas.append(exercise_schema)
+
+        return exercises_schemas

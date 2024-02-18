@@ -56,7 +56,7 @@ async def create_workout_for_sportsman(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
@@ -79,7 +79,6 @@ async def create_workout_for_sportsman(
             date=create_workout_in.date,
         ),
     )
-
 
     workout_status_out = await workouts_statuses_service.get_by_status(
         status=consts.WorkoutsStatusesEnum.PLANNED
@@ -112,6 +111,7 @@ async def create_workout_for_sportsman(
         workout_id=new_workout_out.id,
         exercises_in=create_workout_in.exercises,
     )
+
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
         name=new_workout_out.name,
@@ -179,42 +179,17 @@ async def create_workout_for_group(
             detail="The group must not be empty",
         )
 
-    try:
-        estimated_time = await exercises_service.count_estimated_time(
-            exercises=create_workout_in.exercises
-        )
-        new_workout_out = await workouts_service.create(
-            schema_in=schemas.CreateWorkoutInDB(
-                name=create_workout_in.name,
-                estimated_time=estimated_time,
-                date=create_workout_in.date,
-            ),
-        )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e),
-        )
-
-    try:
-        new_exercises_schemas = await exercises_service.create(
-            workout_id=new_workout_out.id,
-            exercises_in=create_workout_in.exercises,
-        )
-    except ValueError as e:
-        await workouts_service.delete(id=new_workout_out.id)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+    new_workout_out = await workouts_service.create(
+        schema_in=schemas.CreateWorkoutInDB(
+            name=create_workout_in.name,
+            estimated_time=create_workout_in.estimated_time,
+            date=create_workout_in.date,
+        ),
+    )
 
     workout_status_out = await workouts_statuses_service.get_by_status(
         status=consts.WorkoutsStatusesEnum.PLANNED
     )
-    if not workout_status_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Workout status not found",
-        )
 
     for sportsman_out in sportsmans_out:
         await sportsmans_workouts_service.create(
@@ -225,13 +200,6 @@ async def create_workout_for_group(
             )
         )
 
-    await tgs_workouts_service.create(
-        schema_in=schemas.CreateTGSWorkoutIn(
-            group_id=group_id,
-            workout_id=new_workout_out.id,
-        )
-    )
-
     await trainers_workouts_service.create(
         schema_in=schemas.CreateTrainerWorkoutIn(
             trainer_id=self_trainer.id,
@@ -240,10 +208,22 @@ async def create_workout_for_group(
         )
     )
 
+    await tgs_workouts_service.create(
+        schema_in=schemas.CreateTGSWorkoutIn(
+            group_id=group_id,
+            workout_id=new_workout_out.id,
+        )
+    )
+
+    new_exercises_schemas = await exercises_service.create(
+        workout_id=new_workout_out.id,
+        exercises_in=create_workout_in.exercises,
+    )
+
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
         name=new_workout_out.name,
-        estimated_time=estimated_time,
+        estimated_time=create_workout_in.estimated_time,
         status=schemas.WorkoutsStatusesOut(
             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
             description=consts.WORKOUTS_STATUSES_DESC[
@@ -294,7 +274,7 @@ async def create_workout_for_team(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
@@ -304,42 +284,17 @@ async def create_workout_for_team(
             detail="The team must not be empty",
         )
 
-    try:
-        estimated_time = await exercises_service.count_estimated_time(
-            exercises=create_workout_in.exercises
-        )
-        new_workout_out = await workouts_service.create(
-            schema_in=schemas.CreateWorkoutInDB(
-                name=create_workout_in.name,
-                estimated_time=estimated_time,
-                date=create_workout_in.date,
-            ),
-        )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e),
-        )
-
-    try:
-        new_exercises_schemas = await exercises_service.create(
-            workout_id=new_workout_out.id,
-            exercises_in=create_workout_in.exercises,
-        )
-    except ValueError as e:
-        await workouts_service.delete(id=new_workout_out.id)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+    new_workout_out = await workouts_service.create(
+        schema_in=schemas.CreateWorkoutInDB(
+            name=create_workout_in.name,
+            estimated_time=create_workout_in.estimated_time,
+            date=create_workout_in.date,
+        ),
+    )
 
     workout_status_out = await workouts_statuses_service.get_by_status(
         status=consts.WorkoutsStatusesEnum.PLANNED
     )
-    if not workout_status_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Workout status not found",
-        )
 
     for sportsman_out in sportsmans_out:
         await sportsmans_workouts_service.create(
@@ -350,13 +305,6 @@ async def create_workout_for_team(
             )
         )
 
-    await tgs_workouts_service.create(
-        schema_in=schemas.CreateTGSWorkoutIn(
-            team_id=team_out.id,
-            workout_id=new_workout_out.id,
-        )
-    )
-
     await trainers_workouts_service.create(
         schema_in=schemas.CreateTrainerWorkoutIn(
             trainer_id=self_trainer.id,
@@ -365,10 +313,22 @@ async def create_workout_for_team(
         )
     )
 
+    await tgs_workouts_service.create(
+        schema_in=schemas.CreateTGSWorkoutIn(
+            team_id=team_out.id,
+            workout_id=new_workout_out.id,
+        )
+    )
+
+    new_exercises_schemas = await exercises_service.create(
+        workout_id=new_workout_out.id,
+        exercises_in=create_workout_in.exercises,
+    )
+
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
         name=new_workout_out.name,
-        estimated_time=estimated_time,
+        estimated_time=create_workout_in.estimated_time,
         status=schemas.WorkoutsStatusesOut(
             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
             description=consts.WORKOUTS_STATUSES_DESC[
@@ -419,25 +379,19 @@ async def get_workouts(
             id=trainer_workout_out.workout_id
         )
         if not workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_trainer_workout not in workout db",
+            )
 
-        exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-            workout_id=workout_out.id
-        )
-        exercises_schemas: list[schemas.ExerciseOut] = []
-        for exercise_out in exercises_out:
-            exercises_schemas.append(
-                schemas.ExerciseOut(
-                    type=schemas.ExercisesTypesOut(
-                        type=exercise_out.type.type,
-                    ),
-                    reps=exercise_out.reps,
-                    sets=exercise_out.sets,
-                    rest=exercise_out.rest,
-                    time=exercise_out.time,
-                    order=exercise_out.order,
+        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+            exercises_out=(
+                await exercises_service.get_all_exercises_by_workout_id(
+                    workout_id=workout_out.id
                 )
             )
+        )
+
         base_workouts_schemas = schemas.TrainerWorkoutOut(
             workout_id=workout_out.id,
             name=workout_out.name,
@@ -457,7 +411,10 @@ async def get_workouts(
             workout_id=trainer_workout_out.workout_id
         )
         if not tgs_workouts_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_workout not found in tgs",
+            )
 
         workout_schema: (
             schemas.TrainerSportsmanWorkoutOut
@@ -483,7 +440,10 @@ async def get_workouts(
                 sportsman_id=sportsman_id,
             )
         else:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_tgs all none ids",
+            )
 
         workouts.append(workout_schema)
 
@@ -500,7 +460,7 @@ async def get_workouts(
 @inject
 async def get_workout(
     id: UUID,
-    self_trainer: Trainers = Depends(deps.self_trainer),
+    _: Trainers = Depends(deps.self_trainer),
     exercises_service: Services.exercises = Depends(
         Provide[Containers.exercises.service]
     ),
@@ -516,31 +476,28 @@ async def get_workout(
 ) -> Any:
     workout_out = await workouts_service.get_by_id(id=id)
     if not workout_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Workout not found",
+        )
 
     trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
         workout_id=workout_out.id
     )
     if not trainer_workout_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Workout not found",
+        )
 
-    exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-        workout_id=workout_out.id
-    )
-    exercises_schemas: list[schemas.ExerciseOut] = []
-    for exercise_out in exercises_out:
-        exercises_schemas.append(
-            schemas.ExerciseOut(
-                type=schemas.ExercisesTypesOut(
-                    type=exercise_out.type.type,
-                ),
-                reps=exercise_out.reps,
-                sets=exercise_out.sets,
-                rest=exercise_out.rest,
-                time=exercise_out.time,
-                order=exercise_out.order,
+    exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+        exercises_out=(
+            await exercises_service.get_all_exercises_by_workout_id(
+                workout_id=workout_out.id
             )
         )
+    )
+
     base_workouts_schemas = schemas.TrainerWorkoutOut(
         workout_id=workout_out.id,
         name=workout_out.name,
@@ -560,7 +517,10 @@ async def get_workout(
         workout_id=trainer_workout_out.workout_id
     )
     if not tgs_workouts_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_workout not found in tgs",
+        )
 
     workout_schema: (
         schemas.TrainerSportsmanWorkoutOut
@@ -586,7 +546,10 @@ async def get_workout(
             sportsman_id=sportsman_id,
         )
     else:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_tgs all none ids",
+        )
 
     return workout_schema
 
@@ -626,18 +589,18 @@ async def get_workouts_for_sportsman(
         Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
-    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
-        )
-
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email_in)
     if not sportsman_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Sportsman with email {sportsman_email_in} not found",
+        )
+
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_team must exist",
         )
 
     if sportsman_out.team_id != team_out.id:
@@ -646,7 +609,7 @@ async def get_workouts_for_sportsman(
             detail=f"Sportsman with email {sportsman_email_in} not be on a team",
         )
 
-    workouts_outs = await sportsmans_workouts_service.get_all_by_sportsman_id(
+    s_workouts_out = await tgs_workouts_service.get_by_all_sportsman_id(
         sportsman_id=sportsman_out.id
     )
     workouts: list[
@@ -654,34 +617,31 @@ async def get_workouts_for_sportsman(
         | schemas.TrainerGroupWorkoutOut
         | schemas.TrainerTeamWorkoutOut
     ] = []
-    for s_workout_out in workouts_outs:
+    for s_workout_out in s_workouts_out:
         workout_out = await workouts_service.get_by_id(id=s_workout_out.workout_id)
         if not workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_s_workout not in workout db",
+            )
 
         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
             workout_id=workout_out.id
         )
         if not trainer_workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_s_workout not in trainer_workouts db",
+            )
 
-        exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-            workout_id=workout_out.id
-        )
-        exercises_schemas: list[schemas.ExerciseOut] = []
-        for exercise_out in exercises_out:
-            exercises_schemas.append(
-                schemas.ExerciseOut(
-                    type=schemas.ExercisesTypesOut(
-                        type=exercise_out.type.type,
-                    ),
-                    reps=exercise_out.reps,
-                    sets=exercise_out.sets,
-                    rest=exercise_out.rest,
-                    time=exercise_out.time,
-                    order=exercise_out.order,
+        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+            exercises_out=(
+                await exercises_service.get_all_exercises_by_workout_id(
+                    workout_id=workout_out.id
                 )
             )
+        )
+
         base_workouts_schemas = schemas.TrainerWorkoutOut(
             workout_id=workout_out.id,
             name=workout_out.name,
@@ -701,7 +661,10 @@ async def get_workouts_for_sportsman(
             workout_id=trainer_workout_out.workout_id
         )
         if not tgs_workouts_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_workout not found in tgs",
+            )
 
         workout_schema: (
             schemas.TrainerSportsmanWorkoutOut
@@ -727,7 +690,10 @@ async def get_workouts_for_sportsman(
                 sportsman_id=sportsman_id,
             )
         else:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_tgs all none ids",
+            )
 
         workouts.append(workout_schema)
 
@@ -761,42 +727,42 @@ async def get_workouts_for_group(
 ) -> Any:
     group_id = id
     group_out = await groups_service.get_by_id(id=group_id)
+
     if not group_out or group_out.trainer_id != self_trainer.id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Group with id {group_id} not found",
         )
 
-    g_workouts_outs = await tgs_workouts_service.get_all_by_group_id(group_id=group_id)
+    g_workouts_out = await tgs_workouts_service.get_all_by_group_id(
+        group_id=group_id,
+    )
     workouts: list[schemas.TrainerGroupWorkoutOut] = []
-    for g_workout_out in g_workouts_outs:
+    for g_workout_out in g_workouts_out:
         workout_out = await workouts_service.get_by_id(id=g_workout_out.workout_id)
         if not workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_g_workout not in workout db",
+            )
 
         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
             workout_id=workout_out.id
         )
         if not trainer_workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_g_workout not in trainer_workouts db",
+            )
 
-        exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-            workout_id=workout_out.id
-        )
-        exercises_schemas: list[schemas.ExerciseOut] = []
-        for exercise_out in exercises_out:
-            exercises_schemas.append(
-                schemas.ExerciseOut(
-                    type=schemas.ExercisesTypesOut(
-                        type=exercise_out.type.type,
-                    ),
-                    reps=exercise_out.reps,
-                    sets=exercise_out.sets,
-                    rest=exercise_out.rest,
-                    time=exercise_out.time,
-                    order=exercise_out.order,
+        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+            exercises_out=(
+                await exercises_service.get_all_exercises_by_workout_id(
+                    workout_id=workout_out.id
                 )
             )
+        )
+
         workout_schema = schemas.TrainerGroupWorkoutOut(
             workout_id=workout_out.id,
             name=workout_out.name,
@@ -845,39 +811,38 @@ async def get_workouts_for_team(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
-    t_workouts_outs = await tgs_workouts_service.get_all_by_team_id(team_id=team_out.id)
+    t_workouts_out = await tgs_workouts_service.get_all_by_team_id(
+        team_id=team_out.id,
+    )
     workouts: list[schemas.TrainerTeamWorkoutOut] = []
-    for t_workout_out in t_workouts_outs:
+    for t_workout_out in t_workouts_out:
         workout_out = await workouts_service.get_by_id(id=t_workout_out.workout_id)
         if not workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_s_workout not in workout db",
+            )
 
         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
             workout_id=workout_out.id
         )
         if not trainer_workout_out:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="_t_workout not in trainer_workouts db",
+            )
 
-        exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-            workout_id=workout_out.id
-        )
-        exercises_schemas: list[schemas.ExerciseOut] = []
-        for exercise_out in exercises_out:
-            exercises_schemas.append(
-                schemas.ExerciseOut(
-                    type=schemas.ExercisesTypesOut(
-                        type=exercise_out.type.type,
-                    ),
-                    reps=exercise_out.reps,
-                    sets=exercise_out.sets,
-                    rest=exercise_out.rest,
-                    time=exercise_out.time,
-                    order=exercise_out.order,
+        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+            exercises_out=(
+                await exercises_service.get_all_exercises_by_workout_id(
+                    workout_id=workout_out.id
                 )
             )
+        )
+
         workout_schema = schemas.TrainerTeamWorkoutOut(
             workout_id=workout_out.id,
             name=workout_out.name,
@@ -932,25 +897,19 @@ async def delete_workout(
         workout_id=workout_out.id
     )
     if not trainer_workout_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_workout not in trainer_workouts db",
+        )
 
-    exercises_out = await exercises_service.get_all_exercises_by_workout_id(
-        workout_id=workout_out.id
-    )
-    exercises_schemas: list[schemas.ExerciseOut] = []
-    for exercise_out in exercises_out:
-        exercises_schemas.append(
-            schemas.ExerciseOut(
-                type=schemas.ExercisesTypesOut(
-                    type=exercise_out.type.type,
-                ),
-                reps=exercise_out.reps,
-                sets=exercise_out.sets,
-                rest=exercise_out.rest,
-                time=exercise_out.time,
-                order=exercise_out.order,
+    exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+        exercises_out=(
+            await exercises_service.get_all_exercises_by_workout_id(
+                workout_id=workout_out.id
             )
         )
+    )
+
     base_workouts_schemas = schemas.TrainerWorkoutOut(
         workout_id=workout_out.id,
         name=workout_out.name,
@@ -970,7 +929,10 @@ async def delete_workout(
         workout_id=trainer_workout_out.workout_id
     )
     if not tgs_workouts_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_workout not found in tgs",
+        )
 
     workout_schema: (
         schemas.TrainerSportsmanWorkoutOut
@@ -996,7 +958,11 @@ async def delete_workout(
             sportsman_id=sportsman_id,
         )
     else:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_tgs all none ids",
+        )
 
     await workouts_service.delete(id=id)
+
     return workout_schema

@@ -1,10 +1,9 @@
+import logging
 from typing import Sequence
 
 from app.consts import WorkoutsStatusesEnum
 from app.models import WorkoutsStatuses
-
 from app.repositories import WorkoutsStatusesRepository
-import logging
 
 logging.basicConfig(level=logging.INFO)
 

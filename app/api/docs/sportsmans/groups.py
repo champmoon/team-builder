@@ -17,25 +17,21 @@ get_self_groups: Docs = {
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "name": "string",
-                            "sportsmans": [
-                                {
-                                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                    "email": "string",
-                                    "name": "string",
-                                }
-                            ],
+                            "sportsmans": [{
+                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "email": "string",
+                                "name": "string",
+                            }],
                         },
                         {
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "name": "string",
-                            "sportsmans": [
-                                {
-                                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                    "email": "string",
-                                    "name": "string",
-                                }
-                            ],
+                            "sportsmans": [{
+                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "email": "string",
+                                "name": "string",
+                            }],
                         },
                     ]
                 },
@@ -71,13 +67,11 @@ get_self_group: Docs = {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "name": "string",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "string",
-                                "name": "string",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "string",
+                            "name": "string",
+                        }],
                     }
                 },
             },
@@ -103,14 +97,12 @@ get_self_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["path", "id"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["path", "id"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -144,13 +136,11 @@ outs_off_groups: Docs = {
                         "email": "string",
                         "name": "string",
                         "teamId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "groups": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "name": "string",
-                            }
-                        ],
+                        "groups": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "name": "string",
+                        }],
                     },
                 }
             },
@@ -168,14 +158,12 @@ outs_off_groups: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["path", "id"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["path", "id"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -212,13 +200,11 @@ out_off_group: Docs = {
                         "email": "string",
                         "name": "string",
                         "teamId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "groups": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "name": "string",
-                            }
-                        ],
+                        "groups": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "name": "string",
+                        }],
                     },
                 }
             },
@@ -244,14 +230,12 @@ out_off_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["path", "id"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["path", "id"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

@@ -45,9 +45,6 @@ if not settings.DEBUG:
     fastapi_logger.handlers = gunicorn_error_logger.handlers
     fastapi_logger.setLevel(gunicorn_logger.level)
 
-# TODO remove count estimated time
-# TODO remove average time for exercise
-# TODO workouts simplify
 
 # TODO when sportsman added to group, group workout should be on new sportsman
 # TODO make workouts statuses api
@@ -60,4 +57,3 @@ if not settings.DEBUG:
 
 # TODO make transaction
 # TODO make tests
-
