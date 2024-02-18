@@ -3,17 +3,39 @@ from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .api import urls_router
+from .api import sportsman_urls_router, trainer_urls_router
 from .conf.settings import settings
 from .containers import wire_containers
-from .docs import app_docs
+from .docs import app_docs, sportsmans_api_docs, trainers_api_docs
+
+wire_containers()
+
+trainers_api = FastAPI(
+    version=settings.VERSION,
+    title=trainers_api_docs["title"],
+    description=trainers_api_docs["description"],
+    debug=settings.DEBUG,
+)
+trainers_api.include_router(trainer_urls_router, prefix=settings.API_PREFIX)
+
+sportsmans_api = FastAPI(
+    version=settings.VERSION,
+    title=sportsmans_api_docs["title"],
+    description=sportsmans_api_docs["description"],
+    debug=settings.DEBUG,
+)
+sportsmans_api.include_router(sportsman_urls_router, prefix=settings.API_PREFIX)
 
 app = FastAPI(
     version=settings.VERSION,
     title=app_docs["title"],
     description=app_docs["description"],
     debug=settings.DEBUG,
+    docs_url="/",
 )
+
+app.mount(path="/trainers", app=trainers_api)
+app.mount(path="/sportsmans", app=sportsmans_api)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,15 +45,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(urls_router, prefix=settings.API_PREFIX)
-wire_containers()
-
 if settings.DEBUG:
     app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
 
     from .utils import log_middleware
 
-    app.middleware("http")(log_middleware)
+    app.middleware(middleware_type="http")(log_middleware)
 
 if not settings.DEBUG:
     import logging

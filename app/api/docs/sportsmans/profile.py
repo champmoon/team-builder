@@ -38,7 +38,8 @@ update_profile: Docs = {
     "description": """
     ```
     Request Body:
-        name - имя спортсмена.(string)
+        name - имя спортсмена.
+               (string)
 
     Auth:
         Этот запрос доступен только спортсменам.

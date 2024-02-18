@@ -48,12 +48,14 @@ get_self_groups: Docs = {
     },
 }
 
+
 get_self_group: Docs = {
     "summary": "Получение группы спортсмена",
     "description": """
     ```
     Path Params:
-        id - ID группы.(uuid)
+        id - ID группы.
+             (uuid)
 
     Auth:
         Этот запрос доступен только спортсменам.
@@ -116,7 +118,8 @@ outs_off_groups: Docs = {
     "description": """
     ```
     Request Body:
-        groupsIds - ID групп.(array[uuid])
+        groupsIds - ID групп.
+                    (array[uuid])
 
     Auth:
         Этот запрос доступен только спортсменам.
@@ -181,7 +184,8 @@ out_off_group: Docs = {
     "description": """
     ```
     Path Params:
-        id - ID группы.(uuid)
+        id - ID группы.
+             (uuid)
 
     Auth:
         Этот запрос доступен только спортсменам.

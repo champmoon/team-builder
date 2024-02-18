@@ -37,7 +37,8 @@ update_profile: Docs = {
     "description": """
     ```
     Request Body:
-        name - имя тренера.(string)
+        name - имя тренера.
+               (string)
 
     Auth:
         Этот запрос доступен только тренерам.

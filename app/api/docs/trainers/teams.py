@@ -41,7 +41,8 @@ add_sportsman_to_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmanEmail - почта спортсмена.(string)
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -131,7 +132,8 @@ adds_sportsmans_to_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmansEmails - почты спортсмена.(array[string])
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -207,7 +209,8 @@ kick_sportsman_off_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmanEmail - почта спортсмена.(string)
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -281,12 +284,14 @@ kick_sportsman_off_team: Docs = {
     },
 }
 
+
 kicks_sportsmans_off_team: Docs = {
     "summary": "Удаление спортсменов из команду",
     "description": """
     ```
     Request Body:
-        sportsmansEmails - почты спортсмена.(array[string])
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.

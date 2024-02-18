@@ -40,26 +40,26 @@ async def register(
             detail=f"User with email {register_in.email} already exists",
         )
 
-    if register_in.is_trainer:
-        new_trainer_out = await trainers_service.create(
-            schema_in=schemas.CreateTrainerIn(
+    if not register_in.is_trainer:
+        return await sportmans_service.create(
+            schema_in=schemas.CreateSportsmanIn(
                 email=register_in.email,
                 password=register_in.password,
                 name=register_in.name,
             )
         )
-        await teams_service.create(
-            schema_in=schemas.CreateTeamIn(trainer_id=new_trainer_out.id),
-        )
-        return new_trainer_out
 
-    return await sportmans_service.create(
-        schema_in=schemas.CreateSportsmanIn(
+    new_trainer_out = await trainers_service.create(
+        schema_in=schemas.CreateTrainerIn(
             email=register_in.email,
             password=register_in.password,
             name=register_in.name,
         )
     )
+    await teams_service.create(
+        schema_in=schemas.CreateTeamIn(trainer_id=new_trainer_out.id),
+    )
+    return new_trainer_out
 
 
 @router(
@@ -167,7 +167,8 @@ async def refresh(
 
     if session_service.is_refresh_token_expired(created_at=session_out.created_at):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Refresh token expired"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Refresh token expired",
         )
 
     new_session_out = await session_service.create(

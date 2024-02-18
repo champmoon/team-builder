@@ -69,6 +69,7 @@ exclude = [
     "node_modules",
     "venv",
     "app/api/urls.py",
+    "app/docs.py",
 ]
 
 # Same as Black.
@@ -106,6 +107,7 @@ extend-exclude = '''
   # The following are specific to Black, you probably don't want those.
   tests/data
   | profiling
+  app/docs.py
 )/
 '''
 # We use preview style for formatting Black itself. If you
