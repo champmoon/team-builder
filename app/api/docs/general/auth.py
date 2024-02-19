@@ -5,10 +5,17 @@ register: Docs = {
     "description": """
     ```
     Request Body:
-        email - почта тренера / спортсмена.(string)(unique=True)
-        password - пароль тренера / спортсмена.(string)
-        name - имя тренера / спортсмена.(string)
-        isTrainer - флаг, который отвечает за тип пользователя.(bool)
+        email - почта тренера / спортсмена.
+                (string)
+
+        password - пароль тренера / спортсмена.
+                   (string)(5 <= len <= 30)
+
+        name - имя тренера / спортсмена.
+               (string)
+
+        isTrainer - флаг, который отвечает за тип пользователя.
+                    (bool)
 
     Auth:
         Этот запрос публичный.
@@ -39,18 +46,14 @@ register: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -64,9 +67,11 @@ login: Docs = {
     "description": """
     ```
     Request Body:
-        email - почта тренера / спортсмена.(string)(unique=True)
-        password - пароль тренера / спортсмена.(string)
-        name - имя тренера / спортсмена.(string)
+        email - почта тренера / спортсмена.
+                (string)
+
+        password - пароль тренера / спортсмена.
+                   (string)(5 <= len <= 30)
 
     Auth:
         Этот запрос публичный.
@@ -127,18 +132,14 @@ login: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -146,12 +147,14 @@ login: Docs = {
     },
 }
 
+
 logout: Docs = {
     "summary": "Выход с аккаунта тренера / спортсмена",
     "description": """
     ```
     Request Body:
-        refreshToken - рефреш токен авторизации.(uuid)
+        refreshToken - рефреш токен авторизации.
+                       (uuid)
 
     Auth:
         Этот запрос требует авторизации любого типа пользователей.
@@ -186,18 +189,14 @@ logout: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -205,12 +204,14 @@ logout: Docs = {
     },
 }
 
+
 refresh: Docs = {
     "summary": "Получение новой пары токенов с помощью refreshToken.",
     "description": """
     ```
     Request Body:
-        refreshToken - refresh токен авторизации.(string)
+        refreshToken - refresh токен авторизации.
+                       (uuid)
 
     Auth:
         Этот запрос публичный.
@@ -220,14 +221,31 @@ refresh: Docs = {
             "description": "`refreshToken` валидный. Получена новая пара токенов.",
             "content": {
                 "application/json": {
-                    "example": {
-                        "accessToken": (
-                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                            ".eyJleHAiOjE2OTc3Mzc5OTAsInN1YiI6IntcInVzZXJfaWRcIjogXCIwYjcwNzRhZi03NTJlLTQxM2ItOTU1Zi1jMDU1ZDliNDg4YzZcIiwgXCJ1c2VyX3R5cGVcIjogXCJ0cmFpbmVyXCJ9In0"
-                            ".FFqw9AZlajts1GjWKO_c4JwS8G6sX6GbJA2-51SEBQg"
-                        ),
-                        "refreshToken": "0b31b17f-2513-4dcc-899d-debfca437cdc",
-                        "userType": "trainer",
+                    "examples": {
+                        "trainer": {
+                            "summary": "Refresh тренера",
+                            "value": {
+                                "accessToken": (
+                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                    ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
+                                    ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
+                                ),
+                                "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
+                                "userType": "trainer",
+                            },
+                        },
+                        "sportsman": {
+                            "summary": "Refresh спортсмена",
+                            "value": {
+                                "accessToken": (
+                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                    ".eyJleHAiOjE2OTkzNDExMjAsInN1YiI6IntcInVzZXJfaWRcIjogXCIxZTcyNDg0YS0yYmRkLTQ2MzAtOGQ2Yy1iOGNiN2I0Mjk3ZDFcIiwgXCJncm91cFwiOiBcInVzZXJcIn0ifQ"
+                                    ".eVygh9rRrwcPd46a9V9mhznhJh87Nt13LxwN17un_Us"
+                                ),
+                                "refreshToken": "cfb4d589-88b1-474b-8645-3c5a4f53c32c",
+                                "userType": "sportsman",
+                            },
+                        },
                     }
                 }
             },
@@ -249,20 +267,19 @@ refresh: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "refreshToken"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "refreshToken"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
         },
     },
 }
+
 
 verify: Docs = {
     "summary": "Проверка валидности accessToken.",

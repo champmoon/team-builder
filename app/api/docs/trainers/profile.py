@@ -37,7 +37,8 @@ update_profile: Docs = {
     "description": """
     ```
     Request Body:
-        name - имя тренера.(string)
+        name - имя тренера.
+               (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -68,14 +69,12 @@ update_profile: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

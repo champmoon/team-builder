@@ -6,7 +6,6 @@ from pydantic import Field, model_validator
 from app.consts import BasicExercisesTypesEnum, SupportExercisesTypesEnum
 
 from .base_class import BaseSchema
-from .exercises_types import ExercisesTypesOut
 
 
 class CreateBasicExerciseIn(BaseSchema):
@@ -22,17 +21,24 @@ class CreateBasicExerciseIn(BaseSchema):
         return self
 
 
+class BasicExerciseOut(BaseSchema):
+    id: UUID
+    type: BasicExercisesTypesEnum
+    reps: int = Field(..., gt=0)
+    sets: int = Field(..., gt=0)
+    rest: float | None = Field(..., gt=0)
+    order: int
+
+
 class CreateSupportExerciseIn(BaseSchema):
     type: SupportExercisesTypesEnum
     time: int = Field(..., gt=0)
 
 
-class ExerciseOut(BaseSchema):
-    type: ExercisesTypesOut
-    reps: int | None = None
-    sets: int | None = None
-    rest: float | None = None
-    time: int | None = None
+class SupportExerciseOut(BaseSchema):
+    id: UUID
+    type: SupportExercisesTypesEnum
+    time: int = Field(..., gt=0)
     order: int
 
 

@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import IntEnum
 
 
 class ExercisesTypesEnum(IntEnum):
@@ -22,13 +22,6 @@ class BasicExercisesTypesEnum(IntEnum):
     PULL_UPS = 5
     SQUATS = 6
     BURPEE = 7
-
-
-class BasicExercisesTypesAverageTimeEnum(float, Enum):
-    PUSH_UPS = 1
-    PULL_UPS = 1
-    SQUATS = 1
-    BURPEE = 1.5
 
 
 EXERCISES_TYPES_DESC: dict[ExercisesTypesEnum, str] = {

@@ -1,6 +1,5 @@
 from .exercises_types import (
     EXERCISES_TYPES_DESC,
-    BasicExercisesTypesAverageTimeEnum,
     BasicExercisesTypesEnum,
     ExercisesTypesEnum,
     SupportExercisesTypesEnum,

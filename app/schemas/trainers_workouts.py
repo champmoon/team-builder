@@ -5,7 +5,7 @@ from pydantic import NaiveDatetime
 from app import consts
 
 from .base_class import BaseSchema, BaseSchemaFromDB
-from .exercises import ExerciseOut
+from .exercises import BasicExerciseOut, SupportExerciseOut
 from .workouts_statuses import WorkoutsStatusesOut
 
 
@@ -22,7 +22,7 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
     status: WorkoutsStatusesOut
     date: NaiveDatetime
     created_at: NaiveDatetime
-    exercises: list[ExerciseOut]
+    exercises: list[BasicExerciseOut | SupportExerciseOut]
 
 
 class TrainerSportsmanWorkoutOut(TrainerWorkoutOut):

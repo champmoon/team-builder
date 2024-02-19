@@ -16,6 +16,7 @@ class WorkoutsService:
         return await self.repository.get_by_id(id=id)
 
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
+        # TODO
         return await self.repository.create(schema_in=schema_in)
 
     async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:

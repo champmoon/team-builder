@@ -24,5 +24,4 @@ async def get_exercises_types(
         Provide[Containers.exercises_types.service],
     )
 ) -> Any:
-    exercises_types_out = await exercises_types_service.get_all()
-    return exercises_types_out
+    return await exercises_types_service.get_all()

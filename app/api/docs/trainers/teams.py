@@ -15,13 +15,11 @@ get_self_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "first@sportsman.com",
+                            "name": "first",
+                        }],
                     }
                 },
             },
@@ -43,7 +41,8 @@ add_sportsman_to_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmanEmail - почта спортсмена.(string)
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -110,14 +109,12 @@ add_sportsman_to_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -135,7 +132,8 @@ adds_sportsmans_to_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmansEmails - почты спортсмена.(array[string])
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -188,14 +186,12 @@ adds_sportsmans_to_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -213,7 +209,8 @@ kick_sportsman_off_team: Docs = {
     "description": """
     ```
     Request Body:
-        sportsmanEmail - почта спортсмена.(string)
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -226,13 +223,11 @@ kick_sportsman_off_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "first@sportsman.com",
+                            "name": "first",
+                        }],
                     }
                 },
             },
@@ -272,14 +267,12 @@ kick_sportsman_off_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -291,12 +284,14 @@ kick_sportsman_off_team: Docs = {
     },
 }
 
+
 kicks_sportsmans_off_team: Docs = {
     "summary": "Удаление спортсменов из команду",
     "description": """
     ```
     Request Body:
-        sportsmansEmails - почты спортсмена.(array[string])
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -333,14 +328,12 @@ kicks_sportsmans_off_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

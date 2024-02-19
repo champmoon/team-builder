@@ -17,25 +17,21 @@ get_self_groups: Docs = {
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "name": "string",
-                            "sportsmans": [
-                                {
-                                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                    "email": "string",
-                                    "name": "string",
-                                }
-                            ],
+                            "sportsmans": [{
+                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "email": "string",
+                                "name": "string",
+                            }],
                         },
                         {
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "name": "string",
-                            "sportsmans": [
-                                {
-                                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                    "email": "string",
-                                    "name": "string",
-                                }
-                            ],
+                            "sportsmans": [{
+                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "email": "string",
+                                "name": "string",
+                            }],
                         },
                     ]
                 },
@@ -58,7 +54,8 @@ get_self_group: Docs = {
     "description": """
     ```
     Path Params:
-        id - ID группы.(uuid)
+        id - ID группы.
+             (uuid)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -72,13 +69,11 @@ get_self_group: Docs = {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "name": "string",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "string",
-                                "name": "string",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "string",
+                            "name": "string",
+                        }],
                     }
                 },
             },
@@ -104,14 +99,12 @@ get_self_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["path", "id"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["path", "id"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -125,8 +118,11 @@ create_group: Docs = {
     "description": """
     ```
     Request Body:
-        name - имя группы.(uuid)
-        sportsmansEmails - почты спортсмена.(array[string])(required=false)
+        name - имя группы.
+               (uuid)
+
+        sportsmansEmails - почты спортсмена.
+                           (array[string])(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -173,14 +169,12 @@ create_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -194,10 +188,12 @@ update_group: Docs = {
     "description": """
     ```
     Path Params:
-        id - ID группы.(uuid)
+        id - ID группы.
+             (uuid)
 
     Request Body:
-        name - имя тренера.(string)
+        name - имя тренера.
+               (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -248,14 +244,12 @@ update_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -269,7 +263,8 @@ delete_group: Docs = {
     "description": """
     ```
     Path Params:
-        id - ID группы.(uuid)
+        id - ID группы.
+             (uuid)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -320,14 +315,12 @@ delete_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["path", "id"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["path", "id"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -335,13 +328,17 @@ delete_group: Docs = {
     },
 }
 
+
 add_sportsman_to_group: Docs = {
     "summary": "Добавление спортсмена в группу",
     "description": """
     ```
     Request Body:
-        groupid - ID группы.(uuid)
-        sportsmanEmail - почта спортсмена.(string)
+        groupId - ID группы.
+                  (uuid)
+
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -418,14 +415,12 @@ add_sportsman_to_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -443,8 +438,10 @@ adds_sportsmans_to_group: Docs = {
     "description": """
     ```
     Request Body:
-        groupid - ID группы.(uuid)
-        sportsmansEmails - почты спортсмена.(array[string])
+        groupId - ID группы.
+                  (uuid)
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -506,14 +503,12 @@ adds_sportsmans_to_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -531,8 +526,10 @@ kick_sportsman_off_group: Docs = {
     "description": """
     ```
     Request Body:
-        groupid - ID группы.(uuid)
-        sportsmanEmail - почта спортсмена.(string)
+        groupid - ID группы.
+                  (uuid)
+        sportsmanEmail - почта спортсмена.
+                         (string)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -546,13 +543,11 @@ kick_sportsman_off_group: Docs = {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "name": "haha3times",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "first@sportsman.com",
+                            "name": "first",
+                        }],
                     }
                 },
             },
@@ -604,14 +599,12 @@ kick_sportsman_off_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -623,13 +616,16 @@ kick_sportsman_off_group: Docs = {
     },
 }
 
+
 kicks_sportsmans_off_group: Docs = {
     "summary": "Удаление спортсменов из группы",
     "description": """
     ```
     Request Body:
-        groupid - ID группы.(uuid)
-        sportsmansEmails - почты спортсмена.(array[string])
+        groupid - ID группы.
+                  (uuid)
+        sportsmansEmails - почты спортсмена.
+                           (array[string])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -675,14 +671,12 @@ kicks_sportsmans_off_group: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

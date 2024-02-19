@@ -8,4 +8,3 @@ class ExercisesTypes(Base, UUIDAsIDMixin):
     __tablename__ = "exercises_types"
 
     type: Mapped[int]
-    average_time: Mapped[float | None] = None
