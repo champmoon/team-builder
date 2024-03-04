@@ -7,38 +7,52 @@ from .validation import Password
 
 
 class CreateSportsmanIn(BaseSchema):
+    team_id: UUID
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
 
 
 class CreateSportsmanInDB(BaseSchema):
+    team_id: UUID
     email: EmailStr
     hashed_password: str
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
 
 
 class UpdateSportsmanIn(BaseSchema):
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
 
 
 class SportsmanOut(BaseSchemaFromDB):
     id: UUID
     email: str
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
     team_id: UUID | None = None
 
 
 class SportsmanForTeamOut(BaseSchemaFromDB):
     id: UUID
     email: str
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
 
 
 class SportsmanForGroupOut(BaseSchemaFromDB):
     id: UUID
     email: str
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
 
 
 class ListSportsmansEmailsIn(BaseSchema):
@@ -58,6 +72,8 @@ class OnlyGroupOut(BaseSchemaFromDB):
 class SportsmanWithGroupsOut(BaseSchemaFromDB):
     id: UUID
     email: str
-    name: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
     team_id: UUID | None = None
     groups: list[OnlyGroupOut]

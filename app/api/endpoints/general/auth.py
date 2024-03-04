@@ -7,59 +7,12 @@ from app import schemas
 from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers
-from app.models import Sportsmans, Trainers
+from app.models import Admins, Sportsmans, Trainers
 from app.services import Services
 from app.utils import UsersScope
 from app.utils.router import EndPointRouter
 
 router = EndPointRouter()
-
-
-@router(
-    response_model=schemas.SportsmanOut | schemas.TrainerOut,
-    status_code=status.HTTP_201_CREATED,
-)
-@inject
-async def register(
-    register_in: schemas.RegisterIn,
-    sportmans_service: Services.sportsmans = Depends(
-        Provide[Containers.sportsmans.service],
-    ),
-    trainers_service: Services.trainers = Depends(
-        Provide[Containers.trainers.service],
-    ),
-    teams_service: Services.teams = Depends(
-        Provide[Containers.teams.service],
-    ),
-) -> Any:
-    trainer_out = await trainers_service.get_by_email(email=register_in.email)
-    sportsman_out = await sportmans_service.get_by_email(email=register_in.email)
-    if sportsman_out or trainer_out:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"User with email {register_in.email} already exists",
-        )
-
-    if not register_in.is_trainer:
-        return await sportmans_service.create(
-            schema_in=schemas.CreateSportsmanIn(
-                email=register_in.email,
-                password=register_in.password,
-                name=register_in.name,
-            )
-        )
-
-    new_trainer_out = await trainers_service.create(
-        schema_in=schemas.CreateTrainerIn(
-            email=register_in.email,
-            password=register_in.password,
-            name=register_in.name,
-        )
-    )
-    await teams_service.create(
-        schema_in=schemas.CreateTeamIn(trainer_id=new_trainer_out.id),
-    )
-    return new_trainer_out
 
 
 @router(
@@ -76,21 +29,29 @@ async def login(
     trainers_service: Services.trainers = Depends(
         Provide[Containers.trainers.service],
     ),
+    admins_service: Services.admins = Depends(
+        Provide[Containers.admins.service],
+    ),
     session_service: Services.sessions = Depends(Provide[Containers.sessions.service]),
 ) -> Any:
-    user_out: Trainers | Sportsmans
+    user_out: Trainers | Sportsmans | Admins
 
     sportsman_out = await sportmans_service.get_by_email(email=login_in.email)
     if not sportsman_out:
         trainer_out = await trainers_service.get_by_email(email=login_in.email)
         if not trainer_out:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"User with email {login_in.email} not found",
-            )
+            admin_out = await admins_service.get_by_email(email=login_in.email)
+            if not admin_out:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"User with email {login_in.email} not found",
+                )
 
-        user_out = trainer_out
-        user_type = UsersTypes.TRAINER
+            user_out = admin_out
+            user_type = UsersTypes.ADMIN
+        else:
+            user_out = trainer_out
+            user_type = UsersTypes.TRAINER
     else:
         user_out = sportsman_out
         user_type = UsersTypes.SPORTSMAN

@@ -21,7 +21,10 @@ class TrainersService:
             schema_in=schemas.CreateTrainerInDB(
                 email=schema_in.email,
                 hashed_password=Hasher(secret=schema_in.password).hash(),
-                name=schema_in.name,
+                first_name=schema_in.first_name,
+                middle_name=schema_in.middle_name,
+                last_name=schema_in.last_name,
+                sport_type=schema_in.sport_type,
             )
         )
 

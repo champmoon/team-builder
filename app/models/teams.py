@@ -22,3 +22,4 @@ class Teams(Base, UUIDAsIDMixin):
         lazy="immediate",
         viewonly=True,
     )
+    name: Mapped[str]

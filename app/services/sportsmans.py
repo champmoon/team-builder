@@ -25,7 +25,10 @@ class SportsmansService:
             schema_in=schemas.CreateSportsmanInDB(
                 email=schema_in.email,
                 hashed_password=Hasher(secret=schema_in.password).hash(),
-                name=schema_in.name,
+                team_id=schema_in.team_id,
+                first_name=schema_in.first_name,
+                middle_name=schema_in.middle_name,
+                last_name=schema_in.last_name,
             )
         )
 
