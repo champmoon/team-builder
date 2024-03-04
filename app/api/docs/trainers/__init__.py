@@ -1,3 +1,4 @@
+from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
 from .groups import (
     add_sportsman_to_group,
     adds_sportsmans_to_group,

@@ -1,5 +1,16 @@
 from .admins import CreateAdminIn, CreateAdminInDB
-from .auth import LoginIn, RefreshTokenIn, RegisterIn
+from .auth import (
+    ConfirmTokenIn,
+    InnerSendSportsmanEmailIn,
+    LoginIn,
+    RefreshTokenIn,
+    SendSportsmanEmailIn,
+    SendTrainerEmailIn,
+    SportsmanEmailConfirmOut,
+    SportsmanRegisterIn,
+    TrainerEmailConfirmOut,
+    TrainerRegisterIn,
+)
 from .exercises import (
     BasicExerciseOut,
     CreateBasicExerciseIn,
@@ -19,6 +30,7 @@ from .groups import (
     UpdateGroupIn,
 )
 from .sessions import CreateSessionIn
+from .sports_types import SportsTypes
 from .sportsmans import (
     CreateSportsmanIn,
     CreateSportsmanInDB,

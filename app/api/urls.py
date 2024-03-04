@@ -6,11 +6,18 @@ trainer_urls_router = EndPointRouter()
 sportsman_urls_router = EndPointRouter()
 
 
-url.POST("    /auth/register                        ", endpoint=endpoints.general.auth.register, docs=docs.general.register)
 url.POST("    /auth/login                           ", endpoint=endpoints.general.auth.login, docs=docs.general.login)
 url.POST("    /auth/logout                          ", endpoint=endpoints.general.auth.logout, docs=docs.general.logout)
 url.POST("    /auth/refresh                         ", endpoint=endpoints.general.auth.refresh, docs=docs.general.refresh)
 url.POST("    /auth/verify                          ", endpoint=endpoints.general.auth.verify, docs=docs.general.verify)
+
+url.POST("    /trainer/register                     ", endpoint=endpoints.trainers.auth.register_trainer, docs=docs.trainers.register_trainer)
+url.POST("    /trainer/email                        ", endpoint=endpoints.trainers.auth.send_confirm_trainer_email, docs=docs.trainers.send_confirm_trainer_email)
+url.POST("    /trainer/email/confirm                ", endpoint=endpoints.trainers.auth.confirm_trainer_email, docs=docs.trainers.confirm_trainer_email)
+
+url.POST("    /sportsman/register                   ", endpoint=endpoints.sportsmans.auth.register_sportsman, docs=docs.sportsmans.register_sportsman)
+url.POST("    /sportsman/email                      ", endpoint=endpoints.sportsmans.auth.send_confirm_sportsman_email, docs=docs.sportsmans.send_confirm_sportsman_email)
+url.POST("    /sportsman/email/confirm              ", endpoint=endpoints.sportsmans.auth.confirm_sportsman_email, docs=docs.sportsmans.confirm_sportsman_email)
 
 url.GET("     /trainer/profile                      ", endpoint=endpoints.trainers.profile.get_profile, docs=docs.trainers.get_profile)
 url.PATCH("   /trainer/profile                      ", endpoint=endpoints.trainers.profile.update_profile, docs=docs.trainers.update_profile)
@@ -55,6 +62,7 @@ url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.traine
 url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout, docs=docs.trainers.delete_workout)
 
 
+trainer_urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.tags_mapper["auth"]])
 trainer_urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["auth"]])
 trainer_urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])
 trainer_urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_mapper["trainers_profile"]])
@@ -63,6 +71,7 @@ trainer_urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.
 trainer_urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
 
 
+sportsman_urls_router.include_router(endpoints.sportsmans.auth.router, tags=[docs.tags_mapper["auth"]])
 sportsman_urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["auth"]])
 sportsman_urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])
 sportsman_urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])

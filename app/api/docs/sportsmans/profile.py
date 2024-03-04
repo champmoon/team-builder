@@ -70,12 +70,14 @@ update_profile: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [{
-                            "type": "string_type",
-                            "loc": ["body", "name"],
-                            "msg": "Input should be a valid string",
-                            "input": 1,
-                        }]
+                        "detail": [
+                            {
+                                "type": "string_type",
+                                "loc": ["body", "name"],
+                                "msg": "Input should be a valid string",
+                                "input": 1,
+                            }
+                        ]
                     }
                 }
             },

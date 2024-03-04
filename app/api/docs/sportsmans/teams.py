@@ -15,11 +15,13 @@ get_self_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportsmans": [{
-                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                            "email": "first@sportsman.com",
-                            "name": "first",
-                        }],
+                        "sportsmans": [
+                            {
+                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "email": "first@sportsman.com",
+                                "name": "first",
+                            }
+                        ],
                     }
                 },
             },

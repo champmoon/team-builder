@@ -20,7 +20,10 @@ class Sportsmans(Base, UUIDAsIDMixin):
     )
     email: Mapped[str]
     hashed_password: Mapped[str]
-    name: Mapped[str]
+
+    first_name: Mapped[str | None]
+    middle_name: Mapped[str | None]
+    last_name: Mapped[str | None]
 
     groups: Mapped[list["Groups"]] = relationship(  # type: ignore  # noqa
         secondary="sportsmans_groups",
