@@ -58,7 +58,7 @@ CMD ["uvicorn", "--host ${SERVER_HOST}", "--port ${SERVER_PORT}", "app.main:app"
 
 
 FROM python-base AS production
-ENV DEBUG=False
+ENV DEBUG=True
 
 # Copying poetry and venv into image
 COPY --from=builder-base $VENV_PATH $VENV_PATH
