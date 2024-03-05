@@ -37,6 +37,12 @@ app = FastAPI(
 app.mount(path="/trainers", app=trainers_api)
 app.mount(path="/sportsmans", app=sportsmans_api)
 
+
+app.mount(
+    "/" + settings.STATIC_FILES_DIR,
+    StaticFiles(directory=settings.STATIC_FILES_DIR),
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

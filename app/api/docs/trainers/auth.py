@@ -37,7 +37,6 @@ register_trainer: Docs = {
                         "email": "trainer@trainer.com",
                         "firstName": "string",
                         "lastName": "string",
-                        "sportType": "rugby",
                     }
                 },
             },
@@ -110,7 +109,6 @@ confirm_trainer_email: Docs = {
                         "email": "trainer@trainer.com",
                         "firstName": "string",
                         "lastName": "string",
-                        "sportType": "rugby",
                     }
                 }
             },

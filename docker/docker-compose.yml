@@ -13,6 +13,7 @@ services:
     volumes:
       - ../app:/tb/app
       - ../migrations:/tb/migrations
+      - ../static:/tb/static
     env_file:
       - ../.env
     environment:

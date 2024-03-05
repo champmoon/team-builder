@@ -75,6 +75,20 @@ class SportsmansRepository:
 
         return updated_sportsman.scalars().one()
 
+    async def update_avatar(self, id: UUID, avatar_uri: str) -> Sportsmans:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(avatar_uri=avatar_uri)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_sportsman = await session.execute(stmt)
+            await session.commit()
+
+        return updated_sportsman.scalars().one()
+
     async def delete(self, id: UUID) -> Sportsmans:
         stmt = delete(self.model).where(self.model.id == id).returning(self.model)
 

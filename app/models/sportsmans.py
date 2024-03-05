@@ -25,6 +25,8 @@ class Sportsmans(Base, UUIDAsIDMixin):
     middle_name: Mapped[str | None]
     last_name: Mapped[str | None]
 
+    avatar_uri: Mapped[str | None]
+
     groups: Mapped[list["Groups"]] = relationship(  # type: ignore  # noqa
         secondary="sportsmans_groups",
         lazy="immediate",

@@ -37,6 +37,7 @@ class SportsmanOut(BaseSchemaFromDB):
     middle_name: str | None = None
     last_name: str | None = None
     team_id: UUID | None = None
+    avatar_uri: str | None = None
 
 
 class SportsmanForTeamOut(BaseSchemaFromDB):
@@ -45,6 +46,7 @@ class SportsmanForTeamOut(BaseSchemaFromDB):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
+    avatar_uri: str | None = None
 
 
 class SportsmanForGroupOut(BaseSchemaFromDB):
@@ -53,6 +55,7 @@ class SportsmanForGroupOut(BaseSchemaFromDB):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
+    avatar_uri: str | None = None
 
 
 class ListSportsmansEmailsIn(BaseSchema):
@@ -76,4 +79,5 @@ class SportsmanWithGroupsOut(BaseSchemaFromDB):
     middle_name: str | None = None
     last_name: str | None = None
     team_id: UUID | None = None
+    avatar_uri: str | None = None
     groups: list[OnlyGroupOut]

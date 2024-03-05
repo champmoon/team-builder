@@ -27,6 +27,9 @@ async def send_confirm_sportsman_email(
     sportsmans_service: Services.trainers = Depends(
         Provide[Containers.sportsmans.service]
     ),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
     self_trainer: Trainers = Depends(deps.self_trainer),
 ) -> Any:
     is_blocked = await auth_service.is_email_sended(sportsman_email_confirm_in.email)
@@ -52,9 +55,16 @@ async def send_confirm_sportsman_email(
             ),
         )
 
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Team must exist",
+        )
+
     confirm_data = schemas.InnerSendSportsmanEmailIn(
         email=sportsman_email_confirm_in.email,
-        sport_type=self_trainer.sport_type,
+        sport_type=team_out.sport_type,
         trainer_id=self_trainer.id,
     )
 

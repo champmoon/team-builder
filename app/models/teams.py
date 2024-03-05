@@ -23,3 +23,4 @@ class Teams(Base, UUIDAsIDMixin):
         viewonly=True,
     )
     name: Mapped[str]
+    sport_type: Mapped[str]
