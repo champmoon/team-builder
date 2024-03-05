@@ -1,4 +1,3 @@
-import io
 import shutil
 from pathlib import Path
 from typing import BinaryIO
@@ -18,7 +17,7 @@ class SystemFile:
     def __init__(
         self,
         *,
-        bytes_buffer: io.BytesIO | BinaryIO | None = None,
+        bytes_buffer: BinaryIO | None = None,
         dir_path: str,
         filename: str | None = None,
     ) -> None:

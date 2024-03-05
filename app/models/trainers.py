@@ -13,3 +13,5 @@ class Trainers(Base, UUIDAsIDMixin):
     first_name: Mapped[str | None]
     middle_name: Mapped[str | None]
     last_name: Mapped[str | None]
+
+    avatar_uri: Mapped[str | None]

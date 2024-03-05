@@ -34,3 +34,4 @@ class TrainerOut(BaseSchemaFromDB):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
+    avatar_uri: str | None = None

@@ -39,8 +39,8 @@ app.mount(path="/sportsmans", app=sportsmans_api)
 
 
 app.mount(
-    settings.STATIC_FILES_DIR,
-    StaticFiles(directory=settings.STATIC_FILES_DIR[1:]),
+    "/" + settings.STATIC_FILES_DIR,
+    StaticFiles(directory=settings.STATIC_FILES_DIR),
 )
 
 app.add_middleware(

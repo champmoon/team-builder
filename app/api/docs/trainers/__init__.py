@@ -10,7 +10,7 @@ from .groups import (
     kicks_sportsmans_off_group,
     update_group,
 )
-from .profile import get_profile, update_profile
+from .profile import get_profile, update_profile, upload_avatar
 from .teams import (
     add_sportsman_to_team,
     adds_sportsmans_to_team,

@@ -29,3 +29,6 @@ class TrainersService:
 
     async def update(self, id: UUID, schema_in: schemas.UpdateTrainerIn) -> Trainers:
         return await self.repository.update(id=id, schema_in=schema_in)
+
+    async def update_avatar(self, id: UUID, avatar_uri: str) -> Trainers:
+        return await self.repository.update_avatar(id=id, avatar_uri=avatar_uri)

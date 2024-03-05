@@ -20,6 +20,7 @@ get_self_team: Docs = {
                                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                                 "email": "first@sportsman.com",
                                 "name": "first",
+                                "sportType": "rugby",
                             }
                         ],
                     }
@@ -57,6 +58,7 @@ add_sportsman_to_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "sportType": "rugby",
                         "sportsmans": [
                             {
                                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -156,6 +158,7 @@ adds_sportsmans_to_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "sportType": "rugby",
                         "sportsmans": [
                             {
                                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -229,6 +232,7 @@ kick_sportsman_off_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "sportType": "rugby",
                         "sportsmans": [
                             {
                                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -320,6 +324,7 @@ kicks_sportsmans_off_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "sportType": "rugby",
                         "sportsmans": [],
                     }
                 },

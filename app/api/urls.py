@@ -21,9 +21,11 @@ url.POST("    /sportsman/email/confirm              ", endpoint=endpoints.sports
 
 url.GET("     /trainer/profile                      ", endpoint=endpoints.trainers.profile.get_profile, docs=docs.trainers.get_profile)
 url.PATCH("   /trainer/profile                      ", endpoint=endpoints.trainers.profile.update_profile, docs=docs.trainers.update_profile)
+url.POST("    /trainer/profile/avatar               ", endpoint=endpoints.trainers.profile.upload_avatar, docs=docs.trainers.upload_avatar)
 
 url.GET("     /sportsman/profile                    ", endpoint=endpoints.sportsmans.profile.get_profile, docs=docs.sportsmans.get_profile)
 url.PATCH("   /sportsman/profile                    ", endpoint=endpoints.sportsmans.profile.update_profile, docs=docs.sportsmans.update_profile)
+url.POST("    /sportsman/profile/avatar             ", endpoint=endpoints.sportsmans.profile.upload_avatar, docs=docs.trainers.upload_avatar)
 
 url.GET("     /trainer/team                         ", endpoint=endpoints.trainers.teams.get_self_team, docs=docs.trainers.get_self_team)
 url.POST("    /trainer/team/add                     ", endpoint=endpoints.trainers.teams.add_sportsman_to_team, docs=docs.trainers.add_sportsman_to_team)
