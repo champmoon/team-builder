@@ -3,7 +3,6 @@ from uuid import UUID
 from pydantic import EmailStr, Field
 
 from .base_class import BaseSchema, BaseSchemaFromDB
-from .sports_types import SportsTypes
 from .validation import Password
 
 
@@ -13,7 +12,6 @@ class CreateTrainerIn(BaseSchema):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
-    sport_type: SportsTypes
 
 
 class CreateTrainerInDB(BaseSchema):
@@ -22,7 +20,6 @@ class CreateTrainerInDB(BaseSchema):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
-    sport_type: SportsTypes
 
 
 class UpdateTrainerIn(BaseSchema):
@@ -37,4 +34,3 @@ class TrainerOut(BaseSchemaFromDB):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
-    sport_type: SportsTypes

@@ -13,5 +13,3 @@ class Trainers(Base, UUIDAsIDMixin):
     first_name: Mapped[str | None]
     middle_name: Mapped[str | None]
     last_name: Mapped[str | None]
-
-    sport_type: Mapped[str]

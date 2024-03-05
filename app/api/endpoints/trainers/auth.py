@@ -126,13 +126,13 @@ async def register_trainer(
             last_name=register_in.last_name,
             first_name=register_in.first_name,
             middle_name=register_in.middle_name,
-            sport_type=register_in.sport_type,
         )
     )
     await teams_service.create(
         schema_in=schemas.CreateTeamIn(
             trainer_id=new_trainer_out.id,
             name=register_in.team_name,
+            sport_type=register_in.sport_type,
         ),
     )
     return new_trainer_out

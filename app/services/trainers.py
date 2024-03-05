@@ -24,7 +24,6 @@ class TrainersService:
                 first_name=schema_in.first_name,
                 middle_name=schema_in.middle_name,
                 last_name=schema_in.last_name,
-                sport_type=schema_in.sport_type,
             )
         )
 
