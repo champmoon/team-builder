@@ -42,4 +42,4 @@ class ServerSettings(BaseSettings):
             )
         )
 
-    STATIC_FILES_DIR: str = "/static"
+    STATIC_FILES_DIR: str = "static"
