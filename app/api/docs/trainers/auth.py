@@ -105,10 +105,12 @@ confirm_trainer_email: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "id": "c5300a69-ec99-473e-9df5-6b9c2db64eb9",
                         "email": "trainer@trainer.com",
-                        "firstName": "string",
-                        "lastName": "string",
+                        "firstName?": "string",
+                        "middleName?": "string",
+                        "lastName?": "string",
+                        "sportType": "rugby",
+                        "teamName": "string",
                     }
                 }
             },

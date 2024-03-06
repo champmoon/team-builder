@@ -105,12 +105,9 @@ confirm_sportsman_email: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "id": "20c07d0a-f5dd-40c7-aa65-8ff9c12f4d96",
                         "email": "sportsman@sportsman.com",
-                        "firstName": "string",
-                        "middleName": "string",
-                        "lastName": "string",
-                        "teamId": "f4a6b819-1374-4692-977d-d8a976cf4ea9",
+                        "sportType": "rugby",
+                        "trainerId": "f4a6b819-1374-4692-977d-d8a976cf4ea9",
                     }
                 }
             },
@@ -155,7 +152,7 @@ send_confirm_sportsman_email: Docs = {
     "description": """
     ```
     Request Body:
-        email - почта тренера.
+        email - почта спортсмена.
                 (string)
 
     P.S.:
