@@ -16,6 +16,7 @@ class ServerSettings(BaseSettings):
 
     PROTOCOL: str = "http"
     SERVER_HOST: str
+    EXTERNAL_SERVER_HOST: str
     SERVER_PORT: str
 
     DEBUG: bool
@@ -37,7 +38,7 @@ class ServerSettings(BaseSettings):
         return str(
             HttpUrl.build(
                 scheme=values["PROTOCOL"],
-                host=values["SERVER_HOST"],
+                host=values["EXTERNAL_SERVER_HOST"],
                 port=int(values["SERVER_PORT"]),
             )
         )

@@ -30,7 +30,7 @@ from .groups import (
     UpdateGroupIn,
 )
 from .sessions import CreateSessionIn
-from .sports_types import SportsTypes
+from ..consts.sports_types import SportsTypes
 from .sportsmans import (
     CreateSportsmanIn,
     CreateSportsmanInDB,

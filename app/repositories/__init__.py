@@ -14,7 +14,7 @@ from .trainers import TrainersRepository
 from .trainers_workouts import TrainersWorkoutsRepository
 from .workouts import WorkoutsRepository
 from .workouts_statuses import WorkoutsStatusesRepository
-
+from .surveys import TeamSurveysRepository
 
 class Repositories:
     admins: TypeAlias = AdminsRepository
@@ -31,3 +31,4 @@ class Repositories:
     trainers_workouts: TypeAlias = TrainersWorkoutsRepository
     workouts_statuses: TypeAlias = WorkoutsStatusesRepository
     tgs_workouts: TypeAlias = TGSWorkoutsRepository
+    team_surveys: TypeAlias = TeamSurveysRepository

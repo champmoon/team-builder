@@ -15,3 +15,4 @@ from .trainers import Trainers
 from .trainers_workouts import TrainersWorkouts
 from .workouts import Workouts
 from .workouts_statuses import WorkoutsStatuses
+from .surveys import TeamSurveys, SportsmanSurveys

@@ -3,7 +3,7 @@ from uuid import UUID
 from pydantic import EmailStr, Field
 
 from .base_class import BaseSchema
-from .sports_types import SportsTypes
+from ..consts.sports_types import SportsTypes
 from .validation import Password
 
 

@@ -1,1 +1,1 @@
-from . import auth, groups, profile, teams, workouts
+from . import auth, groups, profile, teams, workouts, surveys
