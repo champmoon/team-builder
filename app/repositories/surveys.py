@@ -1,12 +1,11 @@
 from contextlib import AbstractAsyncContextManager
-from typing import Callable, Sequence, Type
+from typing import Callable, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TeamSurveys
-from app.schemas.teams import CreateTeamIn
 
 
 class TeamSurveysRepository:

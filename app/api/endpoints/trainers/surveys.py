@@ -1,18 +1,16 @@
-from typing import Any, cast
+from typing import Any
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
+from fastapi.encoders import jsonable_encoder
 
 from app import schemas
 from app.api import deps
-from app.cache.actions import ConfirmTrainerEmailAction
-from app.conf.settings import settings
 from app.consts import UsersTypes
 from app.containers import Containers
 from app.models.trainers import Trainers
 from app.services import Services
 from app.utils.router import EndPointRouter
-from fastapi.encoders import jsonable_encoder
 
 router = EndPointRouter()
 

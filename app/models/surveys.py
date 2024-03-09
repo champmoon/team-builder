@@ -1,14 +1,11 @@
-from sqlalchemy.orm import Mapped, mapped_column, Mapper
-from sqlalchemy import ForeignKey
-from app.db.base_class import Base
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.engine import Connection
 from uuid import UUID
 
-from app.db.mixins import UUIDAsIDMixin
+from sqlalchemy import ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sqlalchemy import event, insert
-from .teams import Teams
+from app.db.base_class import Base
+from app.db.mixins import UUIDAsIDMixin
 
 
 class TeamSurveys(Base, UUIDAsIDMixin):

@@ -6,6 +6,7 @@ from .base_class import BaseContainer
 from .exercises import ExercisesContainer
 from .exercises_types import ExercisesTypesContainer
 from .groups import GroupsContainer
+from .serveys import TeamSurveysContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
 from .sportsmans_groups import SportsmansGroupsContainer
@@ -16,7 +17,7 @@ from .trainers import TrainersContainer
 from .trainers_workouts import TrainersWorkoutsContainer
 from .workouts import WorkoutContainer
 from .workouts_statuses import WorkoutsStatusesContainer
-from .serveys import TeamSurveysContainer
+
 
 class Containers:
     admins = AdminsContainer

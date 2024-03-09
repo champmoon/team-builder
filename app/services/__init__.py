@@ -9,13 +9,14 @@ from .sessions import SessionsService
 from .sportsmans import SportsmansService
 from .sportsmans_groups import SportsmansGroupsService
 from .sportsmans_workouts import SportsmansWorkoutsService
+from .surveys import TeamSurveysService
 from .teams import TeamsService
 from .tgs_workouts import TGSWorkoutsService
 from .trainers import TrainersService
 from .trainers_workouts import TrainersWorkoutsService
 from .workouts import WorkoutsService
 from .workouts_statuses import WorkoutsStatusesService
-from .surveys import TeamSurveysService
+
 
 class Services:
     admins: TypeAlias = AdminsService

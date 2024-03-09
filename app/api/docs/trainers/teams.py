@@ -15,14 +15,12 @@ get_self_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
-                                "sportType": "rugby",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "first@sportsman.com",
+                            "name": "first",
+                            "sportType": "rugby",
+                        }],
                     }
                 },
             },
@@ -113,14 +111,12 @@ add_sportsman_to_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -193,14 +189,12 @@ adds_sportsmans_to_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -233,13 +227,11 @@ kick_sportsman_off_team: Docs = {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "sportType": "rugby",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
-                            }
-                        ],
+                        "sportsmans": [{
+                            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "email": "first@sportsman.com",
+                            "name": "first",
+                        }],
                     }
                 },
             },
@@ -279,14 +271,12 @@ kick_sportsman_off_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },
@@ -343,14 +333,12 @@ kicks_sportsmans_off_team: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "name"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

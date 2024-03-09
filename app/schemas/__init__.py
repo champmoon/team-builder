@@ -1,3 +1,4 @@
+from ..consts.sports_types import SportsTypes
 from .admins import CreateAdminIn, CreateAdminInDB
 from .auth import (
     ConfirmTokenIn,
@@ -30,7 +31,6 @@ from .groups import (
     UpdateGroupIn,
 )
 from .sessions import CreateSessionIn
-from ..consts.sports_types import SportsTypes
 from .sportsmans import (
     CreateSportsmanIn,
     CreateSportsmanInDB,
@@ -42,6 +42,7 @@ from .sportsmans import (
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
 from .sportsmans_workouts import CreateSportsmansWorkoutIn
+from .team_surveys import TeamSurveysAddFieldsUpdateIn, TeamSurveysOut
 from .teams import CreateTeamIn, TeamOut
 from .tgs_workouts import CreateTGSWorkoutIn
 from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut
@@ -62,4 +63,3 @@ from .workouts import (
     UpdateWorkoutIn,
 )
 from .workouts_statuses import CreateWorkoutStatusesIn, WorkoutsStatusesOut
-from .team_surveys import TeamSurveysOut, TeamSurveysAddFieldsUpdateIn

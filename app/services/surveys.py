@@ -1,10 +1,8 @@
 from uuid import UUID
 
-from app import schemas
+from app import consts
 from app.models import TeamSurveys
 from app.repositories import TeamSurveysRepository
-
-from app import consts
 
 
 class TeamSurveysService:
