@@ -54,18 +54,14 @@ register_trainer: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -105,10 +101,12 @@ confirm_trainer_email: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "id": "c5300a69-ec99-473e-9df5-6b9c2db64eb9",
                         "email": "trainer@trainer.com",
-                        "firstName": "string",
-                        "lastName": "string",
+                        "firstName?": "string",
+                        "middleName?": "string",
+                        "lastName?": "string",
+                        "sportType": "rugby",
+                        "teamName": "string",
                     }
                 }
             },
@@ -125,21 +123,19 @@ confirm_trainer_email: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "uuid_parsing",
-                                "loc": ["query", "confirm_token"],
-                                "msg": (
-                                    "Input should be a valid UUID, invalid group count:"
-                                    " expected 5, found 3"
-                                ),
-                                "input": "702d2c4f-d2ac-",
-                                "ctx": {
-                                    "error": "invalid group count: expected 5, found 3"
-                                },
-                                "url": "https://errors.pydantic.dev/2.3/v/uuid_parsing",
-                            }
-                        ]
+                        "detail": [{
+                            "type": "uuid_parsing",
+                            "loc": ["query", "confirm_token"],
+                            "msg": (
+                                "Input should be a valid UUID, invalid group count:"
+                                " expected 5, found 3"
+                            ),
+                            "input": "702d2c4f-d2ac-",
+                            "ctx": {
+                                "error": "invalid group count: expected 5, found 3"
+                            },
+                            "url": "https://errors.pydantic.dev/2.3/v/uuid_parsing",
+                        }]
                     }
                 }
             },
@@ -237,23 +233,21 @@ send_confirm_trainer_email: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "value_error",
-                                "loc": ["body", "email"],
-                                "msg": (
-                                    "value is not a valid email address: The part after"
-                                    " the @-sign is not valid. It should have a period."
-                                ),
-                                "input": "invalid@example",
-                                "ctx": {
-                                    "reason": (
-                                        "The part after the @-sign is not valid. It"
-                                        " should have a period."
-                                    )
-                                },
-                            }
-                        ]
+                        "detail": [{
+                            "type": "value_error",
+                            "loc": ["body", "email"],
+                            "msg": (
+                                "value is not a valid email address: The part after"
+                                " the @-sign is not valid. It should have a period."
+                            ),
+                            "input": "invalid@example",
+                            "ctx": {
+                                "reason": (
+                                    "The part after the @-sign is not valid. It"
+                                    " should have a period."
+                                )
+                            },
+                        }]
                     }
                 }
             },

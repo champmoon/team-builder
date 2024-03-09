@@ -4,6 +4,9 @@ tags_mapper = {
     "trainers_profile": "Тренеры → Профиль",
     "sportsmans_profile": "Спортсмены → Профиль",
     #
+    "trainers_surveys": "Тренеры → Анкета",
+    "sportsmans_surveys": "Спортсмены → Анкета",
+    #
     "trainers_teams": "Тренеры → Команды",
     "sportsmans_teams": "Спортсмены → Команды",
     #

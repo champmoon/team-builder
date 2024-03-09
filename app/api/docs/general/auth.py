@@ -82,18 +82,14 @@ login: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -143,18 +139,14 @@ logout: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_too_long",
-                                "loc": ["body", "password"],
-                                "msg": "String should have at most 100 characters",
-                                "input": "password" * 12,
-                                "ctx": {"max_length": 100},
-                                "url": (
-                                    "https://errors.pydantic.dev/2.3/v/string_too_long"
-                                ),
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_too_long",
+                            "loc": ["body", "password"],
+                            "msg": "String should have at most 100 characters",
+                            "input": "password" * 12,
+                            "ctx": {"max_length": 100},
+                            "url": "https://errors.pydantic.dev/2.3/v/string_too_long",
+                        }]
                     }
                 }
             },
@@ -237,14 +229,12 @@ refresh: Docs = {
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": [
-                            {
-                                "type": "string_type",
-                                "loc": ["body", "refreshToken"],
-                                "msg": "Input should be a valid string",
-                                "input": 1,
-                            }
-                        ]
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "refreshToken"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
                     }
                 }
             },

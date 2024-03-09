@@ -7,7 +7,7 @@ from app import schemas
 from app.api import deps
 from app.cache.actions import ConfirmTrainerEmailAction
 from app.conf.settings import settings
-from app.consts import UsersTypes
+from app.consts import SportsTypes, UsersTypes
 from app.containers import Containers
 from app.services import Services
 from app.utils.router import EndPointRouter
@@ -104,6 +104,9 @@ async def register_trainer(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
+    team_surveys_service: Services.team_surveys = Depends(
+        Provide[Containers.team_surveys.service],
+    ),
 ) -> Any:
     trainer_out = await trainers_service.get_by_email(email=register_in.email)
     if trainer_out:
@@ -128,11 +131,17 @@ async def register_trainer(
             middle_name=register_in.middle_name,
         )
     )
-    await teams_service.create(
+    new_team_out = await teams_service.create(
         schema_in=schemas.CreateTeamIn(
             trainer_id=new_trainer_out.id,
             name=register_in.team_name,
             sport_type=register_in.sport_type,
         ),
     )
+
+    await team_surveys_service.create(
+        team_id=new_team_out.id,
+        sport_type=SportsTypes(new_team_out.sport_type),
+    )
+
     return new_trainer_out

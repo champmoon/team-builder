@@ -6,6 +6,7 @@ from .base_class import BaseContainer
 from .exercises import ExercisesContainer
 from .exercises_types import ExercisesTypesContainer
 from .groups import GroupsContainer
+from .serveys import SportsmanSurveysContainer, TeamSurveysContainer
 from .sessions import SessionsContainer
 from .sportsmans import SportsmansContainer
 from .sportsmans_groups import SportsmansGroupsContainer
@@ -34,6 +35,8 @@ class Containers:
     sportsmans_workouts = SportsmansWorkoutsContainer
     trainers_workouts = TrainersWorkoutsContainer
     tgs_workouts = TGSContainer
+    team_surveys = TeamSurveysContainer
+    sportsman_surveys = SportsmanSurveysContainer
 
     @classmethod
     def get_all_containers(cls) -> list[Type[BaseContainer]]:
