@@ -84,7 +84,6 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "press__standart",
                                     "rowIndex": 1,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -105,7 +104,6 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "squat__standart",
                                     "rowIndex": 2,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -126,7 +124,6 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "ten__standart",
                                     "rowIndex": 3,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -149,7 +146,6 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "thirty__standart",
                                     "rowIndex": 4,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -172,7 +168,6 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "bron__standart",
                                     "rowIndex": 5,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -280,7 +275,6 @@ update_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "press__standart",
                                     "rowIndex": 1,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -301,7 +295,6 @@ update_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "squat__standart",
                                     "rowIndex": 2,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -322,7 +315,6 @@ update_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "ten__standart",
                                     "rowIndex": 3,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -345,7 +337,6 @@ update_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "thirty__standart",
                                     "rowIndex": 4,
                                     "columnIndex": 3,
                                     "type": "info",
@@ -368,7 +359,6 @@ update_survey: Docs = {
                                     "required": True,
                                 },
                                 {
-                                    "key": "bron__standart",
                                     "rowIndex": 5,
                                     "columnIndex": 3,
                                     "type": "info",

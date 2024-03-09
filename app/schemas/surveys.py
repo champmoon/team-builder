@@ -1,6 +1,6 @@
-from typing import Literal
+from typing import Any, Literal
 
-from .base_class import BaseSchema
+from .base_class import BaseSchema, BaseSchemaFromDB
 
 
 class DefaultFieldOut(BaseSchema):
@@ -36,7 +36,6 @@ class TableCellsSelectFieldOut(BaseSchema):
 
 
 class TableCellsInfoFieldOut(BaseSchema):
-    key: str
     row_index: int
     column_index: int
     type: Literal["info"]
@@ -55,10 +54,20 @@ class TableFieldOut(BaseSchema):
     ]
 
 
-class TeamSurveysOut(BaseSchema):
+class TeamSurveysOut(BaseSchemaFromDB):
     main_fields: list[DefaultFieldOut | SelectFieldOut | TableFieldOut]
     add_fields: list[DefaultFieldOut | SelectFieldOut | TableFieldOut]
 
 
 class TeamSurveysAddFieldsUpdateIn(BaseSchema):
     add_fields: list[DefaultFieldOut | SelectFieldOut | TableFieldOut]
+
+
+class SportsmanAnswerOut(BaseSchema):
+    key: str
+    value: Any
+
+
+class SportsmanSurveysOut(BaseSchemaFromDB):
+    answers: list[SportsmanAnswerOut]
+    survey: TeamSurveysOut

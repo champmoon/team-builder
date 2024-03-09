@@ -42,7 +42,12 @@ from .sportsmans import (
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
 from .sportsmans_workouts import CreateSportsmansWorkoutIn
-from .team_surveys import TeamSurveysAddFieldsUpdateIn, TeamSurveysOut
+from .surveys import (
+    SportsmanAnswerOut,
+    SportsmanSurveysOut,
+    TeamSurveysAddFieldsUpdateIn,
+    TeamSurveysOut,
+)
 from .teams import CreateTeamIn, TeamOut
 from .tgs_workouts import CreateTGSWorkoutIn
 from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut

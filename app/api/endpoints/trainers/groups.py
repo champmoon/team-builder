@@ -16,33 +16,20 @@ router = EndPointRouter()
 
 
 @router(
-    response_model=list[schemas.GroupOut],
+    response_model=list[schemas.GroupOut] | schemas.GroupOut,
     status_code=status.HTTP_200_OK,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def get_self_groups(
+    id: UUID | None = None,
     self_trainer: Trainers = Depends(deps.self_trainer),
     groups_service: Services.groups = Depends(
         Provide[Containers.groups.service],
     ),
 ) -> Any:
-    return await groups_service.get_all_by_trainer_id(trainer_id=self_trainer.id)
-
-
-@router(
-    response_model=schemas.GroupOut,
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_self_group(
-    id: UUID,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    groups_service: Services.groups = Depends(
-        Provide[Containers.groups.service],
-    ),
-) -> Any:
+    if not id:
+        return await groups_service.get_all_by_trainer_id(trainer_id=self_trainer.id)
     group_out = await groups_service.get_by_id(id=id)
     if not group_out or group_out.trainer_id != self_trainer.id:
         raise HTTPException(
@@ -50,6 +37,28 @@ async def get_self_group(
             detail=f"Group with id {id} not found",
         )
     return group_out
+
+
+# @router(
+#     response_model=schemas.GroupOut,
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_self_group(
+#     id: UUID,
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     groups_service: Services.groups = Depends(
+#         Provide[Containers.groups.service],
+#     ),
+# ) -> Any:
+#     group_out = await groups_service.get_by_id(id=id)
+#     if not group_out or group_out.trainer_id != self_trainer.id:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Group with id {id} not found",
+#         )
+#     return group_out
 
 
 @router(

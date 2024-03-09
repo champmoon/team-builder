@@ -29,21 +29,25 @@ url.POST("    /sportsman/profile/avatar             ", endpoint=endpoints.sports
 
 url.GET("     /trainer/survey                       ", endpoint=endpoints.trainers.surveys.get_survey, docs=docs.trainers.surveys.get_survey)
 url.PATCH("   /trainer/survey                       ", endpoint=endpoints.trainers.surveys.update_survey, docs=docs.trainers.surveys.update_survey)
+url.PATCH("   /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey)
+url.PATCH("   /trainer/survey/team                  ", endpoint=endpoints.trainers.surveys.set_update_team_survey)
 
+
+url.GET("     /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.get_survey)
+url.PATCH("   /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.fill_survey)
 
 url.GET("     /trainer/team                         ", endpoint=endpoints.trainers.teams.get_self_team, docs=docs.trainers.get_self_team)
-url.POST("    /trainer/team/add                     ", endpoint=endpoints.trainers.teams.add_sportsman_to_team, docs=docs.trainers.add_sportsman_to_team)
-url.POST("    /trainer/team/adds                    ", endpoint=endpoints.trainers.teams.adds_sportsmans_to_team, docs=docs.trainers.adds_sportsmans_to_team,)
-url.POST("    /trainer/team/kick                    ", endpoint=endpoints.trainers.teams.kick_sportsman_off_team, docs=docs.trainers.kick_sportsman_off_team)
-url.POST("    /trainer/team/kicks                   ", endpoint=endpoints.trainers.teams.kicks_sportsmans_off_team, docs=docs.trainers.kicks_sportsmans_off_team)
+# url.POST("    /trainer/team/add                     ", endpoint=endpoints.trainers.teams.add_sportsman_to_team, docs=docs.trainers.add_sportsman_to_team)
+# url.POST("    /trainer/team/adds                    ", endpoint=endpoints.trainers.teams.adds_sportsmans_to_team, docs=docs.trainers.adds_sportsmans_to_team,)
+# url.POST("    /trainer/team/kick                    ", endpoint=endpoints.trainers.teams.kick_sportsman_off_team, docs=docs.trainers.kick_sportsman_off_team)
+# url.POST("    /trainer/team/kicks                   ", endpoint=endpoints.trainers.teams.kicks_sportsmans_off_team, docs=docs.trainers.kicks_sportsmans_off_team)
 
 url.GET("     /sportsman/team                       ", endpoint=endpoints.sportsmans.teams.get_self_team, docs=docs.sportsmans.teams.get_self_team)
-url.POST("    /sportsman/team/out                   ", endpoint=endpoints.sportsmans.teams.out_off_team, docs=docs.sportsmans.teams.out_off_team)
+# url.POST("    /sportsman/team/out                   ", endpoint=endpoints.sportsmans.teams.out_off_team, docs=docs.sportsmans.teams.out_off_team)
 
 url.GET("     /trainer/groups                       ", endpoint=endpoints.trainers.groups.get_self_groups, docs=docs.trainers.get_self_groups)
-url.GET("     /trainer/groups/{id}                  ", endpoint=endpoints.trainers.groups.get_self_group, docs=docs.trainers.get_self_group)
-url.PATCH("   /trainer/groups/{id}                  ", endpoint=endpoints.trainers.groups.update_group, docs=docs.trainers.update_group)
-url.DELETE("  /trainer/groups/{id}                  ", endpoint=endpoints.trainers.groups.delete_group, docs=docs.trainers.delete_group)
+url.PATCH("   /trainer/groups                       ", endpoint=endpoints.trainers.groups.update_group, docs=docs.trainers.update_group)
+url.DELETE("  /trainer/groups                       ", endpoint=endpoints.trainers.groups.delete_group, docs=docs.trainers.delete_group)
 url.POST("    /trainer/groups                       ", endpoint=endpoints.trainers.groups.create_group, docs=docs.trainers.create_group)
 url.POST("    /trainer/groups/add                   ", endpoint=endpoints.trainers.groups.add_sportsman_to_group, docs=docs.trainers.add_sportsman_to_group)
 url.POST("    /trainer/groups/adds                  ", endpoint=endpoints.trainers.groups.adds_sportsmans_to_group, docs=docs.trainers.adds_sportsmans_to_group)
@@ -82,5 +86,6 @@ sportsman_urls_router.include_router(endpoints.sportsmans.auth.router, tags=[doc
 sportsman_urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["auth"]])
 sportsman_urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])
 sportsman_urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])
+sportsman_urls_router.include_router(endpoints.sportsmans.surveys.router, tags=[docs.tags_mapper["sportsmans_surveys"]])
 sportsman_urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])
 sportsman_urls_router.include_router(endpoints.sportsmans.groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])

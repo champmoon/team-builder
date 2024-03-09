@@ -1,1 +1,1 @@
-from . import auth, groups, profile, teams
+from . import auth, groups, profile, surveys, teams

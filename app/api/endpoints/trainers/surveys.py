@@ -3,6 +3,8 @@ from typing import Any
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import Response
+from pydantic import EmailStr
 
 from app import schemas
 from app.api import deps
@@ -80,3 +82,77 @@ async def update_survey(
     return await team_surveys_service.update(
         id=team_survey_out.id, add_fields=jsonable_encoder(add_fields_in.add_fields)
     )
+
+
+@router(
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def set_update_sportsman_survey(
+    email: EmailStr,
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
+    sportsman_surveys_service: Services.sportsman_surveys = Depends(
+        Provide[Containers.sportsman_surveys.service]
+    ),
+) -> Any:
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Team must exist",
+        )
+
+    sportsman_out = await sportsmans_service.get_by_email(email=email)
+    if not sportsman_out:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Sportsman with email {email} not found",
+        )
+
+    if sportsman_out.team_id != team_out.id:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Sportsman with email {email} not be on a team",
+        )
+
+    await sportsman_surveys_service.set_update(sportsman_id=sportsman_out.id)
+
+    return Response(status_code=status.HTTP_200_OK)
+
+
+@router(
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def set_update_team_survey(
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
+    sportsman_surveys_service: Services.sportsman_surveys = Depends(
+        Provide[Containers.sportsman_surveys.service]
+    ),
+) -> Any:
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Team must exist",
+        )
+
+    sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
+    for sportsman_out in sportsmans_out:
+        await sportsman_surveys_service.set_update(sportsman_id=sportsman_out.id)
+
+    return Response(status_code=status.HTTP_200_OK)
