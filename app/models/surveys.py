@@ -20,8 +20,8 @@ class TeamSurveys(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    main_fields: Mapped[dict] = mapped_column(JSONB)
-    add_fields: Mapped[dict] = mapped_column(JSONB, server_default="{}")
+    main_fields: Mapped[dict | list[dict]] = mapped_column(JSONB, server_default="[]")
+    add_fields: Mapped[dict | list[dict]] = mapped_column(JSONB, server_default="[]")
 
 
 class SportsmanSurveys(Base, UUIDAsIDMixin):
@@ -33,4 +33,5 @@ class SportsmanSurveys(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    answers: Mapped[dict] = mapped_column(JSONB)
+    update_it: Mapped[bool] = mapped_column(default=True)
+    answers: Mapped[list[dict]] = mapped_column(JSONB)

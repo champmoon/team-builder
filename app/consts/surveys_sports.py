@@ -1,6 +1,6 @@
 from app.consts.sports_types import SportsTypes
 
-DEFAULT_DATA = [
+DEFAULT_MAIN_DATA = [
     {
         "key": "gender",
         "label": "Пол",
@@ -32,10 +32,13 @@ DEFAULT_DATA = [
         "type": "number",
         "required": True,
     },
+]
+
+DEFAULT_ADD_DATA = [
     {
         "label": "Физическая подготовка",
         "type": "table",
-        "rows_length": 6,
+        "rowsLength": 6,
         "rows": [
             "Норматив",
             "Жим лежа(кг)",
@@ -44,111 +47,111 @@ DEFAULT_DATA = [
             "30м(с)",
             "Бронко",
         ],
-        "columns_length": 4,
+        "columnsLength": 4,
         "columns": ["Норматив", "Результат актуальный", "Относил. Сила", "Норма"],
         "cells": [
             {
                 "key": "press__current",
-                "row_index": 1,
-                "column_index": 1,
+                "rowIndex": 1,
+                "columnIndex": 1,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "press__relative",
-                "row_index": 1,
-                "column_index": 2,
+                "rowIndex": 1,
+                "columnIndex": 2,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "press__standart",
-                "row_index": 1,
-                "column_index": 3,
+                "rowIndex": 1,
+                "columnIndex": 3,
                 "type": "info",
                 "placeholder": ">1.4",
             },
             {
                 "key": "squat__current",
-                "row_index": 2,
-                "column_index": 1,
+                "rowIndex": 2,
+                "columnIndex": 1,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "squat__relative",
-                "row_index": 2,
-                "column_index": 2,
+                "rowIndex": 2,
+                "columnIndex": 2,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "squat__standart",
-                "row_index": 2,
-                "column_index": 3,
+                "rowIndex": 2,
+                "columnIndex": 3,
                 "type": "info",
                 "placeholder": ">1.7",
             },
             {
                 "key": "ten__current",
-                "row_index": 3,
-                "column_index": 1,
+                "rowIndex": 3,
+                "columnIndex": 1,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "ten__relative",
-                "row_index": 3,
-                "column_index": 2,
+                "rowIndex": 3,
+                "columnIndex": 2,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "ten__standart",
-                "row_index": 3,
-                "column_index": 3,
+                "rowIndex": 3,
+                "columnIndex": 3,
                 "type": "info",
                 "placeholder": "Нап(Forwards). <1,70 Защит(Backs) <1,60",
             },
             {
                 "key": "thirty__current",
-                "row_index": 4,
-                "column_index": 1,
+                "rowIndex": 4,
+                "columnIndex": 1,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "thirty__relative",
-                "row_index": 4,
-                "column_index": 2,
+                "rowIndex": 4,
+                "columnIndex": 2,
                 "type": "number",
                 "required": True,
             },
             {
                 "key": "thirty__standart",
-                "row_index": 4,
-                "column_index": 3,
+                "rowIndex": 4,
+                "columnIndex": 3,
                 "type": "info",
                 "placeholder": "Нап(Forwards). <4,20 Защит(Backs) <4,00",
             },
             {
                 "key": "bron__current",
-                "row_index": 5,
-                "column_index": 1,
+                "rowIndex": 5,
+                "columnIndex": 1,
                 "type": "time",
                 "required": True,
             },
             {
                 "key": "bron__relative",
-                "row_index": 5,
-                "column_index": 2,
+                "rowIndex": 5,
+                "columnIndex": 2,
                 "type": "time",
                 "required": True,
             },
             {
                 "key": "bron__standart",
-                "row_index": 5,
-                "column_index": 3,
+                "rowIndex": 5,
+                "columnIndex": 3,
                 "type": "info",
                 "placeholder": "Нап(Forwards). <5:00 Защит(Backs) <4:40",
             },
@@ -157,9 +160,16 @@ DEFAULT_DATA = [
 ]
 
 
-SURVEY_SPORTS_MAIN_DATA: dict[SportsTypes, list] = {
-    SportsTypes.RUGBY: DEFAULT_DATA,
-    SportsTypes.FOOTBALL: DEFAULT_DATA,
-    SportsTypes.BASKETBALL: DEFAULT_DATA,
-    SportsTypes.TENNIS: DEFAULT_DATA,
+TEAM_SURVEY_MAIN_DATA: dict[SportsTypes, list] = {
+    SportsTypes.RUGBY: DEFAULT_MAIN_DATA,
+    SportsTypes.FOOTBALL: DEFAULT_MAIN_DATA,
+    SportsTypes.BASKETBALL: DEFAULT_MAIN_DATA,
+    SportsTypes.TENNIS: DEFAULT_MAIN_DATA,
+}
+
+TEAM_SURVEY_ADD_DATA: dict[SportsTypes, list] = {
+    SportsTypes.RUGBY: DEFAULT_ADD_DATA,
+    SportsTypes.FOOTBALL: DEFAULT_ADD_DATA,
+    SportsTypes.BASKETBALL: DEFAULT_ADD_DATA,
+    SportsTypes.TENNIS: DEFAULT_ADD_DATA,
 }

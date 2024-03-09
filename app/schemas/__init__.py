@@ -62,3 +62,4 @@ from .workouts import (
     UpdateWorkoutIn,
 )
 from .workouts_statuses import CreateWorkoutStatusesIn, WorkoutsStatusesOut
+from .team_surveys import TeamSurveysOut, TeamSurveysAddFieldsUpdateIn

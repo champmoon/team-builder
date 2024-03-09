@@ -7,7 +7,7 @@ from app import schemas
 from app.api import deps
 from app.cache.actions import ConfirmTrainerEmailAction
 from app.conf.settings import settings
-from app.consts import UsersTypes
+from app.consts import UsersTypes, SportsTypes
 from app.containers import Containers
 from app.services import Services
 from app.utils.router import EndPointRouter
@@ -141,7 +141,7 @@ async def register_trainer(
 
     await team_surveys_service.create(
         team_id=new_team_out.id,
-        sport_type=new_team_out.sport_type,
+        sport_type=SportsTypes(new_team_out.sport_type),
     )
 
     return new_trainer_out

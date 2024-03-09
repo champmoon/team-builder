@@ -29,3 +29,4 @@ from .workouts import (
     get_workouts_for_sportsman,
     get_workouts_for_team,
 )
+from .surveys import get_survey, update_survey

@@ -27,7 +27,8 @@ url.GET("     /sportsman/profile                    ", endpoint=endpoints.sports
 url.PATCH("   /sportsman/profile                    ", endpoint=endpoints.sportsmans.profile.update_profile, docs=docs.sportsmans.update_profile)
 url.POST("    /sportsman/profile/avatar             ", endpoint=endpoints.sportsmans.profile.upload_avatar, docs=docs.trainers.upload_avatar)
 
-url.GET("     /trainer/survey                       ", endpoint=endpoints.trainers.surveys.get_survey)
+url.GET("     /trainer/survey                       ", endpoint=endpoints.trainers.surveys.get_survey, docs=docs.trainers.surveys.get_survey)
+url.PATCH("   /trainer/survey                       ", endpoint=endpoints.trainers.surveys.update_survey, docs=docs.trainers.surveys.update_survey)
 
 
 url.GET("     /trainer/team                         ", endpoint=endpoints.trainers.teams.get_self_team, docs=docs.trainers.get_self_team)
@@ -71,7 +72,7 @@ trainer_urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.ta
 trainer_urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["auth"]])
 trainer_urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["exercises"]])
 trainer_urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_mapper["trainers_profile"]])
-trainer_urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_profile"]])
+trainer_urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_surveys"]])
 trainer_urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 trainer_urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.tags_mapper["trainers_groups"]])
 trainer_urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])

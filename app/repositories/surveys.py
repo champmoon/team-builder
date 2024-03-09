@@ -2,7 +2,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TeamSurveys
@@ -18,21 +18,37 @@ class TeamSurveysRepository:
         self.model = model
         self.session_factory = session_factory
 
-    async def get_all(self) -> Sequence[TeamSurveys]:
-        stmt = select(self.model)
+    async def get_by_team_id(self, team_id: UUID) -> TeamSurveys | None:
+        stmt = select(self.model).where(self.model.team_id == team_id)
 
         async with self.session_factory() as session:
             getted_teams = await session.execute(stmt)
 
-        return getted_teams.scalars().all()
+        return getted_teams.scalars().first()
 
-    async def create(self, team_id: UUID, main_fields: dict) -> TeamSurveys:
+    async def create(
+        self, team_id: UUID, main_fields: list[dict], add_fields: list[dict]
+    ) -> TeamSurveys:
         async with self.session_factory() as session:
             created_team = await session.execute(
                 insert(self.model)
-                .values(team_id=team_id, main_fields=main_fields)
+                .values(team_id=team_id, main_fields=main_fields, add_fields=add_fields)
                 .returning(self.model)
             )
             await session.commit()
 
         return created_team.scalars().one()
+
+    async def update(self, id: UUID, add_fields: list[dict]) -> TeamSurveys:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(add_fields=add_fields)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_trainer = await session.execute(stmt)
+            await session.commit()
+
+        return updated_trainer.scalars().one()
