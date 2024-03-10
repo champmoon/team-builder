@@ -382,3 +382,162 @@ update_survey: Docs = {
         },
     },
 }
+
+get_sportsman_survey: Docs = {
+    "summary": "Получение анкеты спортсмена",
+    "description": """
+    ```
+    Path Params:
+        email - Email спортсмена(str).
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        200: {
+            "description": "Анкета спортсмена.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "answers": [{"key": "123", "value": "312"}],
+                        "survey": {
+                            "mainFields": [
+                                {
+                                    "key": "gender",
+                                    "label": "Пол",
+                                    "type": "select",
+                                    "options": ["Мужской", "Женский"],
+                                    "required": True,
+                                },
+                                {
+                                    "key": "position",
+                                    "label": "Игровая позиция",
+                                    "type": "text",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "height",
+                                    "label": "Рост",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "weight",
+                                    "label": "Вес",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "age",
+                                    "label": "Возраст",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                            ],
+                            "addFields": [{
+                                "key": "1",
+                                "label": "1",
+                                "type": "text",
+                                "required": True,
+                            }],
+                        },
+                    }
+                }
+            },
+        },
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Спортсмен не найден.",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Sportsman with email {email} not found"}
+                }
+            },
+        },
+        409: {
+            "description": "Спортсмен не в этой команде.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Sportsman with email {email} not be on a team"
+                    }
+                }
+            },
+        },
+    },
+}
+
+
+set_update_sportsman_survey: Docs = {
+    "summary": "Дать возможность анкеты спортсмена",
+    "description": """
+    ```
+    Path Params:
+        email - Email спортсмена(str).
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        200: {
+            "description": "Спортмен может теперь обновить анкету.",
+            "content": {"application/json": {"example": {}}},
+        },
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Спортсмен не найден.",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Sportsman with email {email} not found"}
+                }
+            },
+        },
+        409: {
+            "description": "Спортсмен не в этой команде.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Sportsman with email {email} not be on a team"
+                    }
+                }
+            },
+        },
+    },
+}
+
+set_update_team_survey: Docs = {
+    "summary": "Дать возможность анкеты всей команде",
+    "description": """
+    ```
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        200: {
+            "description": "Команда спортсменов может теперь обновить анкету.",
+            "content": {"application/json": {"example": {}}},
+        },
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+    },
+}

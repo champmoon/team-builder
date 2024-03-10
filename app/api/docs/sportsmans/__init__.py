@@ -1,3 +1,4 @@
+from . import surveys
 from .auth import (
     confirm_sportsman_email,
     register_sportsman,
