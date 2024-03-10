@@ -156,3 +156,53 @@ async def set_update_team_survey(
         await sportsman_surveys_service.set_update(sportsman_id=sportsman_out.id)
 
     return Response(status_code=status.HTTP_200_OK)
+
+
+@router(
+    status_code=status.HTTP_200_OK,
+    response_model=schemas.SportsmanSurveysOut,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def get_sportsman_survey(
+    email: EmailStr,
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
+    sportsman_surveys_service: Services.sportsman_surveys = Depends(
+        Provide[Containers.sportsman_surveys.service]
+    ),
+) -> Any:
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Team must exist",
+        )
+
+    sportsman_out = await sportsmans_service.get_by_email(email=email)
+    if not sportsman_out:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Sportsman with email {email} not found",
+        )
+
+    if sportsman_out.team_id != team_out.id:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Sportsman with email {email} not be on a team",
+        )
+
+    sportsman_surveys_out = await sportsman_surveys_service.get_by_sportsman_id(
+        sportsman_id=sportsman_out.id
+    )
+    if sportsman_surveys_out:
+        return sportsman_surveys_out
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="sportsman survey must exist",
+    )

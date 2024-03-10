@@ -29,12 +29,13 @@ url.POST("    /sportsman/profile/avatar             ", endpoint=endpoints.sports
 
 url.GET("     /trainer/survey                       ", endpoint=endpoints.trainers.surveys.get_survey, docs=docs.trainers.surveys.get_survey)
 url.PATCH("   /trainer/survey                       ", endpoint=endpoints.trainers.surveys.update_survey, docs=docs.trainers.surveys.update_survey)
-url.PATCH("   /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey)
-url.PATCH("   /trainer/survey/team                  ", endpoint=endpoints.trainers.surveys.set_update_team_survey)
+url.GET("     /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.get_sportsman_survey, docs=docs.trainers.surveys.get_sportsman_survey)
+url.PATCH("   /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey, docs=docs.trainers.surveys.set_update_sportsman_survey)
+url.PATCH("   /trainer/survey/team                  ", endpoint=endpoints.trainers.surveys.set_update_team_survey, docs=docs.trainers.surveys.set_update_team_survey)
 
-
-url.GET("     /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.get_survey)
-url.PATCH("   /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.fill_survey)
+url.GET("     /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.get_survey, docs=docs.sportsmans.surveys.get_survey)
+url.GET("     /sportsman/survey/update              ", endpoint=endpoints.sportsmans.surveys.get_survey_update_flag, docs=docs.sportsmans.surveys.get_survey_update_flag)
+url.PATCH("   /sportsman/survey                     ", endpoint=endpoints.sportsmans.surveys.fill_survey, docs=docs.sportsmans.surveys.fill_survey)
 
 url.GET("     /trainer/team                         ", endpoint=endpoints.trainers.teams.get_self_team, docs=docs.trainers.get_self_team)
 # url.POST("    /trainer/team/add                     ", endpoint=endpoints.trainers.teams.add_sportsman_to_team, docs=docs.trainers.add_sportsman_to_team)
