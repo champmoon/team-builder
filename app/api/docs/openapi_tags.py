@@ -1,18 +1,19 @@
 tags_mapper = {
-    "auth": "Авторизация / регистрация для тренеров / спортсменов",
+    "general_auth": "Авторизация",
+    "general_exercises": "Упражнения",
     #
+    "trainers_auth": "Тренеры → Регистрация",
     "trainers_profile": "Тренеры → Профиль",
-    "sportsmans_profile": "Спортсмены → Профиль",
-    #
+    "trainers_surveys": "Тренеры → Анкета",
     "trainers_teams": "Тренеры → Команды",
-    "sportsmans_teams": "Спортсмены → Команды",
-    #
     "trainers_groups": "Тренеры → Группы",
-    "sportsmans_groups": "Спортсмены → Группы",
-    #
-    "exercises": "Упражнения",
-    #
     "trainers_workouts": "Тренеры → Тренировки",
+    #
+    "sportsmans_auth": "Спортсмены → Регистрация",
+    "sportsmans_profile": "Спортсмены → Профиль",
+    "sportsmans_surveys": "Спортсмены → Анкета",
+    "sportsmans_teams": "Спортсмены → Команды",
+    "sportsmans_groups": "Спортсмены → Группы",
 }
 
 

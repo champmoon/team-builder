@@ -8,6 +8,7 @@ from .sessions import SessionsRepository
 from .sportsmans import SportsmansRepository
 from .sportsmans_groups import SportsmansGroupsRepository
 from .sportsmans_workouts import SportsmansWorkoutsRepository
+from .surveys import SportsmanSurveysRepository, TeamSurveysRepository
 from .teams import TeamsRepository
 from .tgs_workouts import TGSWorkoutsRepository
 from .trainers import TrainersRepository
@@ -31,3 +32,5 @@ class Repositories:
     trainers_workouts: TypeAlias = TrainersWorkoutsRepository
     workouts_statuses: TypeAlias = WorkoutsStatusesRepository
     tgs_workouts: TypeAlias = TGSWorkoutsRepository
+    team_surveys: TypeAlias = TeamSurveysRepository
+    sportsman_surveys: TypeAlias = SportsmanSurveysRepository

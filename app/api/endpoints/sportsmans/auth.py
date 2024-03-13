@@ -120,6 +120,12 @@ async def register_sportsman(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
+    sportsman_surveys_service: Services.sportsman_surveys = Depends(
+        Provide[Containers.sportsman_surveys.service]
+    ),
+    team_surveys_service: Services.team_surveys = Depends(
+        Provide[Containers.team_surveys.service],
+    ),
 ) -> Any:
     sportsman_out = await sportsmans_service.get_by_email(email=register_in.email)
     if sportsman_out:
@@ -142,6 +148,13 @@ async def register_sportsman(
             detail="Team must exist",
         )
 
+    team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
+    if not team_survey_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="team survey must exist",
+        )
+
     new_sportsman_out = await sportsmans_service.create(
         schema_in=schemas.CreateSportsmanIn(
             team_id=team_out.id,
@@ -152,4 +165,10 @@ async def register_sportsman(
             middle_name=register_in.middle_name,
         )
     )
+
+    await sportsman_surveys_service.create(
+        sportsman_id=new_sportsman_out.id,
+        team_survey_id=team_survey_out.id,
+    )
+
     return new_sportsman_out

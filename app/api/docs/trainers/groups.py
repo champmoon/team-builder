@@ -4,8 +4,15 @@ get_self_groups: Docs = {
     "summary": "Получение всех групп тренера",
     "description": """
     ```
+    Query Params:
+        id - ID группы(uuid)(required=false)
+
     Auth:
         Этот запрос доступен только тренерам.
+
+    P.S:
+        Если присылается id - возвращается группа или 404
+        Если без id - присылваются все группы.
     """,
     "responses": {
         200: {
@@ -48,6 +55,14 @@ get_self_groups: Docs = {
         403: {
             "description": "Пользователь не является тренером.",
             "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Группа не найдена",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Group with id {id} not found"}
+                }
+            },
         },
     },
 }
@@ -197,12 +212,12 @@ update_group: Docs = {
     "summary": "Обновление группы тренера",
     "description": """
     ```
-    Path Params:
+    Query Params:
         id - ID группы.
              (uuid)
 
     Request Body:
-        name - имя тренера.
+        name - имя группы.
                (string)
 
     Auth:
@@ -274,7 +289,7 @@ delete_group: Docs = {
     "summary": "Удаление группы тренера",
     "description": """
     ```
-    Path Params:
+    Query Params:
         id - ID группы.
              (uuid)
 

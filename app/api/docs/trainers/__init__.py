@@ -11,6 +11,7 @@ from .groups import (
     update_group,
 )
 from .profile import get_profile, update_profile, upload_avatar
+from .surveys import get_survey, update_survey
 from .teams import (
     add_sportsman_to_team,
     adds_sportsmans_to_team,

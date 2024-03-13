@@ -9,6 +9,7 @@ from .sessions import Sessions
 from .sportsmans import Sportsmans
 from .sportsmans_groups import SportsmansGroups
 from .sportsmans_workouts import SportsmansWorkouts
+from .surveys import SportsmanSurveys, TeamSurveys
 from .teams import Teams
 from .tgs_workouts import TGSWorkouts
 from .trainers import Trainers
