@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.example.trener_appication",
+            "sha256_cert_fingerprints": [
+                "8C:FD:20:65:AD:37:79:52:7F:EA:A5:25:C9:47:FC:E7:12:5B:C3:06:29:97:12:88:85:76:A4:AF:47:E7:6A:DF"
+            ]
+        }
+    }
+]

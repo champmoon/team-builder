@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from .api.urls import urls_router
@@ -62,3 +63,8 @@ if not settings.DEBUG:
 
 # TODO make transaction
 # TODO make tests
+
+
+@app.get("/.well-known/assetlinks.json", include_in_schema=False)
+async def assetlinks() -> FileResponse:
+    return FileResponse("files/assetlinks.json")
