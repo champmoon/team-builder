@@ -68,15 +68,17 @@ url.POST("    /sportsman/groups/outs                ", endpoint=endpoints.sports
 url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sportsmans.groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
 # Trainer Workout
-url.POST("    /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
-url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
-url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
-url.GET("     /trainer/workouts/group/{id}          ", endpoint=endpoints.trainers.workouts.get_workouts_for_group, docs=docs.trainers.get_workouts_for_group)
-url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
-url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
-url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts, docs=docs.trainers.get_workouts)
-url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.get_workout, docs=docs.trainers.get_workout)
-url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout, docs=docs.trainers.delete_workout)
+url.POST("    /trainer/workouts/pool                ", endpoint=endpoints.trainers.workouts.create_workout_pool)
+url.POST("    /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
+# url.POST("    /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
+# url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
+# url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
+# url.GET("     /trainer/workouts/group/{id}          ", endpoint=endpoints.trainers.workouts.get_workouts_for_group, docs=docs.trainers.get_workouts_for_group)
+# url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
+# url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
+# url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts, docs=docs.trainers.get_workouts)
+# url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.get_workout, docs=docs.trainers.get_workout)
+# url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout, docs=docs.trainers.delete_workout)
 
 test = EndPointRouter()
 

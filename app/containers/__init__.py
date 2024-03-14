@@ -15,7 +15,7 @@ from .teams import TeamsContainer
 from .tgs_workouts import TGSContainer
 from .trainers import TrainersContainer
 from .trainers_workouts import TrainersWorkoutsContainer
-from .workouts import WorkoutContainer
+from .workouts import WorkoutContainer, WorkoutPoolContainer
 from .workouts_statuses import WorkoutsStatusesContainer
 
 
@@ -37,6 +37,7 @@ class Containers:
     tgs_workouts = TGSContainer
     team_surveys = TeamSurveysContainer
     sportsman_surveys = SportsmanSurveysContainer
+    workouts_pool = WorkoutPoolContainer
 
     @classmethod
     def get_all_containers(cls) -> list[Type[BaseContainer]]:

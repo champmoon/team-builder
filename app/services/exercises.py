@@ -41,14 +41,11 @@ class ExercisesService:
 
     async def create(
         self,
-        workout_id: UUID,
+        workout_pool_id: UUID,
         exercises_in: list[
             schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         ],
-    ) -> list[schemas.BasicExerciseOut | schemas.SupportExerciseOut]:
-        exercises_schemas_out: list[
-            schemas.BasicExerciseOut | schemas.SupportExerciseOut
-        ] = []
+    ) -> None:
         for order, exercise_in in enumerate(exercises_in):
             exercise_type_out = await self.exercises_types_service.get_by_type(
                 type=consts.ExercisesTypesEnum(exercise_in.type)
@@ -56,20 +53,10 @@ class ExercisesService:
             if not exercise_type_out:
                 raise ExercisesTypesNotFoundException(type=exercise_in.type)
 
-            exercise_schema_out: schemas.BasicExerciseOut | schemas.SupportExerciseOut
             if isinstance(exercise_in, schemas.CreateBasicExerciseIn):
                 new_schema_in = schemas.CreateExerciseInDB(
-                    workout_id=workout_id,
+                    workout_pool_id=workout_pool_id,
                     type_id=exercise_type_out.id,
-                    reps=exercise_in.reps,
-                    sets=exercise_in.sets,
-                    rest=exercise_in.rest,
-                    order=order + 1,
-                )
-                new_exercise_out = await self.repository.create(schema_in=new_schema_in)
-                exercise_schema_out = schemas.BasicExerciseOut(
-                    id=new_exercise_out.id,
-                    type=consts.BasicExercisesTypesEnum(exercise_type_out.type),
                     reps=exercise_in.reps,
                     sets=exercise_in.sets,
                     rest=exercise_in.rest,
@@ -77,22 +64,14 @@ class ExercisesService:
                 )
             else:
                 new_schema_in = schemas.CreateExerciseInDB(
-                    workout_id=workout_id,
+                    workout_pool_id=workout_pool_id,
                     type_id=exercise_type_out.id,
                     time=exercise_in.time,
                     order=order + 1,
                 )
-                new_exercise_out = await self.repository.create(schema_in=new_schema_in)
-                exercise_schema_out = schemas.SupportExerciseOut(
-                    id=new_exercise_out.id,
-                    type=consts.SupportExercisesTypesEnum(exercise_type_out.type),
-                    time=exercise_in.time,
-                    order=order + 1,
-                )
+            
+            await self.repository.create(schema_in=new_schema_in)
 
-            exercises_schemas_out.append(exercise_schema_out)
-
-        return exercises_schemas_out
 
     async def get_schemas_by_orm_models(
         self,

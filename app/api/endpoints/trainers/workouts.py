@@ -17,6 +17,64 @@ router = EndPointRouter()
 
 
 @router(
+    response_model=schemas.TrainerWorkoutPoolOut,
+    status_code=status.HTTP_201_CREATED,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def create_workout_pool(
+    create_workout_in: schemas.CreateWorkoutPoolIn,
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    exercises_service: Services.exercises = Depends(
+        Provide[Containers.exercises.service]
+    ),
+    workouts_pool_service: Services.workouts_pool = Depends(
+        Provide[Containers.workouts_pool.service],
+    ),
+    workouts_statuses_service: Services.workouts_statuses = Depends(
+        Provide[Containers.workouts_statuses.service]
+    ),
+) -> Any:
+    new_workout_pool_out = await workouts_pool_service.create(
+        schema_in=schemas.CreateWorkoutPoolInDB(
+            name=create_workout_in.name,
+            trainer_id=self_trainer.id,
+            estimated_time=create_workout_in.estimated_time,
+        ),
+    )
+
+    workout_status_out = await workouts_statuses_service.get_by_status(
+        status=consts.WorkoutsStatusesEnum.PLANNED
+    )
+
+    await exercises_service.create(
+        workout_pool_id=new_workout_pool_out.id,
+        exercises_in=create_workout_in.exercises,
+    )
+
+    workout_pool_out = await workouts_pool_service.get_by_id(id=new_workout_pool_out.id)
+    if not workout_pool_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_no new_workout_pool",
+        )
+
+    return schemas.TrainerWorkoutPoolOut(
+        workout_pool_id=new_workout_pool_out.id,
+        name=new_workout_pool_out.name,
+        estimated_time=create_workout_in.estimated_time,
+        status=schemas.WorkoutsStatusesOut(
+            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+            description=consts.WORKOUTS_STATUSES_DESC[
+                consts.WorkoutsStatusesEnum(workout_status_out.status)
+            ],
+        ),
+        created_at=new_workout_pool_out.created_at,
+        exercises=workout_pool_out.exercises,
+    )
+
+
+@router(
     response_model=schemas.TrainerWorkoutOut,
     status_code=status.HTTP_201_CREATED,
 )
@@ -30,9 +88,6 @@ async def create_workout_for_sportsman(
     ),
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
-    ),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
     ),
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
@@ -74,8 +129,7 @@ async def create_workout_for_sportsman(
 
     new_workout_out = await workouts_service.create(
         schema_in=schemas.CreateWorkoutInDB(
-            name=create_workout_in.name,
-            estimated_time=create_workout_in.estimated_time,
+            workout_pool_id=create_workout_in.workout_pool_id,
             date=create_workout_in.date,
         ),
     )
@@ -107,15 +161,10 @@ async def create_workout_for_sportsman(
         )
     )
 
-    new_exercises_schemas = await exercises_service.create(
-        workout_id=new_workout_out.id,
-        exercises_in=create_workout_in.exercises,
-    )
-
     return schemas.TrainerWorkoutOut(
         workout_id=new_workout_out.id,
-        name=new_workout_out.name,
-        estimated_time=create_workout_in.estimated_time,
+        name=new_workout_out.workout_pool.name,
+        estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
             description=consts.WORKOUTS_STATUSES_DESC[
@@ -123,846 +172,846 @@ async def create_workout_for_sportsman(
             ],
         ),
         date=new_workout_out.date,
-        created_at=new_workout_out.created_at,
-        exercises=new_exercises_schemas,
+        created_at=new_workout_out.workout_pool.created_at,
+        exercises=new_workout_out.workout_pool.exercises,
     )
 
 
-@router(
-    response_model=schemas.TrainerWorkoutOut,
-    status_code=status.HTTP_201_CREATED,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def create_workout_for_group(
-    create_workout_in: schemas.CreateWorkoutForGroupIn,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    sportsmans_groups_service: Services.sportsmans_groups = Depends(
-        Provide[Containers.sportsmans_groups.service],
-    ),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
-    ),
-    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
-        Provide[Containers.sportsmans_workouts.service]
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    groups_service: Services.groups = Depends(
-        Provide[Containers.groups.service],
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-) -> Any:
-    group_id = create_workout_in.group_id
-    group_out = await groups_service.get_by_id(id=group_id)
-    if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
-
-    sportsmans_out = await sportsmans_groups_service.get_all_sportsmans_by_group_id(
-        group_id=group_id
-    )
-    if len(sportsmans_out) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The group must not be empty",
-        )
-
-    new_workout_out = await workouts_service.create(
-        schema_in=schemas.CreateWorkoutInDB(
-            name=create_workout_in.name,
-            estimated_time=create_workout_in.estimated_time,
-            date=create_workout_in.date,
-        ),
-    )
-
-    workout_status_out = await workouts_statuses_service.get_by_status(
-        status=consts.WorkoutsStatusesEnum.PLANNED
-    )
-
-    for sportsman_out in sportsmans_out:
-        await sportsmans_workouts_service.create(
-            schema_in=schemas.CreateSportsmansWorkoutIn(
-                sportsman_id=sportsman_out.sportsman_id,
-                workout_id=new_workout_out.id,
-                status_id=workout_status_out.id,
-            )
-        )
-
-    await trainers_workouts_service.create(
-        schema_in=schemas.CreateTrainerWorkoutIn(
-            trainer_id=self_trainer.id,
-            workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
-        )
-    )
-
-    await tgs_workouts_service.create(
-        schema_in=schemas.CreateTGSWorkoutIn(
-            group_id=group_id,
-            workout_id=new_workout_out.id,
-        )
-    )
-
-    new_exercises_schemas = await exercises_service.create(
-        workout_id=new_workout_out.id,
-        exercises_in=create_workout_in.exercises,
-    )
-
-    return schemas.TrainerWorkoutOut(
-        workout_id=new_workout_out.id,
-        name=new_workout_out.name,
-        estimated_time=create_workout_in.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(workout_status_out.status)
-            ],
-        ),
-        date=new_workout_out.date,
-        created_at=new_workout_out.created_at,
-        exercises=new_exercises_schemas,
-    )
-
-
-@router(
-    response_model=schemas.TrainerWorkoutOut,
-    status_code=status.HTTP_201_CREATED,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def create_workout_for_team(
-    create_workout_in: schemas.CreateWorkoutForTeamIn,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
-    ),
-    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
-        Provide[Containers.sportsmans_workouts.service]
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    teams_service: Services.teams = Depends(
-        Provide[Containers.teams.service],
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-    sportsmans_service: Services.sportsmans = Depends(
-        Provide[Containers.sportsmans.service],
-    ),
-) -> Any:
-    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_team must exist",
-        )
-
-    sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
-    if len(sportsmans_out) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The team must not be empty",
-        )
-
-    new_workout_out = await workouts_service.create(
-        schema_in=schemas.CreateWorkoutInDB(
-            name=create_workout_in.name,
-            estimated_time=create_workout_in.estimated_time,
-            date=create_workout_in.date,
-        ),
-    )
-
-    workout_status_out = await workouts_statuses_service.get_by_status(
-        status=consts.WorkoutsStatusesEnum.PLANNED
-    )
-
-    for sportsman_out in sportsmans_out:
-        await sportsmans_workouts_service.create(
-            schema_in=schemas.CreateSportsmansWorkoutIn(
-                sportsman_id=sportsman_out.id,
-                workout_id=new_workout_out.id,
-                status_id=workout_status_out.id,
-            )
-        )
-
-    await trainers_workouts_service.create(
-        schema_in=schemas.CreateTrainerWorkoutIn(
-            trainer_id=self_trainer.id,
-            workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
-        )
-    )
-
-    await tgs_workouts_service.create(
-        schema_in=schemas.CreateTGSWorkoutIn(
-            team_id=team_out.id,
-            workout_id=new_workout_out.id,
-        )
-    )
-
-    new_exercises_schemas = await exercises_service.create(
-        workout_id=new_workout_out.id,
-        exercises_in=create_workout_in.exercises,
-    )
-
-    return schemas.TrainerWorkoutOut(
-        workout_id=new_workout_out.id,
-        name=new_workout_out.name,
-        estimated_time=create_workout_in.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(workout_status_out.status)
-            ],
-        ),
-        date=new_workout_out.date,
-        created_at=new_workout_out.created_at,
-        exercises=new_exercises_schemas,
-    )
-
-
-@router(
-    response_model=list[
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    ],
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_workouts(
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-) -> Any:
-    trainers_workouts_out = await trainers_workouts_service.get_all_by_trainer_id(
-        trainer_id=self_trainer.id
-    )
-    workouts: list[
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    ] = []
-    for trainer_workout_out in trainers_workouts_out:
-        workout_out = await workouts_service.get_by_id(
-            id=trainer_workout_out.workout_id
-        )
-        if not workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_trainer_workout not in workout db",
-            )
-
-        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-            exercises_out=(
-                await exercises_service.get_all_exercises_by_workout_id(
-                    workout_id=workout_out.id
-                )
-            )
-        )
-
-        base_workouts_schemas = schemas.TrainerWorkoutOut(
-            workout_id=workout_out.id,
-            name=workout_out.name,
-            estimated_time=workout_out.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
-            date=workout_out.date,
-            created_at=workout_out.created_at,
-            exercises=exercises_schemas,
-        )
-
-        tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
-            workout_id=trainer_workout_out.workout_id
-        )
-        if not tgs_workouts_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_workout not found in tgs",
-            )
-
-        workout_schema: (
-            schemas.TrainerSportsmanWorkoutOut
-            | schemas.TrainerGroupWorkoutOut
-            | schemas.TrainerTeamWorkoutOut
-        )
-        team_id = tgs_workouts_out.team_id
-        group_id = tgs_workouts_out.group_id
-        sportsman_id = tgs_workouts_out.sportsman_id
-        if team_id:
-            workout_schema = schemas.TrainerTeamWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                team_id=team_id,
-            )
-        elif group_id:
-            workout_schema = schemas.TrainerGroupWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                group_id=group_id,
-            )
-        elif sportsman_id:
-            workout_schema = schemas.TrainerSportsmanWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                sportsman_id=sportsman_id,
-            )
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_tgs all none ids",
-            )
-
-        workouts.append(workout_schema)
-
-    return workouts
-
-
-@router(
-    response_model=schemas.TrainerSportsmanWorkoutOut
-    | schemas.TrainerGroupWorkoutOut
-    | schemas.TrainerTeamWorkoutOut,
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_workout(
-    id: UUID,
-    _: Trainers = Depends(deps.self_trainer),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-) -> Any:
-    workout_out = await workouts_service.get_by_id(id=id)
-    if not workout_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Workout not found",
-        )
-
-    trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-        workout_id=workout_out.id
-    )
-    if not trainer_workout_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Workout not found",
-        )
-
-    exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-        exercises_out=(
-            await exercises_service.get_all_exercises_by_workout_id(
-                workout_id=workout_out.id
-            )
-        )
-    )
-
-    base_workouts_schemas = schemas.TrainerWorkoutOut(
-        workout_id=workout_out.id,
-        name=workout_out.name,
-        estimated_time=workout_out.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-            ],
-        ),
-        date=workout_out.date,
-        created_at=workout_out.created_at,
-        exercises=exercises_schemas,
-    )
-
-    tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
-        workout_id=trainer_workout_out.workout_id
-    )
-    if not tgs_workouts_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_workout not found in tgs",
-        )
-
-    workout_schema: (
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    )
-    team_id = tgs_workouts_out.team_id
-    group_id = tgs_workouts_out.group_id
-    sportsman_id = tgs_workouts_out.sportsman_id
-    if team_id:
-        workout_schema = schemas.TrainerTeamWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            team_id=team_id,
-        )
-    elif group_id:
-        workout_schema = schemas.TrainerGroupWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            group_id=group_id,
-        )
-    elif sportsman_id:
-        workout_schema = schemas.TrainerSportsmanWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            sportsman_id=sportsman_id,
-        )
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_tgs all none ids",
-        )
-
-    return workout_schema
-
-
-@router(
-    response_model=list[
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    ],
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_workouts_for_sportsman(
-    sportsman_email_in: EmailStr,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    teams_service: Services.teams = Depends(
-        Provide[Containers.teams.service],
-    ),
-    sportsmans_service: Services.sportsmans = Depends(
-        Provide[Containers.sportsmans.service],
-    ),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
-        Provide[Containers.sportsmans_workouts.service]
-    ),
-) -> Any:
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email_in)
-    if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email_in} not found",
-        )
-
-    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_team must exist",
-        )
-
-    if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email_in} not be on a team",
-        )
-
-    s_workouts_out = await tgs_workouts_service.get_by_all_sportsman_id(
-        sportsman_id=sportsman_out.id
-    )
-    workouts: list[
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    ] = []
-    for s_workout_out in s_workouts_out:
-        workout_out = await workouts_service.get_by_id(id=s_workout_out.workout_id)
-        if not workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_s_workout not in workout db",
-            )
-
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
-        )
-        if not trainer_workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_s_workout not in trainer_workouts db",
-            )
-
-        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-            exercises_out=(
-                await exercises_service.get_all_exercises_by_workout_id(
-                    workout_id=workout_out.id
-                )
-            )
-        )
-
-        base_workouts_schemas = schemas.TrainerWorkoutOut(
-            workout_id=workout_out.id,
-            name=workout_out.name,
-            estimated_time=workout_out.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
-            date=workout_out.date,
-            created_at=workout_out.created_at,
-            exercises=exercises_schemas,
-        )
-
-        tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
-            workout_id=trainer_workout_out.workout_id
-        )
-        if not tgs_workouts_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_workout not found in tgs",
-            )
-
-        workout_schema: (
-            schemas.TrainerSportsmanWorkoutOut
-            | schemas.TrainerGroupWorkoutOut
-            | schemas.TrainerTeamWorkoutOut
-        )
-        team_id = tgs_workouts_out.team_id
-        group_id = tgs_workouts_out.group_id
-        sportsman_id = tgs_workouts_out.sportsman_id
-        if team_id:
-            workout_schema = schemas.TrainerTeamWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                team_id=team_id,
-            )
-        elif group_id:
-            workout_schema = schemas.TrainerGroupWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                group_id=group_id,
-            )
-        elif sportsman_id:
-            workout_schema = schemas.TrainerSportsmanWorkoutOut(
-                **base_workouts_schemas.model_dump(),
-                sportsman_id=sportsman_id,
-            )
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_tgs all none ids",
-            )
-
-        workouts.append(workout_schema)
-
-    return workouts
-
-
-@router(
-    response_model=list[schemas.TrainerGroupWorkoutOut],
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_workouts_for_group(
-    id: UUID,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-    groups_service: Services.groups = Depends(
-        Provide[Containers.groups.service],
-    ),
-) -> Any:
-    group_id = id
-    group_out = await groups_service.get_by_id(id=group_id)
-
-    if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
-
-    g_workouts_out = await tgs_workouts_service.get_all_by_group_id(
-        group_id=group_id,
-    )
-    workouts: list[schemas.TrainerGroupWorkoutOut] = []
-    for g_workout_out in g_workouts_out:
-        workout_out = await workouts_service.get_by_id(id=g_workout_out.workout_id)
-        if not workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_g_workout not in workout db",
-            )
-
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
-        )
-        if not trainer_workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_g_workout not in trainer_workouts db",
-            )
-
-        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-            exercises_out=(
-                await exercises_service.get_all_exercises_by_workout_id(
-                    workout_id=workout_out.id
-                )
-            )
-        )
-
-        workout_schema = schemas.TrainerGroupWorkoutOut(
-            workout_id=workout_out.id,
-            name=workout_out.name,
-            estimated_time=workout_out.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
-            date=workout_out.date,
-            created_at=workout_out.created_at,
-            exercises=exercises_schemas,
-            group_id=group_id,
-        )
-        workouts.append(workout_schema)
-
-    return workouts
-
-
-@router(
-    response_model=list[schemas.TrainerTeamWorkoutOut],
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def get_workouts_for_team(
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    teams_service: Services.teams = Depends(
-        Provide[Containers.teams.service],
-    ),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-) -> Any:
-    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_team must exist",
-        )
-
-    t_workouts_out = await tgs_workouts_service.get_all_by_team_id(
-        team_id=team_out.id,
-    )
-    workouts: list[schemas.TrainerTeamWorkoutOut] = []
-    for t_workout_out in t_workouts_out:
-        workout_out = await workouts_service.get_by_id(id=t_workout_out.workout_id)
-        if not workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_s_workout not in workout db",
-            )
-
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
-        )
-        if not trainer_workout_out:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="_t_workout not in trainer_workouts db",
-            )
-
-        exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-            exercises_out=(
-                await exercises_service.get_all_exercises_by_workout_id(
-                    workout_id=workout_out.id
-                )
-            )
-        )
-
-        workout_schema = schemas.TrainerTeamWorkoutOut(
-            workout_id=workout_out.id,
-            name=workout_out.name,
-            estimated_time=workout_out.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
-            date=workout_out.date,
-            created_at=workout_out.created_at,
-            exercises=exercises_schemas,
-            team_id=team_out.id,
-        )
-        workouts.append(workout_schema)
-
-    return workouts
-
-
-@router(
-    response_model=schemas.TrainerSportsmanWorkoutOut
-    | schemas.TrainerGroupWorkoutOut
-    | schemas.TrainerTeamWorkoutOut,
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
-async def delete_workout(
-    id: UUID,
-    workouts_service: Services.workouts = Depends(
-        Provide[Containers.workouts.service],
-    ),
-    exercises_service: Services.exercises = Depends(
-        Provide[Containers.exercises.service]
-    ),
-    trainers_workouts_service: Services.trainers_workouts = Depends(
-        Provide[Containers.trainers_workouts.service]
-    ),
-    tgs_workouts_service: Services.tgs_workouts = Depends(
-        Provide[Containers.tgs_workouts.service]
-    ),
-) -> Any:
-    workout_out = await workouts_service.get_by_id(id=id)
-    if not workout_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Workout with id {id} not found",
-        )
-
-    trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-        workout_id=workout_out.id
-    )
-    if not trainer_workout_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_workout not in trainer_workouts db",
-        )
-
-    exercises_schemas = await exercises_service.get_schemas_by_orm_models(
-        exercises_out=(
-            await exercises_service.get_all_exercises_by_workout_id(
-                workout_id=workout_out.id
-            )
-        )
-    )
-
-    base_workouts_schemas = schemas.TrainerWorkoutOut(
-        workout_id=workout_out.id,
-        name=workout_out.name,
-        estimated_time=workout_out.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-            ],
-        ),
-        date=workout_out.date,
-        created_at=workout_out.created_at,
-        exercises=exercises_schemas,
-    )
-
-    tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
-        workout_id=trainer_workout_out.workout_id
-    )
-    if not tgs_workouts_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_workout not found in tgs",
-        )
-
-    workout_schema: (
-        schemas.TrainerSportsmanWorkoutOut
-        | schemas.TrainerGroupWorkoutOut
-        | schemas.TrainerTeamWorkoutOut
-    )
-    team_id = tgs_workouts_out.team_id
-    group_id = tgs_workouts_out.group_id
-    sportsman_id = tgs_workouts_out.sportsman_id
-    if team_id:
-        workout_schema = schemas.TrainerTeamWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            team_id=team_id,
-        )
-    elif group_id:
-        workout_schema = schemas.TrainerGroupWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            group_id=group_id,
-        )
-    elif sportsman_id:
-        workout_schema = schemas.TrainerSportsmanWorkoutOut(
-            **base_workouts_schemas.model_dump(),
-            sportsman_id=sportsman_id,
-        )
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_tgs all none ids",
-        )
-
-    await workouts_service.delete(id=id)
-
-    return workout_schema
+# @router(
+#     response_model=schemas.TrainerWorkoutOut,
+#     status_code=status.HTTP_201_CREATED,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def create_workout_for_group(
+#     create_workout_in: schemas.CreateWorkoutForGroupIn,
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     sportsmans_groups_service: Services.sportsmans_groups = Depends(
+#         Provide[Containers.sportsmans_groups.service],
+#     ),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     workouts_statuses_service: Services.workouts_statuses = Depends(
+#         Provide[Containers.workouts_statuses.service]
+#     ),
+#     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+#         Provide[Containers.sportsmans_workouts.service]
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     groups_service: Services.groups = Depends(
+#         Provide[Containers.groups.service],
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+# ) -> Any:
+#     group_id = create_workout_in.group_id
+#     group_out = await groups_service.get_by_id(id=group_id)
+#     if not group_out or group_out.trainer_id != self_trainer.id:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Group with id {group_id} not found",
+#         )
+
+#     sportsmans_out = await sportsmans_groups_service.get_all_sportsmans_by_group_id(
+#         group_id=group_id
+#     )
+#     if len(sportsmans_out) == 0:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail="The group must not be empty",
+#         )
+
+#     new_workout_out = await workouts_service.create(
+#         schema_in=schemas.CreateWorkoutInDB(
+#             name=create_workout_in.name,
+#             estimated_time=create_workout_in.estimated_time,
+#             date=create_workout_in.date,
+#         ),
+#     )
+
+#     workout_status_out = await workouts_statuses_service.get_by_status(
+#         status=consts.WorkoutsStatusesEnum.PLANNED
+#     )
+
+#     for sportsman_out in sportsmans_out:
+#         await sportsmans_workouts_service.create(
+#             schema_in=schemas.CreateSportsmansWorkoutIn(
+#                 sportsman_id=sportsman_out.sportsman_id,
+#                 workout_id=new_workout_out.id,
+#                 status_id=workout_status_out.id,
+#             )
+#         )
+
+#     await trainers_workouts_service.create(
+#         schema_in=schemas.CreateTrainerWorkoutIn(
+#             trainer_id=self_trainer.id,
+#             workout_id=new_workout_out.id,
+#             status_id=workout_status_out.id,
+#         )
+#     )
+
+#     await tgs_workouts_service.create(
+#         schema_in=schemas.CreateTGSWorkoutIn(
+#             group_id=group_id,
+#             workout_id=new_workout_out.id,
+#         )
+#     )
+
+#     new_exercises_schemas = await exercises_service.create(
+#         workout_id=new_workout_out.id,
+#         exercises_in=create_workout_in.exercises,
+#     )
+
+#     return schemas.TrainerWorkoutOut(
+#         workout_id=new_workout_out.id,
+#         name=new_workout_out.name,
+#         estimated_time=create_workout_in.estimated_time,
+#         status=schemas.WorkoutsStatusesOut(
+#             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+#             description=consts.WORKOUTS_STATUSES_DESC[
+#                 consts.WorkoutsStatusesEnum(workout_status_out.status)
+#             ],
+#         ),
+#         date=new_workout_out.date,
+#         created_at=new_workout_out.created_at,
+#         exercises=new_exercises_schemas,
+#     )
+
+
+# @router(
+#     response_model=schemas.TrainerWorkoutOut,
+#     status_code=status.HTTP_201_CREATED,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def create_workout_for_team(
+#     create_workout_in: schemas.CreateWorkoutForTeamIn,
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     workouts_statuses_service: Services.workouts_statuses = Depends(
+#         Provide[Containers.workouts_statuses.service]
+#     ),
+#     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+#         Provide[Containers.sportsmans_workouts.service]
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     teams_service: Services.teams = Depends(
+#         Provide[Containers.teams.service],
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+#     sportsmans_service: Services.sportsmans = Depends(
+#         Provide[Containers.sportsmans.service],
+#     ),
+# ) -> Any:
+#     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+#     if not team_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_team must exist",
+#         )
+
+#     sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
+#     if len(sportsmans_out) == 0:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail="The team must not be empty",
+#         )
+
+#     new_workout_out = await workouts_service.create(
+#         schema_in=schemas.CreateWorkoutInDB(
+#             name=create_workout_in.name,
+#             estimated_time=create_workout_in.estimated_time,
+#             date=create_workout_in.date,
+#         ),
+#     )
+
+#     workout_status_out = await workouts_statuses_service.get_by_status(
+#         status=consts.WorkoutsStatusesEnum.PLANNED
+#     )
+
+#     for sportsman_out in sportsmans_out:
+#         await sportsmans_workouts_service.create(
+#             schema_in=schemas.CreateSportsmansWorkoutIn(
+#                 sportsman_id=sportsman_out.id,
+#                 workout_id=new_workout_out.id,
+#                 status_id=workout_status_out.id,
+#             )
+#         )
+
+#     await trainers_workouts_service.create(
+#         schema_in=schemas.CreateTrainerWorkoutIn(
+#             trainer_id=self_trainer.id,
+#             workout_id=new_workout_out.id,
+#             status_id=workout_status_out.id,
+#         )
+#     )
+
+#     await tgs_workouts_service.create(
+#         schema_in=schemas.CreateTGSWorkoutIn(
+#             team_id=team_out.id,
+#             workout_id=new_workout_out.id,
+#         )
+#     )
+
+#     new_exercises_schemas = await exercises_service.create(
+#         workout_id=new_workout_out.id,
+#         exercises_in=create_workout_in.exercises,
+#     )
+
+#     return schemas.TrainerWorkoutOut(
+#         workout_id=new_workout_out.id,
+#         name=new_workout_out.name,
+#         estimated_time=create_workout_in.estimated_time,
+#         status=schemas.WorkoutsStatusesOut(
+#             status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+#             description=consts.WORKOUTS_STATUSES_DESC[
+#                 consts.WorkoutsStatusesEnum(workout_status_out.status)
+#             ],
+#         ),
+#         date=new_workout_out.date,
+#         created_at=new_workout_out.created_at,
+#         exercises=new_exercises_schemas,
+#     )
+
+
+# @router(
+#     response_model=list[
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     ],
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_workouts(
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+# ) -> Any:
+#     trainers_workouts_out = await trainers_workouts_service.get_all_by_trainer_id(
+#         trainer_id=self_trainer.id
+#     )
+#     workouts: list[
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     ] = []
+#     for trainer_workout_out in trainers_workouts_out:
+#         workout_out = await workouts_service.get_by_id(
+#             id=trainer_workout_out.workout_id
+#         )
+#         if not workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_trainer_workout not in workout db",
+#             )
+
+#         exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#             exercises_out=(
+#                 await exercises_service.get_all_exercises_by_workout_id(
+#                     workout_id=workout_out.id
+#                 )
+#             )
+#         )
+
+#         base_workouts_schemas = schemas.TrainerWorkoutOut(
+#             workout_id=workout_out.id,
+#             name=workout_out.name,
+#             estimated_time=workout_out.estimated_time,
+#             status=schemas.WorkoutsStatusesOut(
+#                 status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#                 description=consts.WORKOUTS_STATUSES_DESC[
+#                     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#                 ],
+#             ),
+#             date=workout_out.date,
+#             created_at=workout_out.created_at,
+#             exercises=exercises_schemas,
+#         )
+
+#         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
+#             workout_id=trainer_workout_out.workout_id
+#         )
+#         if not tgs_workouts_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_workout not found in tgs",
+#             )
+
+#         workout_schema: (
+#             schemas.TrainerSportsmanWorkoutOut
+#             | schemas.TrainerGroupWorkoutOut
+#             | schemas.TrainerTeamWorkoutOut
+#         )
+#         team_id = tgs_workouts_out.team_id
+#         group_id = tgs_workouts_out.group_id
+#         sportsman_id = tgs_workouts_out.sportsman_id
+#         if team_id:
+#             workout_schema = schemas.TrainerTeamWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 team_id=team_id,
+#             )
+#         elif group_id:
+#             workout_schema = schemas.TrainerGroupWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 group_id=group_id,
+#             )
+#         elif sportsman_id:
+#             workout_schema = schemas.TrainerSportsmanWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 sportsman_id=sportsman_id,
+#             )
+#         else:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_tgs all none ids",
+#             )
+
+#         workouts.append(workout_schema)
+
+#     return workouts
+
+
+# @router(
+#     response_model=schemas.TrainerSportsmanWorkoutOut
+#     | schemas.TrainerGroupWorkoutOut
+#     | schemas.TrainerTeamWorkoutOut,
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_workout(
+#     id: UUID,
+#     _: Trainers = Depends(deps.self_trainer),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+# ) -> Any:
+#     workout_out = await workouts_service.get_by_id(id=id)
+#     if not workout_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail="Workout not found",
+#         )
+
+#     trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
+#         workout_id=workout_out.id
+#     )
+#     if not trainer_workout_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail="Workout not found",
+#         )
+
+#     exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#         exercises_out=(
+#             await exercises_service.get_all_exercises_by_workout_id(
+#                 workout_id=workout_out.id
+#             )
+#         )
+#     )
+
+#     base_workouts_schemas = schemas.TrainerWorkoutOut(
+#         workout_id=workout_out.id,
+#         name=workout_out.name,
+#         estimated_time=workout_out.estimated_time,
+#         status=schemas.WorkoutsStatusesOut(
+#             status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#             description=consts.WORKOUTS_STATUSES_DESC[
+#                 consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#             ],
+#         ),
+#         date=workout_out.date,
+#         created_at=workout_out.created_at,
+#         exercises=exercises_schemas,
+#     )
+
+#     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
+#         workout_id=trainer_workout_out.workout_id
+#     )
+#     if not tgs_workouts_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_workout not found in tgs",
+#         )
+
+#     workout_schema: (
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     )
+#     team_id = tgs_workouts_out.team_id
+#     group_id = tgs_workouts_out.group_id
+#     sportsman_id = tgs_workouts_out.sportsman_id
+#     if team_id:
+#         workout_schema = schemas.TrainerTeamWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             team_id=team_id,
+#         )
+#     elif group_id:
+#         workout_schema = schemas.TrainerGroupWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             group_id=group_id,
+#         )
+#     elif sportsman_id:
+#         workout_schema = schemas.TrainerSportsmanWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             sportsman_id=sportsman_id,
+#         )
+#     else:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_tgs all none ids",
+#         )
+
+#     return workout_schema
+
+
+# @router(
+#     response_model=list[
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     ],
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_workouts_for_sportsman(
+#     sportsman_email_in: EmailStr,
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     teams_service: Services.teams = Depends(
+#         Provide[Containers.teams.service],
+#     ),
+#     sportsmans_service: Services.sportsmans = Depends(
+#         Provide[Containers.sportsmans.service],
+#     ),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+#     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+#         Provide[Containers.sportsmans_workouts.service]
+#     ),
+# ) -> Any:
+#     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email_in)
+#     if not sportsman_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Sportsman with email {sportsman_email_in} not found",
+#         )
+
+#     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+#     if not team_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_team must exist",
+#         )
+
+#     if sportsman_out.team_id != team_out.id:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail=f"Sportsman with email {sportsman_email_in} not be on a team",
+#         )
+
+#     s_workouts_out = await tgs_workouts_service.get_by_all_sportsman_id(
+#         sportsman_id=sportsman_out.id
+#     )
+#     workouts: list[
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     ] = []
+#     for s_workout_out in s_workouts_out:
+#         workout_out = await workouts_service.get_by_id(id=s_workout_out.workout_id)
+#         if not workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_s_workout not in workout db",
+#             )
+
+#         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
+#             workout_id=workout_out.id
+#         )
+#         if not trainer_workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_s_workout not in trainer_workouts db",
+#             )
+
+#         exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#             exercises_out=(
+#                 await exercises_service.get_all_exercises_by_workout_id(
+#                     workout_id=workout_out.id
+#                 )
+#             )
+#         )
+
+#         base_workouts_schemas = schemas.TrainerWorkoutOut(
+#             workout_id=workout_out.id,
+#             name=workout_out.name,
+#             estimated_time=workout_out.estimated_time,
+#             status=schemas.WorkoutsStatusesOut(
+#                 status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#                 description=consts.WORKOUTS_STATUSES_DESC[
+#                     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#                 ],
+#             ),
+#             date=workout_out.date,
+#             created_at=workout_out.created_at,
+#             exercises=exercises_schemas,
+#         )
+
+#         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
+#             workout_id=trainer_workout_out.workout_id
+#         )
+#         if not tgs_workouts_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_workout not found in tgs",
+#             )
+
+#         workout_schema: (
+#             schemas.TrainerSportsmanWorkoutOut
+#             | schemas.TrainerGroupWorkoutOut
+#             | schemas.TrainerTeamWorkoutOut
+#         )
+#         team_id = tgs_workouts_out.team_id
+#         group_id = tgs_workouts_out.group_id
+#         sportsman_id = tgs_workouts_out.sportsman_id
+#         if team_id:
+#             workout_schema = schemas.TrainerTeamWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 team_id=team_id,
+#             )
+#         elif group_id:
+#             workout_schema = schemas.TrainerGroupWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 group_id=group_id,
+#             )
+#         elif sportsman_id:
+#             workout_schema = schemas.TrainerSportsmanWorkoutOut(
+#                 **base_workouts_schemas.model_dump(),
+#                 sportsman_id=sportsman_id,
+#             )
+#         else:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_tgs all none ids",
+#             )
+
+#         workouts.append(workout_schema)
+
+#     return workouts
+
+
+# @router(
+#     response_model=list[schemas.TrainerGroupWorkoutOut],
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_workouts_for_group(
+#     id: UUID,
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+#     groups_service: Services.groups = Depends(
+#         Provide[Containers.groups.service],
+#     ),
+# ) -> Any:
+#     group_id = id
+#     group_out = await groups_service.get_by_id(id=group_id)
+
+#     if not group_out or group_out.trainer_id != self_trainer.id:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Group with id {group_id} not found",
+#         )
+
+#     g_workouts_out = await tgs_workouts_service.get_all_by_group_id(
+#         group_id=group_id,
+#     )
+#     workouts: list[schemas.TrainerGroupWorkoutOut] = []
+#     for g_workout_out in g_workouts_out:
+#         workout_out = await workouts_service.get_by_id(id=g_workout_out.workout_id)
+#         if not workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_g_workout not in workout db",
+#             )
+
+#         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
+#             workout_id=workout_out.id
+#         )
+#         if not trainer_workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_g_workout not in trainer_workouts db",
+#             )
+
+#         exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#             exercises_out=(
+#                 await exercises_service.get_all_exercises_by_workout_id(
+#                     workout_id=workout_out.id
+#                 )
+#             )
+#         )
+
+#         workout_schema = schemas.TrainerGroupWorkoutOut(
+#             workout_id=workout_out.id,
+#             name=workout_out.name,
+#             estimated_time=workout_out.estimated_time,
+#             status=schemas.WorkoutsStatusesOut(
+#                 status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#                 description=consts.WORKOUTS_STATUSES_DESC[
+#                     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#                 ],
+#             ),
+#             date=workout_out.date,
+#             created_at=workout_out.created_at,
+#             exercises=exercises_schemas,
+#             group_id=group_id,
+#         )
+#         workouts.append(workout_schema)
+
+#     return workouts
+
+
+# @router(
+#     response_model=list[schemas.TrainerTeamWorkoutOut],
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def get_workouts_for_team(
+#     self_trainer: Trainers = Depends(deps.self_trainer),
+#     teams_service: Services.teams = Depends(
+#         Provide[Containers.teams.service],
+#     ),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+# ) -> Any:
+#     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+#     if not team_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_team must exist",
+#         )
+
+#     t_workouts_out = await tgs_workouts_service.get_all_by_team_id(
+#         team_id=team_out.id,
+#     )
+#     workouts: list[schemas.TrainerTeamWorkoutOut] = []
+#     for t_workout_out in t_workouts_out:
+#         workout_out = await workouts_service.get_by_id(id=t_workout_out.workout_id)
+#         if not workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_s_workout not in workout db",
+#             )
+
+#         trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
+#             workout_id=workout_out.id
+#         )
+#         if not trainer_workout_out:
+#             raise HTTPException(
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 detail="_t_workout not in trainer_workouts db",
+#             )
+
+#         exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#             exercises_out=(
+#                 await exercises_service.get_all_exercises_by_workout_id(
+#                     workout_id=workout_out.id
+#                 )
+#             )
+#         )
+
+#         workout_schema = schemas.TrainerTeamWorkoutOut(
+#             workout_id=workout_out.id,
+#             name=workout_out.name,
+#             estimated_time=workout_out.estimated_time,
+#             status=schemas.WorkoutsStatusesOut(
+#                 status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#                 description=consts.WORKOUTS_STATUSES_DESC[
+#                     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#                 ],
+#             ),
+#             date=workout_out.date,
+#             created_at=workout_out.created_at,
+#             exercises=exercises_schemas,
+#             team_id=team_out.id,
+#         )
+#         workouts.append(workout_schema)
+
+#     return workouts
+
+
+# @router(
+#     response_model=schemas.TrainerSportsmanWorkoutOut
+#     | schemas.TrainerGroupWorkoutOut
+#     | schemas.TrainerTeamWorkoutOut,
+#     status_code=status.HTTP_200_OK,
+# )
+# @deps.auth_required(users=[UsersTypes.TRAINER])
+# @inject
+# async def delete_workout(
+#     id: UUID,
+#     workouts_service: Services.workouts = Depends(
+#         Provide[Containers.workouts.service],
+#     ),
+#     exercises_service: Services.exercises = Depends(
+#         Provide[Containers.exercises.service]
+#     ),
+#     trainers_workouts_service: Services.trainers_workouts = Depends(
+#         Provide[Containers.trainers_workouts.service]
+#     ),
+#     tgs_workouts_service: Services.tgs_workouts = Depends(
+#         Provide[Containers.tgs_workouts.service]
+#     ),
+# ) -> Any:
+#     workout_out = await workouts_service.get_by_id(id=id)
+#     if not workout_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Workout with id {id} not found",
+#         )
+
+#     trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
+#         workout_id=workout_out.id
+#     )
+#     if not trainer_workout_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_workout not in trainer_workouts db",
+#         )
+
+#     exercises_schemas = await exercises_service.get_schemas_by_orm_models(
+#         exercises_out=(
+#             await exercises_service.get_all_exercises_by_workout_id(
+#                 workout_id=workout_out.id
+#             )
+#         )
+#     )
+
+#     base_workouts_schemas = schemas.TrainerWorkoutOut(
+#         workout_id=workout_out.id,
+#         name=workout_out.name,
+#         estimated_time=workout_out.estimated_time,
+#         status=schemas.WorkoutsStatusesOut(
+#             status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+#             description=consts.WORKOUTS_STATUSES_DESC[
+#                 consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+#             ],
+#         ),
+#         date=workout_out.date,
+#         created_at=workout_out.created_at,
+#         exercises=exercises_schemas,
+#     )
+
+#     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
+#         workout_id=trainer_workout_out.workout_id
+#     )
+#     if not tgs_workouts_out:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_workout not found in tgs",
+#         )
+
+#     workout_schema: (
+#         schemas.TrainerSportsmanWorkoutOut
+#         | schemas.TrainerGroupWorkoutOut
+#         | schemas.TrainerTeamWorkoutOut
+#     )
+#     team_id = tgs_workouts_out.team_id
+#     group_id = tgs_workouts_out.group_id
+#     sportsman_id = tgs_workouts_out.sportsman_id
+#     if team_id:
+#         workout_schema = schemas.TrainerTeamWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             team_id=team_id,
+#         )
+#     elif group_id:
+#         workout_schema = schemas.TrainerGroupWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             group_id=group_id,
+#         )
+#     elif sportsman_id:
+#         workout_schema = schemas.TrainerSportsmanWorkoutOut(
+#             **base_workouts_schemas.model_dump(),
+#             sportsman_id=sportsman_id,
+#         )
+#     else:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="_tgs all none ids",
+#         )
+
+#     await workouts_service.delete(id=id)
+
+#     return workout_schema

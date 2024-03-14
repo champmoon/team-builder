@@ -8,17 +8,28 @@ from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
 
 
-class CreateWorkoutInDB(BaseSchema):
+class CreateWorkoutPoolInDB(BaseSchema):
     name: str
+    trainer_id: UUID
     estimated_time: float
-    date: NaiveDatetime
 
 
-class CreateWorkoutIn(BaseSchema):
+class CreateWorkoutPoolIn(BaseSchema):
     name: str
-    date: NaiveDatetime
     estimated_time: float
     exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
+
+
+
+class CreateWorkoutInDB(BaseSchema):
+    workout_pool_id: UUID
+    date: NaiveDatetime
+
+
+class CreateWorkoutForSportsmanIn(BaseSchema):
+    workout_pool_id: UUID
+    sportsman_email: EmailStr
+    date: NaiveDatetime
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -27,30 +38,35 @@ class CreateWorkoutIn(BaseSchema):
         return self
 
 
-class CreateWorkoutForSportsmanIn(CreateWorkoutIn):
-    sportsman_email: EmailStr
-
-
-class CreateWorkoutForGroupIn(CreateWorkoutIn):
+class CreateWorkoutForGroupIn(BaseSchema):
+    workout_pool_id: UUID
     group_id: UUID
-
-
-class CreateWorkoutForTeamIn(CreateWorkoutIn): ...
-
-
-class UpdateWorkoutIn(BaseSchema):
-    name: str | None = None
-    estimated_time: float | None = None
-    date: NaiveDatetime | None = None
+    date: NaiveDatetime
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
-        if self.date and self.date <= (now := datetime.utcnow()):
+        if self.date <= (now := datetime.utcnow()):
             raise ValueError(f"date - {self.date} less then now - {now}")
         return self
 
+
+class CreateWorkoutForTeamIn(BaseSchema):
+    workout_pool_id: UUID
+    date: NaiveDatetime
+
+    @model_validator(mode="after")
+    def check_date(self) -> Self:
+        if self.date <= (now := datetime.utcnow()):
+            raise ValueError(f"date - {self.date} less then now - {now}")
+        return self
+
+
+class UpdateWorkoutPoolIn(BaseSchema):
+    name: str | None = None
+    estimated_time: float | None = None
+
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
-        if not any((self.name, self.date)):
+        if not any((self.name, self.estimated_time)):
             raise ValueError("at least not null")
         return self

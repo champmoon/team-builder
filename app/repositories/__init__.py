@@ -13,7 +13,7 @@ from .teams import TeamsRepository
 from .tgs_workouts import TGSWorkoutsRepository
 from .trainers import TrainersRepository
 from .trainers_workouts import TrainersWorkoutsRepository
-from .workouts import WorkoutsRepository
+from .workouts import WorkoutsRepository, WorkoutsPoolRepository
 from .workouts_statuses import WorkoutsStatusesRepository
 
 
@@ -34,3 +34,4 @@ class Repositories:
     tgs_workouts: TypeAlias = TGSWorkoutsRepository
     team_surveys: TypeAlias = TeamSurveysRepository
     sportsman_surveys: TypeAlias = SportsmanSurveysRepository
+    workouts_pool: TypeAlias = WorkoutsPoolRepository

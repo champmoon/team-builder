@@ -14,5 +14,5 @@ from .teams import Teams
 from .tgs_workouts import TGSWorkouts
 from .trainers import Trainers
 from .trainers_workouts import TrainersWorkouts
-from .workouts import Workouts
+from .workouts import Workouts, WorkoutsPool
 from .workouts_statuses import WorkoutsStatuses

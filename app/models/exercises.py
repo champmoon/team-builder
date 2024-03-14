@@ -12,9 +12,9 @@ from .exercises_types import ExercisesTypes
 class Exercises(Base, UUIDAsIDMixin):
     __tablename__ = "exercises"
 
-    workout_id: Mapped[UUID] = mapped_column(
+    workout_pool_id: Mapped[UUID] = mapped_column(
         ForeignKey(
-            column="workouts.id",
+            column="workouts_pool.id",
             ondelete="CASCADE",
         )
     )

@@ -15,6 +15,15 @@ class CreateTrainerWorkoutIn(BaseSchema):
     status_id: UUID
 
 
+class TrainerWorkoutPoolOut(BaseSchemaFromDB):
+    workout_pool_id: UUID
+    name: str
+    estimated_time: float
+    status: WorkoutsStatusesOut
+    created_at: NaiveDatetime
+    exercises: list[BasicExerciseOut | SupportExerciseOut]
+
+
 class TrainerWorkoutOut(BaseSchemaFromDB):
     workout_id: UUID
     name: str

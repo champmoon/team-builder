@@ -4,8 +4,9 @@ from uuid import UUID
 from pydantic import Field, model_validator
 
 from app.consts import BasicExercisesTypesEnum, SupportExercisesTypesEnum
+from .exercises_types import ExercisesTypesOut
 
-from .base_class import BaseSchema
+from .base_class import BaseSchema, BaseSchemaFromDB
 
 
 class CreateBasicExerciseIn(BaseSchema):
@@ -21,9 +22,9 @@ class CreateBasicExerciseIn(BaseSchema):
         return self
 
 
-class BasicExerciseOut(BaseSchema):
+class BasicExerciseOut(BaseSchemaFromDB):
     id: UUID
-    type: BasicExercisesTypesEnum
+    type: ExercisesTypesOut
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
     rest: float | None = Field(..., gt=0)
@@ -35,15 +36,15 @@ class CreateSupportExerciseIn(BaseSchema):
     time: int = Field(..., gt=0)
 
 
-class SupportExerciseOut(BaseSchema):
+class SupportExerciseOut(BaseSchemaFromDB):
     id: UUID
-    type: SupportExercisesTypesEnum
+    type: ExercisesTypesOut
     time: int = Field(..., gt=0)
     order: int
 
 
 class CreateExerciseInDB(BaseSchema):
-    workout_id: UUID
+    workout_pool_id: UUID
     type_id: UUID
     reps: int | None = None
     sets: int | None = None
