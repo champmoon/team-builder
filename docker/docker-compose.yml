@@ -4,7 +4,7 @@ services:
   tb_api:
     build:
       context: ..
-      target: production
+      target: development
       dockerfile: docker/Dockerfile
       # args:
         # - HTTP_PROXY=http://antipov:911@proxy.bolid.ru:3128
