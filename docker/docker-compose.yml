@@ -52,7 +52,7 @@ services:
 
   nginx:
     build:
-      context: ./nginx
+      context: ../nginx
     container_name: tb_nginx
     ports:
       - 80:80
