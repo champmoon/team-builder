@@ -1,8 +1,8 @@
 from dependency_injector import providers
 
 from app.models import Workouts, WorkoutsPool
-from app.repositories import WorkoutsRepository, WorkoutsPoolRepository
-from app.services import WorkoutsService, WorkoutsPoolService
+from app.repositories import WorkoutsPoolRepository, WorkoutsRepository
+from app.services import WorkoutsPoolService, WorkoutsService
 
 from .base_class import BaseContainer
 

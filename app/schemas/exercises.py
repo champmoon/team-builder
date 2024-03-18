@@ -4,9 +4,9 @@ from uuid import UUID
 from pydantic import Field, model_validator
 
 from app.consts import BasicExercisesTypesEnum, SupportExercisesTypesEnum
-from .exercises_types import ExercisesTypesOut
 
 from .base_class import BaseSchema, BaseSchemaFromDB
+from .exercises_types import ExercisesTypesOut
 
 
 class CreateBasicExerciseIn(BaseSchema):

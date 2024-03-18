@@ -58,15 +58,15 @@ from .trainers_workouts import (
     TrainerSportsmanWorkoutOut,
     TrainerTeamWorkoutOut,
     TrainerWorkoutOut,
-    TrainerWorkoutPoolOut
+    TrainerWorkoutPoolOut,
 )
 from .workouts import (
     CreateWorkoutForGroupIn,
     CreateWorkoutForSportsmanIn,
     CreateWorkoutForTeamIn,
+    CreateWorkoutInDB,
     CreateWorkoutPoolIn,
     CreateWorkoutPoolInDB,
     UpdateWorkoutPoolIn,
-    CreateWorkoutInDB
 )
 from .workouts_statuses import CreateWorkoutStatusesIn, WorkoutsStatusesOut

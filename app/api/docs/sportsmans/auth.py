@@ -72,11 +72,7 @@ register_sportsman: Docs = {
         },
         423: {
             "description": "Почта не была подтверждена.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Sportsman with email {email} not confirmed"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "email"}}},
         },
     },
 }
@@ -86,7 +82,7 @@ confirm_sportsman_email: Docs = {
     "summary": "Подтверждение email спортсмена.",
     "description": """
     ```
-    Query Params:
+    Request Body:
         confirm_token - токен для идентификации пользователя.(uuid)
 
     P.S.:
@@ -189,7 +185,7 @@ send_confirm_sportsman_email: Docs = {
                                 "Этот запрос сразу возвращает `uri` на подтверждение"
                             ),
                             "value": {
-                                "uri": "http://192.168.22.169:9000/register?confirm_token=7a32cb4c-ed9b-41c3-a8e1-7a95ab074e94",
+                                "uri": "https://tbuilder.pro/register?confirm_token=7a32cb4c-ed9b-41c3-a8e1-7a95ab074e94",
                                 "expire": 300,
                             },
                         },
@@ -204,19 +200,13 @@ send_confirm_sportsman_email: Docs = {
             ),
             "content": {
                 "application/json": {
-                    "example": {
-                        "detail": {"msg": "email already sended", "expire": 295}
-                    }
+                    "example": {"detail": {"detail": "email", "expire": 295}}
                 }
             },
         },
         409: {
             "description": "Спортсмен с таким `email` уже существует.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Sportsman with email {email} already exists"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         422: {
             "description": "Ошибка валидации.",

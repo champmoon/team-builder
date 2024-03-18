@@ -2,7 +2,7 @@ from uuid import UUID
 
 from app import schemas
 from app.models.workouts import Workouts, WorkoutsPool
-from app.repositories import WorkoutsRepository, WorkoutsPoolRepository
+from app.repositories import WorkoutsPoolRepository, WorkoutsRepository
 
 
 class WorkoutsService:

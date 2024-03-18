@@ -94,11 +94,7 @@ get_self_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, `id` невалидный.",
@@ -183,10 +179,6 @@ outs_off_groups: Docs = {
                 }
             },
         },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
-        },
     },
 }
 
@@ -237,11 +229,7 @@ out_off_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, `id` невалидный.",
@@ -259,10 +247,6 @@ out_off_group: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }

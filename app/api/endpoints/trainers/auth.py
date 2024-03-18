@@ -33,19 +33,14 @@ async def send_confirm_trainer_email(
         )
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail={"msg": "email already sended", "expire": timer},
+            detail={"detail": "email", "expire": timer},
         )
 
     trainer_out = await trainer_service.get_by_email(
         email=trainer_email_confirm_in.email
     )
     if trainer_out:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=(
-                f"Trainer with email {trainer_email_confirm_in.email} already exists"
-            ),
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="trainer")
 
     if settings.DEBUG:
         confirmation_uri = await auth_service.create_trainer_confirmation_uri(
@@ -112,14 +107,14 @@ async def register_trainer(
     if trainer_out:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Trainer with email {register_in.email} already exists",
+            detail="trainer",
         )
 
     is_confirmed = await auth_service.is_email_confirmed(email=register_in.email)
     if not is_confirmed:
         raise HTTPException(
             status_code=status.HTTP_423_LOCKED,
-            detail=f"Trainer with email {register_in.email} not confirmed",
+            detail="trainer",
         )
 
     new_trainer_out = await trainers_service.create(

@@ -40,26 +40,19 @@ async def send_confirm_sportsman_email(
         )
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail={"msg": "email already sended", "expire": timer},
+            detail={"detail": "email", "expire": timer},
         )
 
     sportsman_out = await sportsmans_service.get_by_email(
         email=sportsman_email_confirm_in.email
     )
     if sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=(
-                f"Sportsman with email {sportsman_email_confirm_in.email} already"
-                " exists"
-            ),
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="_team must exist"
         )
 
     confirm_data = schemas.InnerSendSportsmanEmailIn(
@@ -129,30 +122,21 @@ async def register_sportsman(
 ) -> Any:
     sportsman_out = await sportsmans_service.get_by_email(email=register_in.email)
     if sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {register_in.email} already exists",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     is_confirmed = await auth_service.is_email_confirmed(email=register_in.email)
     if not is_confirmed:
-        raise HTTPException(
-            status_code=status.HTTP_423_LOCKED,
-            detail=f"Sportsman email {register_in.email} not confirmed",
-        )
+        raise HTTPException(status_code=status.HTTP_423_LOCKED, detail="email")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=register_in.trainer_id)
     if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="team")
 
     team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
     if not team_survey_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="team survey must exist",
+            detail="_team survey must exist",
         )
 
     new_sportsman_out = await sportsmans_service.create(

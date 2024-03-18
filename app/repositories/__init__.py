@@ -13,7 +13,7 @@ from .teams import TeamsRepository
 from .tgs_workouts import TGSWorkoutsRepository
 from .trainers import TrainersRepository
 from .trainers_workouts import TrainersWorkoutsRepository
-from .workouts import WorkoutsRepository, WorkoutsPoolRepository
+from .workouts import WorkoutsPoolRepository, WorkoutsRepository
 from .workouts_statuses import WorkoutsStatusesRepository
 
 

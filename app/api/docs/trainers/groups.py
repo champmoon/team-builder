@@ -58,11 +58,7 @@ get_self_groups: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
     },
 }
@@ -109,11 +105,7 @@ get_self_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, `id` невалидный.",
@@ -258,11 +250,7 @@ update_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -331,11 +319,7 @@ delete_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, `id` невалидный.",
@@ -412,16 +396,11 @@ add_sportsman_to_group: Docs = {
                     "examples": {
                         "group": {
                             "summary": "Группа не найдена",
-                            "value": {"detail": "Group with id {groupId} not found"},
+                            "value": {"detail": "group"},
                         },
                         "sportsman": {
                             "summary": "Спортсмен не найден",
-                            "value": {
-                                "detail": (
-                                    "Sportsman with email {sportsmanEmail} not be on a"
-                                    " team"
-                                )
-                            },
+                            "value": {"detail": "sportsman"},
                         },
                     }
                 }
@@ -429,15 +408,7 @@ add_sportsman_to_group: Docs = {
         },
         409: {
             "description": "Cпортсмен не состоит в команде тренера",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": (
-                            "Sportsman with email {sportsman_email} not be on a team"
-                        )
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -455,10 +426,6 @@ add_sportsman_to_group: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }
@@ -523,11 +490,7 @@ adds_sportsmans_to_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {group_id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -545,10 +508,6 @@ adds_sportsmans_to_group: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }
@@ -602,16 +561,11 @@ kick_sportsman_off_group: Docs = {
                     "examples": {
                         "group": {
                             "summary": "Группа не найдена",
-                            "value": {"detail": "Group with id {groupId} not found"},
+                            "value": {"detail": "group"},
                         },
                         "sportsman": {
                             "summary": "Спортсмен не найден",
-                            "value": {
-                                "detail": (
-                                    "Sportsman with email {sportsmanEmail} not be on a"
-                                    " team"
-                                )
-                            },
+                            "value": {"detail": "sportsman"},
                         },
                     }
                 }
@@ -619,15 +573,7 @@ kick_sportsman_off_group: Docs = {
         },
         409: {
             "description": "Удаляемый спортсмен не состоит в этой команде",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": (
-                            "Sportsman with email {sportsmanEmail} not be on a team"
-                        )
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -645,10 +591,6 @@ kick_sportsman_off_group: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }
@@ -697,11 +639,7 @@ kicks_sportsmans_off_group: Docs = {
         },
         404: {
             "description": "Группа не найдена",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Group with id {group_id} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "group"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -719,10 +657,6 @@ kicks_sportsmans_off_group: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }

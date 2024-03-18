@@ -31,7 +31,7 @@ async def get_self_team(
         return team_out
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="Team must exist",
+        detail="_team must exist",
     )
 
 
@@ -55,23 +55,17 @@ async def add_sportsman_to_team(
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     if sportsman_out.team_id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email} already on the team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     await sportsmans_service.add_to_team(
         sportsman_id=sportsman_out.id,
@@ -100,7 +94,7 @@ async def adds_sportsmans_to_team(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_emails = sportsmans_emails_in.sportsmans_emails
@@ -143,23 +137,17 @@ async def kick_sportsman_off_team(
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     await sportsmans_service.kick_off_team(sportsman_id=sportsman_out.id)
 
@@ -200,7 +188,7 @@ async def kicks_sportsmans_off_team(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsmans_emails = sportsmans_emails_in.sportsmans_emails

@@ -27,17 +27,14 @@ async def get_self_team(
     ),
 ) -> Any:
     if not self_sportsman.team_id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Team not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="team")
 
     team_out = await teams_service.get_by_id(id=self_sportsman.team_id)
     if team_out:
         return team_out
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="Team must exist",
+        detail="_team must exist",
     )
 
 
@@ -60,16 +57,13 @@ async def out_off_team(
     ),
 ) -> Any:
     if not self_sportsman.team_id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Team not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="team")
 
     team_out = await teams_service.get_by_id(id=self_sportsman.team_id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     await sportsmans_service.kick_off_team(sportsman_id=self_sportsman.id)

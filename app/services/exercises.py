@@ -69,9 +69,8 @@ class ExercisesService:
                     time=exercise_in.time,
                     order=order + 1,
                 )
-            
-            await self.repository.create(schema_in=new_schema_in)
 
+            await self.repository.create(schema_in=new_schema_in)
 
     async def get_schemas_by_orm_models(
         self,

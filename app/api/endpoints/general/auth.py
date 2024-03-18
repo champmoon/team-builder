@@ -43,8 +43,7 @@ async def login(
             admin_out = await admins_service.get_by_email(email=login_in.email)
             if not admin_out:
                 raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"User with email {login_in.email} not found",
+                    status_code=status.HTTP_404_NOT_FOUND, detail="user"
                 )
 
             user_out = admin_out
@@ -61,10 +60,7 @@ async def login(
         hashed_password=user_out.hashed_password,
     )
     if not is_match_passwords:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="User password didn't match",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user")
 
     session_out = await session_service.create(
         user_id=user_out.id,
@@ -94,7 +90,7 @@ async def logout(
     if not session_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Refresh token not found",
+            detail="refresh_token",
         )
 
     await session_service.delete_by_refresh_token(
@@ -119,7 +115,7 @@ async def refresh(
     if not session_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Refresh token not found",
+            detail="refresh_token",
         )
 
     await session_service.delete_by_refresh_token(
@@ -129,7 +125,7 @@ async def refresh(
     if session_service.is_refresh_token_expired(created_at=session_out.created_at):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Refresh token expired",
+            detail="refresh_token",
         )
 
     new_session_out = await session_service.create(

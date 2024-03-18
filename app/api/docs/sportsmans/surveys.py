@@ -96,7 +96,9 @@ get_survey_update_flag: Docs = {
         },
         423: {
             "description": "Спортсмен не может обновить анкету",
-            "content": {"application/json": {"example": {}}},
+            "content": {
+                "application/json": {"example": {"detail": "sportsman_survey"}}
+            },
         },
     },
 }
@@ -173,7 +175,9 @@ fill_survey: Docs = {
         },
         423: {
             "description": "Спортсмен не может обновить анкету",
-            "content": {"application/json": {"example": {}}},
+            "content": {
+                "application/json": {"example": {"detail": "sportsman_survey"}}
+            },
         },
     },
 }

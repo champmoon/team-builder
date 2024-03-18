@@ -65,17 +65,11 @@ login: Docs = {
         },
         404: {
             "description": "Тренер / спортсмен с таким `email` не найден.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "User with email {email} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "user"}}},
         },
         409: {
             "description": "Неверный `password`.",
-            "content": {
-                "application/json": {"example": {"detail": "User password didnt match"}}
-            },
+            "content": {"application/json": {"example": {"detail": "user"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр был передан неверно.",
@@ -134,9 +128,7 @@ logout: Docs = {
         },
         404: {
             "description": "`refreshToken` не был найден в БД.",
-            "content": {
-                "application/json": {"example": {"detail": "Refresh token not found"}}
-            },
+            "content": {"application/json": {"example": {"detail": "refresh_token"}}},
         },
         422: {
             "description": "Ошибка валидации, `refreshToken` невалидный.",
@@ -222,15 +214,11 @@ refresh: Docs = {
         },
         400: {
             "description": "`refreshToken` протух.",
-            "content": {
-                "application/json": {"example": {"detail": "Refresh token expired"}}
-            },
+            "content": {"application/json": {"example": {"detail": "refresh_token"}}},
         },
         404: {
             "description": "Сессия пользователя с таким `refreshToken` не найдена.",
-            "content": {
-                "application/json": {"example": {"detail": "Refresh token not found"}}
-            },
+            "content": {"application/json": {"example": {"detail": "refresh_token"}}},
         },
         422: {
             "description": "Ошибка валидации, `refreshToken` невалидный.",

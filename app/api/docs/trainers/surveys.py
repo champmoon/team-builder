@@ -461,21 +461,11 @@ get_sportsman_survey: Docs = {
         },
         404: {
             "description": "Спортсмен не найден.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Sportsman with email {email} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         409: {
             "description": "Спортсмен не в этой команде.",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": "Sportsman with email {email} not be on a team"
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
     },
 }
@@ -506,21 +496,11 @@ set_update_sportsman_survey: Docs = {
         },
         404: {
             "description": "Спортсмен не найден.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Sportsman with email {email} not found"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         409: {
             "description": "Спортсмен не в этой команде.",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": "Sportsman with email {email} not be on a team"
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
     },
 }

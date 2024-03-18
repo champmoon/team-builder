@@ -44,10 +44,7 @@ async def get_self_group(
     )
     if group_out:
         return group_out
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Group with id {id} not found",
-    )
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
 
 @router(
@@ -108,10 +105,7 @@ async def out_off_group(
         id=id, sportsman_id=self_sportsman.id
     )
     if not group_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     await sportsmans_groups_service.delete(
         schema_in=schemas.DeleteSportsmanGroupIn(

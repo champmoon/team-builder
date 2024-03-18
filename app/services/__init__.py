@@ -14,7 +14,7 @@ from .teams import TeamsService
 from .tgs_workouts import TGSWorkoutsService
 from .trainers import TrainersService
 from .trainers_workouts import TrainersWorkoutsService
-from .workouts import WorkoutsService, WorkoutsPoolService
+from .workouts import WorkoutsPoolService, WorkoutsService
 from .workouts_statuses import WorkoutsStatusesService
 
 

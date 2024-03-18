@@ -20,7 +20,6 @@ class CreateWorkoutPoolIn(BaseSchema):
     exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
 
 
-
 class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime

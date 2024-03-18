@@ -1,6 +1,6 @@
 import tomllib
 
-from pydantic import HttpUrl, validator
+from pydantic import validator
 from pydantic_settings import BaseSettings
 
 

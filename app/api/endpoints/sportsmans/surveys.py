@@ -35,7 +35,7 @@ async def get_survey(
         return sportsman_surveys_out
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="sportsman survey must exist",
+        detail="_sportsman survey must exist",
     )
 
 
@@ -56,13 +56,12 @@ async def get_survey_update_flag(
     if not sportsman_surveys_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="sportsman survey must exist",
+            detail="_sportsman survey must exist",
         )
-    return (
-        Response(status_code=status.HTTP_200_OK)
-        if sportsman_surveys_out.update_it
-        else Response(status_code=status.HTTP_423_LOCKED)
-    )
+    if sportsman_surveys_out.update_it:
+        return Response(status_code=status.HTTP_200_OK)
+
+    raise HTTPException(status_code=status.HTTP_423_LOCKED, detail="sportsman_survey")
 
 
 @router(
@@ -84,11 +83,13 @@ async def fill_survey(
     if not sportsman_surveys_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="sportsman survey must exist",
+            detail="_sportsman survey must exist",
         )
 
     if sportsman_surveys_out.update_it is False:
-        raise HTTPException(status_code=status.HTTP_423_LOCKED)
+        raise HTTPException(
+            status_code=status.HTTP_423_LOCKED, detail="sportsman_survey"
+        )
 
     return await sportsman_surveys_service.update(
         id=sportsman_surveys_out.id,

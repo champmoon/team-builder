@@ -85,28 +85,14 @@ add_sportsman_to_team: Docs = {
         },
         404: {
             "description": "Добавляемый спортсмен не найден.",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": "Sportsman with email {sportsmanEmail} not found"
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         409: {
             "description": (
                 "Добавляемый спортсмен уже состоит в какой-то команде(в этой же или"
                 " другой)."
             ),
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": (
-                            "Sportsman with email {sportsmanEmail} already on the team"
-                        )
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -124,10 +110,6 @@ add_sportsman_to_team: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }
@@ -205,10 +187,6 @@ adds_sportsmans_to_team: Docs = {
                 }
             },
         },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
-        },
     },
 }
 
@@ -254,25 +232,11 @@ kick_sportsman_off_team: Docs = {
         },
         404: {
             "description": "Удаляемый спортсмен не найден.",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": "Sportsman with email {sportsmanEmail} not found"
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         409: {
             "description": "Удаляемый спортсмен не состоит в этой команде",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "detail": (
-                            "Sportsman with email {sportsmanEmail} not be on a team"
-                        )
-                    }
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -290,10 +254,6 @@ kick_sportsman_off_team: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }
@@ -354,10 +314,6 @@ kicks_sportsmans_off_team: Docs = {
                     }
                 }
             },
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
         },
     },
 }

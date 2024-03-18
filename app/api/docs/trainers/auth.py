@@ -86,7 +86,7 @@ confirm_trainer_email: Docs = {
     "summary": "Подтверждение email тренера.",
     "description": """
     ```
-    Query Params:
+    Request Body:
         confirm_token - токен для идентификации пользователя.(uuid)
 
     P.S.:
@@ -220,19 +220,13 @@ send_confirm_trainer_email: Docs = {
             ),
             "content": {
                 "application/json": {
-                    "example": {
-                        "detail": {"msg": "email already sended", "expire": 295}
-                    }
+                    "example": {"detail": {"detail": "email", "expire": 295}}
                 }
             },
         },
         409: {
             "description": "Тренер с таким `email` уже существует.",
-            "content": {
-                "application/json": {
-                    "example": {"detail": "Trainer with email {email} already exists"}
-                }
-            },
+            "content": {"application/json": {"example": {"detail": "trainer"}}},
         },
         422: {
             "description": "Ошибка валидации.",

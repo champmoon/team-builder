@@ -36,14 +36,14 @@ async def get_survey(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
     if not team_survey_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="team survey must exist",
+            detail="_team survey must exist",
         )
 
     return team_survey_out
@@ -69,14 +69,14 @@ async def update_survey(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
     if not team_survey_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="team survey must exist",
+            detail="_team survey must exist",
         )
 
     return await team_surveys_service.update(
@@ -106,21 +106,15 @@ async def set_update_sportsman_survey(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     await sportsman_surveys_service.set_update(sportsman_id=sportsman_out.id)
 
@@ -148,7 +142,7 @@ async def set_update_team_survey(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
@@ -181,21 +175,15 @@ async def get_sportsman_survey(
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     sportsman_surveys_out = await sportsman_surveys_service.get_by_sportsman_id(
         sportsman_id=sportsman_out.id
@@ -204,5 +192,5 @@ async def get_sportsman_survey(
         return sportsman_surveys_out
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="sportsman survey must exist",
+        detail="_sportsman survey must exist",
     )

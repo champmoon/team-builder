@@ -77,11 +77,7 @@ out_off_team: Docs = {
         },
         404: {
             "description": "Спортсмен не состоит в команде",
-            "content": {"application/json": {"example": {"detail": "Team not found"}}},
-        },
-        500: {
-            "description": "Ошибка сервера: команды не существует",
-            "content": {"application/json": {"example": {"detail": "Team must exist"}}},
+            "content": {"application/json": {"example": {"detail": "team"}}},
         },
     },
 }

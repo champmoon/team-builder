@@ -1,9 +1,7 @@
 from typing import Any
-from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
-from pydantic import EmailStr
 
 from app import consts, schemas
 from app.api import deps
@@ -108,13 +106,15 @@ async def create_workout_for_sportsman(
         Provide[Containers.tgs_workouts.service]
     ),
 ) -> Any:
-    workout_pool_out = await workouts_pool_service.get_by_id(id=create_workout_in.workout_pool_id)
+    workout_pool_out = await workouts_pool_service.get_by_id(
+        id=create_workout_in.workout_pool_id
+    )
     if not workout_pool_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="workout_pool",
         )
-    
+
     sportsman_email = create_workout_in.sportsman_email
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
@@ -126,16 +126,10 @@ async def create_workout_for_sportsman(
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     new_workout_out = await workouts_service.create(
         schema_in=schemas.CreateWorkoutInDB(
@@ -221,29 +215,25 @@ async def create_workout_for_group(
         Provide[Containers.tgs_workouts.service]
     ),
 ) -> Any:
-    workout_pool_out = await workouts_pool_service.get_by_id(id=create_workout_in.workout_pool_id)
+    workout_pool_out = await workouts_pool_service.get_by_id(
+        id=create_workout_in.workout_pool_id
+    )
     if not workout_pool_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="workout_pool",
         )
-    
+
     group_id = create_workout_in.group_id
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     sportsmans_out = await sportsmans_groups_service.get_all_sportsmans_by_group_id(
         group_id=group_id
     )
     if len(sportsmans_out) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The group must not be empty",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="group")
 
     new_workout_out = await workouts_service.create(
         schema_in=schemas.CreateWorkoutInDB(
@@ -330,13 +320,15 @@ async def create_workout_for_team(
         Provide[Containers.sportsmans.service],
     ),
 ) -> Any:
-    workout_pool_out = await workouts_pool_service.get_by_id(id=create_workout_in.workout_pool_id)
+    workout_pool_out = await workouts_pool_service.get_by_id(
+        id=create_workout_in.workout_pool_id
+    )
     if not workout_pool_out:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="workout_pool",
         )
-    
+
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
@@ -346,10 +338,7 @@ async def create_workout_for_team(
 
     sportsmans_out = await sportsmans_service.get_by_team_id(team_id=team_out.id)
     if len(sportsmans_out) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="The team must not be empty",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="team")
 
     new_workout_out = await workouts_service.create(
         schema_in=schemas.CreateWorkoutInDB(

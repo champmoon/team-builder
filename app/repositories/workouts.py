@@ -37,7 +37,6 @@ class WorkoutsRepository:
 
         return created_workout.scalars().one()
 
-
     async def delete(self, id: UUID) -> Workouts:
         stmt = delete(self.model).where(self.model.id == id).returning(self.model)
 
@@ -46,7 +45,6 @@ class WorkoutsRepository:
             await session.commit()
 
         return deleted_workout.scalars().one()
-
 
 
 class WorkoutsPoolRepository:
@@ -65,7 +63,7 @@ class WorkoutsPoolRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().first()
-    
+
     async def get_by_id(self, id: UUID) -> WorkoutsPool | None:
         stmt = select(self.model).where(self.model.id == id)
 
@@ -85,7 +83,9 @@ class WorkoutsPoolRepository:
 
         return created_workout.scalars().one()
 
-    async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutPoolIn) -> WorkoutsPool:
+    async def update(
+        self, id: UUID, schema_in: schemas.UpdateWorkoutPoolIn
+    ) -> WorkoutsPool:
         stmt = (
             update(self.model)
             .where(self.model.id == id)

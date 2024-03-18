@@ -32,10 +32,7 @@ async def get_self_groups(
         return await groups_service.get_all_by_trainer_id(trainer_id=self_trainer.id)
     group_out = await groups_service.get_by_id(id=id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
     return group_out
 
 
@@ -119,10 +116,7 @@ async def update_group(
 ) -> Any:
     group_out = await groups_service.get_by_id(id=id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
     return await groups_service.update(id=id, schema_in=update_group_in)
 
 
@@ -141,10 +135,7 @@ async def delete_group(
 ) -> Any:
     group_out = await groups_service.get_by_id(id=id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     await groups_service.delete(id=id)
     return group_out
@@ -177,30 +168,21 @@ async def add_sportsman_to_group(
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     await sportsmans_groups_service.create(
         schema_in=schemas.CreateSportsmanGroupIn(
@@ -239,16 +221,13 @@ async def adds_sportsmans_to_group(
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     for sportsman_email in sportsmans_emails or []:
@@ -293,30 +272,21 @@ async def kick_sportsman_off_group(
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
     if not sportsman_out:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sportsman with email {sportsman_email} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Sportsman with email {sportsman_email} not be on a team",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     await sportsmans_groups_service.delete(
         schema_in=schemas.DeleteSportsmanGroupIn(
@@ -355,16 +325,13 @@ async def kicks_sportsmans_off_group(
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Group with id {group_id} not found",
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Team must exist",
+            detail="_team must exist",
         )
 
     for sportsman_email in sportsmans_emails or []:
