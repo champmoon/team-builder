@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import StrEnum
 
 
-class WorkoutsTypes(IntEnum):
-    INDIVIDUAL = 1
-    GROUP = 2
-    TEAM = 3
+class WorkoutsTypes(StrEnum):
+    INDIVIDUAL = "Индивидуальная"
+    GROUP = "Групповая"
+    TEAM = "Командная"

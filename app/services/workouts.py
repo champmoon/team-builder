@@ -1,3 +1,4 @@
+from typing import Sequence
 from uuid import UUID
 
 from app import schemas
@@ -32,7 +33,7 @@ class WorkoutsPoolService:
     async def get_by_id(self, id: UUID) -> WorkoutsPool | None:
         return await self.repository.get_by_id(id=id)
 
-    async def get_by_trainer_id(self, trainer_id: UUID) -> WorkoutsPool | None:
+    async def get_by_trainer_id(self, trainer_id: UUID) -> Sequence[WorkoutsPool]:
         return await self.repository.get_by_trainer_id(trainer_id=trainer_id)
 
     async def create(self, schema_in: schemas.CreateWorkoutPoolInDB) -> WorkoutsPool:

@@ -1,9 +1,10 @@
 from contextlib import AbstractAsyncContextManager
-from typing import Callable, Type
+from typing import Callable, Sequence, Type
 from uuid import UUID
 
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import subqueryload
 
 from app import schemas
 from app.models import Workouts, WorkoutsPool
@@ -56,13 +57,17 @@ class WorkoutsPoolRepository:
         self.model = model
         self.session_factory = session_factory
 
-    async def get_by_trainer_id(self, trainer_id: UUID) -> WorkoutsPool | None:
-        stmt = select(self.model).where(self.model.trainer_id == trainer_id)
+    async def get_by_trainer_id(self, trainer_id: UUID) -> Sequence[WorkoutsPool]:
+        stmt = (
+            select(self.model)
+            .where(self.model.trainer_id == trainer_id)
+            .options(subqueryload(self.model.exercises))
+        )
 
         async with self.session_factory() as session:
             getted = await session.execute(stmt)
 
-        return getted.scalars().first()
+        return getted.scalars().all()
 
     async def get_by_id(self, id: UUID) -> WorkoutsPool | None:
         stmt = select(self.model).where(self.model.id == id)
