@@ -12,7 +12,7 @@ class FileNotExist(Exception):
 
 class SystemFile:
     static_dir = settings.STATIC_FILES_DIR
-    hostname = settings.SERVER_HOSTNAME
+    hostname = settings.CONFIRM_URL
 
     def __init__(
         self,
@@ -45,7 +45,7 @@ class SystemFile:
         with file.open("wb") as f:
             f.write(self.bytes_buffer.read())
 
-        return self.hostname + file_path
+        return self.hostname + "/" + file_path
         # return file_path
 
     def delete(self) -> None:

@@ -70,6 +70,8 @@ url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sports
 # Trainer Workout
 url.POST("    /trainer/workouts/pool                ", endpoint=endpoints.trainers.workouts.create_workout_pool)
 url.POST("    /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
+url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
+url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
 # url.POST("    /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
 # url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
 # url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)

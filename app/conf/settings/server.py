@@ -14,9 +14,7 @@ class ServerSettings(BaseSettings):
     VERSION: str = ""
     API_PREFIX: str = "/api"
 
-    PROTOCOL: str = "http"
     SERVER_HOST: str
-    EXTERNAL_SERVER_HOST: str
     SERVER_PORT: str
 
     DEBUG: bool
@@ -28,19 +26,5 @@ class ServerSettings(BaseSettings):
         if v:
             return v
         return get_version()
-
-    SERVER_HOSTNAME: str | None = None
-
-    @validator("SERVER_HOSTNAME", pre=True)
-    def assemble_server_(cls, v: str | None, values: dict[str, str]) -> str:
-        if isinstance(v, str):
-            return v
-        return str(
-            HttpUrl.build(
-                scheme=values["PROTOCOL"],
-                host=values["EXTERNAL_SERVER_HOST"],
-                port=int(values["SERVER_PORT"]),
-            )
-        )
 
     STATIC_FILES_DIR: str = "static"

@@ -17,6 +17,7 @@ class WorkoutsPool(Base, UUIDAsIDMixin):
     name: Mapped[str]
     estimated_time: Mapped[float]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    is_visible: Mapped[bool] = mapped_column(default=True)
 
     trainer_id: Mapped[UUID] = mapped_column(
         ForeignKey(
