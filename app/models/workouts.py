@@ -32,6 +32,8 @@ class Workouts(Base, UUIDAsIDMixin):
     __tablename__ = "workouts"
 
     date: Mapped[datetime]
+    is_visible: Mapped[bool] = mapped_column(default=True)
+
     workout_pool_id: Mapped[UUID] = mapped_column(
         ForeignKey(
             column="workouts_pool.id",

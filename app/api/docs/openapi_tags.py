@@ -8,6 +8,7 @@ tags_mapper = {
     "trainers_teams": "Тренеры → Команды",
     "trainers_groups": "Тренеры → Группы",
     "trainers_workouts": "Тренеры → Тренировки",
+    "trainers_workouts_pool": "Тренеры → Программа тренировок",
     #
     "sportsmans_auth": "Спортсмены → Регистрация",
     "sportsmans_profile": "Спортсмены → Профиль",

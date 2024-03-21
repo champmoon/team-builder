@@ -24,7 +24,7 @@ class TrainerWorkoutPoolOut(BaseSchemaFromDB):
 
 
 class TrainerWorkoutOut(BaseSchemaFromDB):
-    workout_id: UUID
+    id: UUID
     name: str
     estimated_time: float
     status: WorkoutsStatusesOut

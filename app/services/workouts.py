@@ -16,11 +16,20 @@ class WorkoutsService:
     async def get_by_id(self, id: UUID) -> Workouts | None:
         return await self.repository.get_by_id(id=id)
 
+    async def get_by_pool_id(self, pool_id: UUID) -> Sequence[Workouts]:
+        return await self.repository.get_by_pool_id(pool_id=pool_id)
+
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         return await self.repository.create(schema_in=schema_in)
 
+    async def set_unvisible(self, id: UUID) -> Workouts:
+        return await self.repository.set_unvisible(id=id)
+
     async def delete(self, id: UUID) -> Workouts:
         return await self.repository.delete(id=id)
+
+    async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
+        return await self.repository.update(id=id, schema_in=schema_in)
 
 
 class WorkoutsPoolService:
@@ -43,6 +52,9 @@ class WorkoutsPoolService:
         self, id: UUID, schema_in: schemas.UpdateWorkoutPoolIn
     ) -> WorkoutsPool:
         return await self.repository.update(id=id, schema_in=schema_in)
+
+    async def set_unvisible(self, id: UUID) -> WorkoutsPool:
+        return await self.repository.set_unvisible(id=id)
 
     async def delete(self, id: UUID) -> WorkoutsPool:
         return await self.repository.delete(id=id)

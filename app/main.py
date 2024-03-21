@@ -51,14 +51,11 @@ if not settings.DEBUG:
     fastapi_logger.setLevel(gunicorn_logger.level)
 
 
-# TODO when sportsman added to group, group workout should be on new sportsman
-# TODO make workouts statuses api
-# TODO update workouts
-# TODO delete workouts when deletinig group, sportsman from team
-# TODO bind workout to other categories
+# TODO update workouts/workouts-pool
 # TODO create workouts api for sportsman
 # TODO make trainers -> sportsmans api
-# TODO make update workouts statuses(cache)
 
-# TODO make transaction
-# TODO make tests
+# TODO when sportsman added to group, group workout should be on new sportsman
+# TODO make workouts statuses api
+# TODO delete workouts when deletinig group, sportsman from team
+# TODO make update workouts statuses(cache)

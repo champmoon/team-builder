@@ -69,3 +69,14 @@ class UpdateWorkoutPoolIn(BaseSchema):
         if not any((self.name, self.estimated_time)):
             raise ValueError("at least not null")
         return self
+
+
+class UpdateWorkoutIn(BaseSchema):
+    date: NaiveDatetime
+
+    @model_validator(mode="after")
+    def check_date(self) -> Self:
+        if self.date <= (now := datetime.utcnow()):
+            raise ValueError(f"date - {self.date} less then now - {now}")
+        return self
+

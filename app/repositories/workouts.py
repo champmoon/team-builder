@@ -20,12 +20,26 @@ class WorkoutsRepository:
         self.session_factory = session_factory
 
     async def get_by_id(self, id: UUID) -> Workouts | None:
-        stmt = select(self.model).where(self.model.id == id)
+        stmt = select(self.model).where(
+            self.model.id == id,
+            self.model.is_visible == True,  # noqa
+        )
 
         async with self.session_factory() as session:
             getted = await session.execute(stmt)
 
         return getted.scalars().first()
+
+    async def get_by_pool_id(self, pool_id: UUID) -> Sequence[Workouts]:
+        stmt = select(self.model).where(
+            self.model.workout_pool_id == pool_id,
+            self.model.is_visible == True,  # noqa
+        )
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()
 
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         async with self.session_factory() as session:
@@ -38,6 +52,20 @@ class WorkoutsRepository:
 
         return created_workout.scalars().one()
 
+    async def set_unvisible(self, id: UUID) -> Workouts:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(is_visible=False)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_workout = await session.execute(stmt)
+            await session.commit()
+
+        return updated_workout.scalars().one()
+
     async def delete(self, id: UUID) -> Workouts:
         stmt = delete(self.model).where(self.model.id == id).returning(self.model)
 
@@ -46,6 +74,20 @@ class WorkoutsRepository:
             await session.commit()
 
         return deleted_workout.scalars().one()
+
+    async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(**schema_in.model_dump(exclude_none=True))
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_workout = await session.execute(stmt)
+            await session.commit()
+
+        return updated_workout.scalars().one()
 
 
 class WorkoutsPoolRepository:
@@ -60,7 +102,10 @@ class WorkoutsPoolRepository:
     async def get_by_trainer_id(self, trainer_id: UUID) -> Sequence[WorkoutsPool]:
         stmt = (
             select(self.model)
-            .where(self.model.trainer_id == trainer_id)
+            .where(
+                self.model.trainer_id == trainer_id,
+                self.model.is_visible == True,  # noqa
+            )
             .options(subqueryload(self.model.exercises))
         )
 
@@ -70,7 +115,10 @@ class WorkoutsPoolRepository:
         return getted.scalars().all()
 
     async def get_by_id(self, id: UUID) -> WorkoutsPool | None:
-        stmt = select(self.model).where(self.model.id == id)
+        stmt = select(self.model).where(
+            self.model.id == id,
+            self.model.is_visible == True,  # noqa
+        )
 
         async with self.session_factory() as session:
             getted = await session.execute(stmt)
@@ -95,6 +143,20 @@ class WorkoutsPoolRepository:
             update(self.model)
             .where(self.model.id == id)
             .values(**schema_in.model_dump(exclude_none=True))
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_workout = await session.execute(stmt)
+            await session.commit()
+
+        return updated_workout.scalars().one()
+
+    async def set_unvisible(self, id: UUID) -> WorkoutsPool:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(is_visible=False)
             .returning(self.model)
         )
 
