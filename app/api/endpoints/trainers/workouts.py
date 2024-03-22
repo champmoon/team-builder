@@ -11,7 +11,6 @@ from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers
 from app.models import Trainers
-from app.models.workouts import Workouts
 from app.services import Services
 from app.utils.router import EndPointRouter
 

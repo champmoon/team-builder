@@ -4,9 +4,8 @@ from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
-from pydantic import EmailStr
 
-from app import consts, schemas
+from app import schemas
 from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers

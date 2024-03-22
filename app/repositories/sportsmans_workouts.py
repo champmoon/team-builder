@@ -27,7 +27,7 @@ class SportsmansWorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().all()
-    
+
     async def get_all_by_workout_id(
         self, workout_id: UUID
     ) -> Sequence[SportsmansWorkouts]:

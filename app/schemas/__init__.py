@@ -67,7 +67,7 @@ from .workouts import (
     CreateWorkoutInDB,
     CreateWorkoutPoolIn,
     CreateWorkoutPoolInDB,
-    UpdateWorkoutPoolIn,
     UpdateWorkoutIn,
+    UpdateWorkoutPoolIn,
 )
 from .workouts_statuses import CreateWorkoutStatusesIn, WorkoutsStatusesOut

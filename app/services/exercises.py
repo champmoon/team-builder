@@ -32,11 +32,11 @@ class ExercisesService:
 
         self.exercises_types_service = exercises_types_service
 
-    async def get_all_exercises_by_workout_id(
-        self, workout_id: UUID
+    async def get_all_exercises_by_workout_pool_id(
+        self, workout_pool_id: UUID
     ) -> Sequence[Exercises]:
-        return await self.repository.get_all_exercises_by_workout_id(
-            workout_id=workout_id
+        return await self.repository.get_all_exercises_by_workout_pool_id(
+            workout_pool_id=workout_pool_id
         )
 
     async def create(

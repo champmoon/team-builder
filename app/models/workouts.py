@@ -33,6 +33,8 @@ class Workouts(Base, UUIDAsIDMixin):
 
     date: Mapped[datetime]
     is_visible: Mapped[bool] = mapped_column(default=True)
+    rest_time: Mapped[int]
+    stress_questionnaire_time: Mapped[int]
 
     workout_pool_id: Mapped[UUID] = mapped_column(
         ForeignKey(

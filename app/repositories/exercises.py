@@ -18,10 +18,10 @@ class ExercisesRepository:
         self.model = model
         self.session_factory = session_factory
 
-    async def get_all_exercises_by_workout_id(
-        self, workout_id: UUID
+    async def get_all_exercises_by_workout_pool_id(
+        self, workout_pool_id: UUID
     ) -> Sequence[Exercises]:
-        stmt = select(self.model).where(self.model.workout_id == workout_id)
+        stmt = select(self.model).where(self.model.workout_pool_id == workout_pool_id)
 
         async with self.session_factory() as session:
             getted_exercises = await session.execute(stmt)
