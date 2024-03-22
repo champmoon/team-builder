@@ -38,6 +38,19 @@ class SportsmansWorkoutsRepository:
 
         return getted.scalars().all()
 
+    async def get_by(
+        self, workout_id: UUID, sportsman_id: UUID
+    ) -> SportsmansWorkouts | None:
+        stmt = select(self.model).where(
+            self.model.workout_id == workout_id,
+            self.model.sportsman_id == sportsman_id,
+        )
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().first()
+
     async def create(self, schema_in: CreateSportsmansWorkoutIn) -> SportsmansWorkouts:
         async with self.session_factory() as session:
             created_sportsman_workout = await session.execute(

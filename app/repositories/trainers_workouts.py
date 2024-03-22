@@ -28,8 +28,23 @@ class TrainersWorkoutsRepository:
 
         return getted.scalars().all()
 
-    async def get_by_workout_id(self, workout_id: UUID) -> TrainersWorkouts | None:
+    async def get_all_by_workout_id(
+        self, workout_id: UUID
+    ) -> Sequence[TrainersWorkouts]:
         stmt = select(self.model).where(self.model.workout_id == workout_id)
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()
+
+    async def get_by(
+        self, workout_id: UUID, trainer_id: UUID
+    ) -> TrainersWorkouts | None:
+        stmt = select(self.model).where(
+            self.model.workout_id == workout_id,
+            self.model.trainer_id == trainer_id,
+        )
 
         async with self.session_factory() as session:
             getted = await session.execute(stmt)

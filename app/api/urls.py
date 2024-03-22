@@ -68,15 +68,15 @@ url.POST("    /sportsman/groups/outs                ", endpoint=endpoints.sports
 url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sportsmans.groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
 # Trainer Workout
+url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team)
+url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
+url.GET("     /trainer/workouts/group/{id}          ", endpoint=endpoints.trainers.workouts.get_workouts_for_group)
+url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
+url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman)
+url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
 url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.get_workout)
 url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts)
 url.GET("     /trainer/workouts/pool/{id}           ", endpoint=endpoints.trainers.workouts.get_workouts_by_pool_id)
-url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman)
-url.GET("     /trainer/workouts/group/{id}          ", endpoint=endpoints.trainers.workouts.get_workouts_for_group)
-url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team)
-url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
-url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
-url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
 url.PATCH("   /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.update_workout)
 url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout)
 
@@ -86,6 +86,11 @@ url.GET("     /trainer/workouts-pool                ", endpoint=endpoints.traine
 url.POST("    /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.create_workout_pool)
 url.DELETE("  /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts_pool.delete_workout_pool)
 url.PATCH("   /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts_pool.update_workout_pool)
+
+# Sportsman Workouts
+url.GET("     /sportsman/workouts/{id}              ", endpoint=endpoints.sportsmans.workouts.get_workout)
+url.GET("     /sportsman/workouts                   ", endpoint=endpoints.sportsmans.workouts.get_workouts)
+
 
 
 urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["general_auth"]])
@@ -104,3 +109,4 @@ urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_
 urls_router.include_router(endpoints.sportsmans.surveys.router, tags=[docs.tags_mapper["sportsmans_surveys"]])
 urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])
 urls_router.include_router(endpoints.sportsmans.groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])
+urls_router.include_router(endpoints.sportsmans.workouts.router, tags=[docs.tags_mapper["sportsmans_workouts"]])

@@ -15,6 +15,7 @@ tags_mapper = {
     "sportsmans_surveys": "Спортсмены → Анкета",
     "sportsmans_teams": "Спортсмены → Команды",
     "sportsmans_groups": "Спортсмены → Группы",
+    "sportsmans_workouts": "Спортсмены → Тренировки",
 }
 
 

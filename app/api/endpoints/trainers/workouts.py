@@ -482,8 +482,9 @@ async def get_workouts_by_pool_id(
         | schemas.TrainerTeamWorkoutOut
     ] = []
     for workout_out in workouts_outs:
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
+        trainer_workout_out = await trainers_workouts_service.get_by(
+            workout_id=workout_out.id,
+            trainer_id=self_trainer.id,
         )
         if not trainer_workout_out:
             # continue
@@ -577,8 +578,9 @@ async def get_workout(
     if not workout_out or workout_out.workout_pool.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")
 
-    trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-        workout_id=workout_out.id
+    trainer_workout_out = await trainers_workouts_service.get_by(
+        workout_id=workout_out.id,
+        trainer_id=self_trainer.id,
     )
     if not trainer_workout_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")
@@ -702,8 +704,9 @@ async def get_workouts_for_sportsman(
                 detail="_s_workout not in workout db",
             )
 
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
+        trainer_workout_out = await trainers_workouts_service.get_by(
+            workout_id=workout_out.id,
+            trainer_id=self_trainer.id,
         )
         if not trainer_workout_out:
             raise HTTPException(
@@ -811,8 +814,9 @@ async def get_workouts_for_group(
                 detail="_g_workout not in workout db",
             )
 
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
+        trainer_workout_out = await trainers_workouts_service.get_by(
+            workout_id=workout_out.id,
+            trainer_id=self_trainer.id,
         )
         if not trainer_workout_out:
             raise HTTPException(
@@ -881,8 +885,9 @@ async def get_workouts_for_team(
                 detail="_s_workout not in workout db",
             )
 
-        trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-            workout_id=workout_out.id
+        trainer_workout_out = await trainers_workouts_service.get_by(
+            workout_id=workout_out.id,
+            trainer_id=self_trainer.id,
         )
         if not trainer_workout_out:
             raise HTTPException(
@@ -966,8 +971,9 @@ async def update_workout(
 
     workout_out = await workouts_service.update(id=id, schema_in=update_workout_in)
 
-    trainer_workout_out = await trainers_workouts_service.get_by_workout_id(
-        workout_id=workout_out.id
+    trainer_workout_out = await trainers_workouts_service.get_by(
+        workout_id=workout_out.id,
+        trainer_id=self_trainer.id,
     )
     if not trainer_workout_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")

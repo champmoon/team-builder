@@ -15,8 +15,17 @@ class TrainersWorkoutsService:
     ) -> Sequence[TrainersWorkouts]:
         return await self.repository.get_all_by_trainer_id(trainer_id=trainer_id)
 
-    async def get_by_workout_id(self, workout_id: UUID) -> TrainersWorkouts | None:
-        return await self.repository.get_by_workout_id(workout_id=workout_id)
+    async def get_all_by_workout_id(
+        self, workout_id: UUID
+    ) -> Sequence[TrainersWorkouts]:
+        return await self.repository.get_all_by_workout_id(workout_id=workout_id)
+
+    async def get_by(
+        self, workout_id: UUID, trainer_id: UUID
+    ) -> TrainersWorkouts | None:
+        return await self.repository.get_by(
+            workout_id=workout_id, trainer_id=trainer_id
+        )
 
     async def create(
         self, schema_in: schemas.CreateTrainerWorkoutIn

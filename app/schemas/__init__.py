@@ -41,7 +41,13 @@ from .sportsmans import (
     UpdateSportsmanIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
-from .sportsmans_workouts import CreateSportsmansWorkoutIn
+from .sportsmans_workouts import (
+    CreateSportsmansWorkoutIn,
+    SportsmansGroupWorkoutOut,
+    SportsmansSportsmanWorkoutOut,
+    SportsmansTeamWorkoutOut,
+    SportsmansWorkoutOut,
+)
 from .surveys import (
     SportsmanAnswerOut,
     SportsmanSurveysOut,
