@@ -78,6 +78,8 @@ async def create_workout_for_sportsman(
         schema_in=schemas.CreateWorkoutInDB(
             workout_pool_id=create_workout_in.workout_pool_id,
             date=create_workout_in.date,
+            rest_time=create_workout_in.rest_time,
+            stress_questionnaire_time=create_workout_in.stress_questionnaire_time,
         ),
     )
 
@@ -121,6 +123,8 @@ async def create_workout_for_sportsman(
         date=new_workout_out.date,
         created_at=new_workout_out.workout_pool.created_at,
         exercises=new_workout_out.workout_pool.exercises,
+        rest_time=new_workout_out.rest_time,
+        stress_questionnaire_time=new_workout_out.stress_questionnaire_time,
     )
 
 
@@ -181,6 +185,8 @@ async def create_workout_for_group(
         schema_in=schemas.CreateWorkoutInDB(
             workout_pool_id=create_workout_in.workout_pool_id,
             date=create_workout_in.date,
+            rest_time=create_workout_in.rest_time,
+            stress_questionnaire_time=create_workout_in.stress_questionnaire_time,
         ),
     )
 
@@ -225,6 +231,8 @@ async def create_workout_for_group(
         date=new_workout_out.date,
         created_at=new_workout_out.workout_pool.created_at,
         exercises=new_workout_out.workout_pool.exercises,
+        rest_time=new_workout_out.rest_time,
+        stress_questionnaire_time=new_workout_out.stress_questionnaire_time,
     )
 
 
@@ -284,6 +292,8 @@ async def create_workout_for_team(
         schema_in=schemas.CreateWorkoutInDB(
             workout_pool_id=create_workout_in.workout_pool_id,
             date=create_workout_in.date,
+            rest_time=create_workout_in.rest_time,
+            stress_questionnaire_time=create_workout_in.stress_questionnaire_time,
         ),
     )
 
@@ -328,6 +338,8 @@ async def create_workout_for_team(
         date=new_workout_out.date,
         created_at=new_workout_out.workout_pool.created_at,
         exercises=new_workout_out.workout_pool.exercises,
+        rest_time=new_workout_out.rest_time,
+        stress_questionnaire_time=new_workout_out.stress_questionnaire_time,
     )
 
 
@@ -385,6 +397,8 @@ async def get_workouts(
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
+            rest_time=workout_out.rest_time,
+            stress_questionnaire_time=workout_out.stress_questionnaire_time,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -491,6 +505,8 @@ async def get_workouts_by_pool_id(
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
+            rest_time=workout_out.rest_time,
+            stress_questionnaire_time=workout_out.stress_questionnaire_time,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -580,6 +596,8 @@ async def get_workout(
         date=workout_out.date,
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,
+        rest_time=workout_out.rest_time,
+        stress_questionnaire_time=workout_out.stress_questionnaire_time,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -706,6 +724,8 @@ async def get_workouts_for_sportsman(
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
+            rest_time=workout_out.rest_time,
+            stress_questionnaire_time=workout_out.stress_questionnaire_time,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -814,6 +834,8 @@ async def get_workouts_for_group(
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
             group_id=group_id,
+            rest_time=workout_out.rest_time,
+            stress_questionnaire_time=workout_out.stress_questionnaire_time,
         )
         workouts.append(workout_schema)
 
@@ -882,6 +904,8 @@ async def get_workouts_for_team(
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
             team_id=team_out.id,
+            rest_time=workout_out.rest_time,
+            stress_questionnaire_time=workout_out.stress_questionnaire_time,
         )
         workouts.append(workout_schema)
 
@@ -961,6 +985,8 @@ async def update_workout(
         date=workout_out.date,
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,
+        rest_time=workout_out.rest_time,
+        stress_questionnaire_time=workout_out.stress_questionnaire_time,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(

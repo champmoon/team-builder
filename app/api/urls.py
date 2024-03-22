@@ -36,8 +36,8 @@ url.POST("    /sportsman/profile/avatar             ", endpoint=endpoints.sports
 # Trainer Survey
 url.GET("     /trainer/survey                       ", endpoint=endpoints.trainers.surveys.get_survey, docs=docs.trainers.surveys.get_survey)
 url.PATCH("   /trainer/survey                       ", endpoint=endpoints.trainers.surveys.update_survey, docs=docs.trainers.surveys.update_survey)
-url.GET("     /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.get_sportsman_survey, docs=docs.trainers.surveys.get_sportsman_survey)
-url.PATCH("   /trainer/survey/sportsman/{email}     ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey, docs=docs.trainers.surveys.set_update_sportsman_survey)
+url.GET("     /trainer/survey/sportsman             ", endpoint=endpoints.trainers.surveys.get_sportsman_survey, docs=docs.trainers.surveys.get_sportsman_survey)
+url.PATCH("   /trainer/survey/sportsman             ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey, docs=docs.trainers.surveys.set_update_sportsman_survey)
 url.PATCH("   /trainer/survey/team                  ", endpoint=endpoints.trainers.surveys.set_update_team_survey, docs=docs.trainers.surveys.set_update_team_survey)
 
 # Sportsman Survey
@@ -70,14 +70,14 @@ url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sports
 # Trainer Workout
 url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.get_workout)
 url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts)
-url.PATCH("   /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.update_workout)
 url.GET("     /trainer/workouts/pool/{id}           ", endpoint=endpoints.trainers.workouts.get_workouts_by_pool_id)
 url.GET("     /trainer/workouts/sportsman/{email}   ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman)
 url.GET("     /trainer/workouts/group/{id}          ", endpoint=endpoints.trainers.workouts.get_workouts_for_group)
 url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team)
-url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
 url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
+url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
 url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
+url.PATCH("   /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.update_workout)
 url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout)
 
 # Trainer Workouts Pool 

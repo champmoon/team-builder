@@ -391,7 +391,7 @@ get_sportsman_survey: Docs = {
     "summary": "Получение анкеты спортсмена",
     "description": """
     ```
-    Path Params:
+    Query Params:
         email - Email спортсмена(str).
 
     Auth:
@@ -475,7 +475,7 @@ set_update_sportsman_survey: Docs = {
     "summary": "Дать возможность анкеты спортсмена",
     "description": """
     ```
-    Path Params:
+    Query Params:
         email - Email спортсмена(str).
 
     Auth:

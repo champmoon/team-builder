@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Self
 from uuid import UUID
 
-from pydantic import EmailStr, NaiveDatetime, model_validator
+from pydantic import EmailStr, Field, NaiveDatetime, model_validator
 
 from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
@@ -23,12 +23,16 @@ class CreateWorkoutPoolIn(BaseSchema):
 class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
+    rest_time: int = Field(..., gt=0)
+    stress_questionnaire_time: int = Field(..., gt=0)
 
 
 class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
     sportsman_email: EmailStr
     date: NaiveDatetime
+    rest_time: int = Field(..., gt=0)
+    stress_questionnaire_time: int = Field(..., gt=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -41,6 +45,8 @@ class CreateWorkoutForGroupIn(BaseSchema):
     workout_pool_id: UUID
     group_id: UUID
     date: NaiveDatetime
+    rest_time: int = Field(..., gt=0)
+    stress_questionnaire_time: int = Field(..., gt=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -52,6 +58,8 @@ class CreateWorkoutForGroupIn(BaseSchema):
 class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
+    rest_time: int = Field(..., gt=0)
+    stress_questionnaire_time: int = Field(..., gt=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -75,10 +83,22 @@ class UpdateWorkoutPoolIn(BaseSchema):
 
 
 class UpdateWorkoutIn(BaseSchema):
-    date: NaiveDatetime
+    date: NaiveDatetime | None = None
+    rest_time: int | None = Field(None, gt=0)
+    stress_questionnaire_time: int | None = Field(None, gt=0)
 
     @model_validator(mode="after")
-    def check_date(self) -> Self:
-        if self.date <= (now := datetime.utcnow()):
+    def check_at_least(self) -> Self:
+        if self.date and self.date <= (now := datetime.utcnow()):
             raise ValueError(f"date - {self.date} less then now - {now}")
+
+        if not any(
+            (
+                self.date is None,
+                self.rest_time is None,
+                self.stress_questionnaire_time is None,
+            )
+        ):
+            raise ValueError("at least not null")
+
         return self

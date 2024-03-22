@@ -27,9 +27,11 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
     id: UUID
     name: str
     estimated_time: float
-    status: WorkoutsStatusesOut
+    rest_time: int
+    stress_questionnaire_time: int
     date: NaiveDatetime
     created_at: NaiveDatetime
+    status: WorkoutsStatusesOut
     exercises: list[BasicExerciseOut | SupportExerciseOut]
 
 
