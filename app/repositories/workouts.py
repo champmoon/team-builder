@@ -89,6 +89,20 @@ class WorkoutsRepository:
 
         return updated_workout.scalars().one()
 
+    async def reassign(self, id: UUID, workout_pool_id: UUID) -> Workouts:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(workout_pool_id=workout_pool_id)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_workout = await session.execute(stmt)
+            await session.commit()
+
+        return updated_workout.scalars().one()
+
 
 class WorkoutsPoolRepository:
     def __init__(

@@ -68,9 +68,6 @@ url.POST("    /sportsman/groups/outs                ", endpoint=endpoints.sports
 url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sportsmans.groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
 # Trainer Workout
-url.GET("     /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts.get_workout_pool)
-url.GET("     /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts.get_workouts_pool)
-url.POST("    /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts.create_workout_pool)
 url.GET("     /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.get_workout)
 url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts)
 url.PATCH("   /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.update_workout)
@@ -82,9 +79,14 @@ url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.traine
 url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
 url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
 url.DELETE("  /trainer/workouts/{id}                ", endpoint=endpoints.trainers.workouts.delete_workout)
-url.DELETE("  /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts.delete_workout_pool)
 
-test = EndPointRouter()
+# Trainer Workouts Pool 
+url.GET("     /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts_pool.get_workout_pool)
+url.GET("     /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.get_workouts_pool)
+url.POST("    /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.create_workout_pool)
+url.DELETE("  /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts_pool.delete_workout_pool)
+url.PATCH("   /trainer/workouts-pool/{id}           ", endpoint=endpoints.trainers.workouts_pool.update_workout_pool)
+
 
 urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["general_auth"]])
 urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["general_exercises"]])
@@ -95,6 +97,7 @@ urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_ma
 urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.tags_mapper["trainers_groups"]])
 urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
+urls_router.include_router(endpoints.trainers.workouts_pool.router, tags=[docs.tags_mapper["trainers_workouts_pool"]])
 
 urls_router.include_router(endpoints.sportsmans.auth.router, tags=[docs.tags_mapper["sportsmans_auth"]])
 urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])

@@ -27,6 +27,16 @@ class SportsmansWorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().all()
+    
+    async def get_all_by_workout_id(
+        self, workout_id: UUID
+    ) -> Sequence[SportsmansWorkouts]:
+        stmt = select(self.model).where(self.model.workout_id == workout_id)
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()
 
     async def create(self, schema_in: CreateSportsmansWorkoutIn) -> SportsmansWorkouts:
         async with self.session_factory() as session:

@@ -30,6 +30,9 @@ class WorkoutsService:
 
     async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
         return await self.repository.update(id=id, schema_in=schema_in)
+    
+    async def reassign(self, id: UUID, workout_pool_id: UUID) -> Workouts:
+        return await self.repository.reassign(id=id, workout_pool_id=workout_pool_id)
 
 
 class WorkoutsPoolService:

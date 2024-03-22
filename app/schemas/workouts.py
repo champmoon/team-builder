@@ -63,10 +63,13 @@ class CreateWorkoutForTeamIn(BaseSchema):
 class UpdateWorkoutPoolIn(BaseSchema):
     name: str | None = None
     estimated_time: float | None = None
+    exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn] | None = None
 
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
-        if not any((self.name, self.estimated_time)):
+        if not any(
+            (self.name is None, self.estimated_time is None, self.exercises is None)
+        ):
             raise ValueError("at least not null")
         return self
 
@@ -79,4 +82,3 @@ class UpdateWorkoutIn(BaseSchema):
         if self.date <= (now := datetime.utcnow()):
             raise ValueError(f"date - {self.date} less then now - {now}")
         return self
-

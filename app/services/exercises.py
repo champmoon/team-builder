@@ -75,27 +75,23 @@ class ExercisesService:
     async def get_schemas_by_orm_models(
         self,
         exercises_out: Sequence[Exercises],
-    ) -> list[schemas.BasicExerciseOut | schemas.SupportExerciseOut]:
+    ) -> list[schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn]:
         exercises_schemas: list[
-            schemas.BasicExerciseOut | schemas.SupportExerciseOut
+            schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         ] = []
-        exercise_schema: schemas.BasicExerciseOut | schemas.SupportExerciseOut
+        exercise_schema: schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         for exercise_out in exercises_out:
             try:
-                exercise_schema = schemas.BasicExerciseOut(
-                    id=exercise_out.id,
+                exercise_schema = schemas.CreateBasicExerciseIn(
                     type=consts.BasicExercisesTypesEnum(exercise_out.type.type),
                     reps=exercise_out.reps,
                     sets=exercise_out.sets,
                     rest=exercise_out.rest,
-                    order=exercise_out.order,
                 )
-            except ValidationError:
-                exercise_schema = schemas.SupportExerciseOut(
-                    id=exercise_out.id,
+            except (ValidationError, ValueError):
+                exercise_schema = schemas.CreateSupportExerciseIn(
                     type=consts.SupportExercisesTypesEnum(exercise_out.type.type),
                     time=exercise_out.time,
-                    order=exercise_out.order,
                 )
             exercises_schemas.append(exercise_schema)
 
