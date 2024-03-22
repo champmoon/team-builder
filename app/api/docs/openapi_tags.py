@@ -5,17 +5,17 @@ tags_mapper = {
     "trainers_auth": "Тренеры → Регистрация",
     "trainers_profile": "Тренеры → Профиль",
     "trainers_surveys": "Тренеры → Анкета",
-    "trainers_teams": "Тренеры → Команды",
-    "trainers_groups": "Тренеры → Группы",
-    "trainers_workouts": "Тренеры → Тренировки",
+    "trainers_teams": "Тренеры → Команда",
+    "trainers_groups": "Тренеры → Группа",
+    "trainers_workouts": "Тренеры → Тренировка",
     "trainers_workouts_pool": "Тренеры → Программа тренировок",
     #
     "sportsmans_auth": "Спортсмены → Регистрация",
     "sportsmans_profile": "Спортсмены → Профиль",
     "sportsmans_surveys": "Спортсмены → Анкета",
-    "sportsmans_teams": "Спортсмены → Команды",
-    "sportsmans_groups": "Спортсмены → Группы",
-    "sportsmans_workouts": "Спортсмены → Тренировки",
+    "sportsmans_teams": "Спортсмены → Команда",
+    "sportsmans_groups": "Спортсмены → Группа",
+    "sportsmans_workouts": "Спортсмены → Тренировка",
 }
 
 
