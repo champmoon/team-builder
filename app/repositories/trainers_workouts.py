@@ -2,11 +2,14 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
+from pydantic import NaiveDatetime
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TrainersWorkouts
 from app.schemas import CreateTrainerWorkoutIn
+
+from .workouts import Workouts
 
 
 class TrainersWorkoutsRepository:
@@ -19,9 +22,33 @@ class TrainersWorkoutsRepository:
         self.session_factory = session_factory
 
     async def get_all_by_trainer_id(
-        self, trainer_id: UUID
+        self,
+        trainer_id: UUID,
+        offset: int = 0,
+        limit: int = 100,
+        start_date: NaiveDatetime | None = None,
+        end_date: NaiveDatetime | None = None,
     ) -> Sequence[TrainersWorkouts]:
-        stmt = select(self.model).where(self.model.trainer_id == trainer_id)
+        where_start_date: tuple = ()
+        where_end_date: tuple = ()
+
+        if start_date:
+            where_start_date = (Workouts.date >= start_date,)
+
+        if end_date:
+            where_end_date = (Workouts.date <= end_date,)
+
+        stmt = (
+            select(self.model)
+            .join(Workouts, self.model.workout_id == Workouts.id)
+            .where(
+                self.model.trainer_id == trainer_id,
+                *where_start_date,
+                *where_end_date,
+            )
+        )
+
+        stmt = stmt.offset(offset).limit(limit)
 
         async with self.session_factory() as session:
             getted = await session.execute(stmt)

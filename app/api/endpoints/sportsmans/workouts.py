@@ -3,6 +3,7 @@ from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
+from pydantic import NaiveDatetime
 
 from app import consts, schemas
 from app.api import deps
@@ -26,6 +27,10 @@ router = EndPointRouter()
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
 @inject
 async def get_workouts(
+    offset: int = 0,
+    limit: int = 100,
+    start_date: NaiveDatetime | None = None,
+    end_date: NaiveDatetime | None = None,
     self_sportsman: Sportsmans = Depends(deps.self_sportsman),
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
@@ -38,7 +43,11 @@ async def get_workouts(
     ),
 ) -> Any:
     sportsmans_workouts_out = await sportsmans_workouts_service.get_all_by_sportsman_id(
-        sportsman_id=self_sportsman.id
+        sportsman_id=self_sportsman.id,
+        offset=offset,
+        limit=limit,
+        start_date=start_date,
+        end_date=end_date,
     )
     workouts: list[
         schemas.SportsmansSportsmanWorkoutOut
