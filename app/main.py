@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
+import asyncio
+from .cache.listener import listen_redis_key_expired
 from .api.urls import urls_router
 from .conf.settings import settings
 from .containers import wire_containers
@@ -49,6 +50,12 @@ if not settings.DEBUG:
 
     fastapi_logger.handlers = gunicorn_error_logger.handlers
     fastapi_logger.setLevel(gunicorn_logger.level)
+
+
+@app.on_event("startup")
+async def startup_event() -> None:
+    loop = asyncio.get_event_loop()
+    loop.create_task(listen_redis_key_expired())
 
 
 # TODO update workouts/workouts-pool

@@ -44,7 +44,9 @@ services:
     image: redis:7-alpine
     container_name: tb_cache
     env_file: ../.env
-    command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT}
+    command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT} --include /usr/local/etc/redis/redis.conf
+    volumes:
+      - .././redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     networks:
