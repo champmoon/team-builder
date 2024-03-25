@@ -16,3 +16,4 @@ from .trainers import Trainers
 from .trainers_workouts import TrainersWorkouts
 from .workouts import Workouts, WorkoutsPool
 from .workouts_statuses import WorkoutsStatuses
+from .questionnaires import StressQuestionnaires

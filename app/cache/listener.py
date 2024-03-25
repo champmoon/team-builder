@@ -12,3 +12,4 @@ async def listen_redis_key_expired() -> None:
 
     async for msg in pubsub.listen():
         logger.info(f"\nREDIS MESSAGE - {msg}\n")
+

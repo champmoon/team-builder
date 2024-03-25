@@ -1,21 +1,21 @@
 from typing import TypeAlias
 
-from .base_class import create_action
-from .check_confirm_email import CheckConfirmEmailAction, CheckConfirmEmailData
-from .confirm_email import (
+from .base import create_action
+from .auth.check_confirm_email import CheckConfirmEmailAction, CheckConfirmEmailData
+from .auth.confirm_email import (
     ConfirmSportsmanEmailAction,
     ConfirmSportsmanEmailData,
     ConfirmTrainerEmailAction,
     ConfirmTrainerEmailData,
 )
-from .limit_email import LimitEmailAction, LimitEmailData
-from .limit_login import (
+from .auth.limit_email import LimitEmailAction, LimitEmailData
+from .auth.limit_login import (
     LimitLoginAction,
     LimitLoginData,
     LoginLimitExceedException,
 )
-from .reset_email import ResetEmailAction, ResetEmailData
-from .reset_password import ResetPasswordAction, ResetPasswordData
+from .auth.reset_email import ResetEmailAction, ResetEmailData
+from .auth.reset_password import ResetPasswordAction, ResetPasswordData
 
 
 class Actions:

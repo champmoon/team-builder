@@ -17,7 +17,6 @@ class ActionTypes(StrEnum):
     RESET_EMAIL = "reset_email"
     RESET_PASSWORD = "reset_password"
 
-
 class BaseActionData(BaseModel): ...
 
 
@@ -63,10 +62,3 @@ class BaseAction(Generic[BaseActionDataType]):
     async def ttl(self) -> int:
         async with self.connection_factory() as connection:
             return int(await connection.ttl(self.key))
-
-
-def create_action(
-    action_class: Type[BaseAction],
-    connection_factory: Callable[..., AbstractAsyncContextManager[AIORedis]],
-) -> Callable[[str], BaseAction]:
-    return partial(action_class, connection_factory=connection_factory)
