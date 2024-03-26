@@ -5,7 +5,7 @@ DEFAULT_MAIN_DATA = [
         "key": "gender",
         "label": "Пол",
         "type": "select",
-        "options": ["Мужской", "Женский"],
+        "options": ["Мужской", "Женский", "Боинг Б-52 «Стратофортресс»"],
         "required": True,
     },
     {
@@ -36,121 +36,133 @@ DEFAULT_MAIN_DATA = [
 
 DEFAULT_ADD_DATA = [
     {
+        "key": "heartrate",
+        "label": "Средняя частота сердцебиения",
+        "type": "number",
+        "required": True,
+    },
+    {
         "label": "Физическая подготовка",
-        "type": "table",
-        "rowsLength": 6,
-        "rows": [
-            "Норматив",
-            "Жим лежа(кг)",
-            "Приседания(кг)",
-            "10м(с)",
-            "30м(с)",
-            "Бронко",
+        "type": "groups",
+        "groups": [
+            {
+                "label": "Жим лежа",
+                "fields": [
+                    {
+                        "key": "result",
+                        "label": "Результат актуальный",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "key": "force",
+                        "label": "Относил. Сила",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "label": "Норма World Class",
+                        "type": "info",
+                        "value": "> 1.4",
+                    },
+                ],
+            },
+            {
+                "label": "Приседания (кг)",
+                "fields": [
+                    {
+                        "key": "result",
+                        "label": "Результат актуальный",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "key": "force",
+                        "label": "Относил. Сила",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "label": "Норма World Class",
+                        "type": "info",
+                        "value": "> 1.7",
+                    },
+                ],
+            },
+            {
+                "label": "10м (с)",
+                "fields": [
+                    {
+                        "key": "result",
+                        "label": "Результат актуальный",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "key": "force",
+                        "label": "Относил. Сила",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "label": "Норма World Class",
+                        "type": "info",
+                        "value": "Нап. < 1.7, Защ. < 1.6",
+                    },
+                ],
+            },
+            {
+                "label": "30м (с)",
+                "fields": [
+                    {
+                        "key": "result",
+                        "label": "Результат актуальный",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "key": "force",
+                        "label": "Относил. Сила",
+                        "type": "number",
+                        "required": True,
+                    },
+                    {
+                        "label": "Норма World Class",
+                        "type": "info",
+                        "value": "Нап. < 4.2, Защ. < 4.0",
+                    },
+                ],
+            },
+            {
+                "label": "Бронко (мин)",
+                "fields": [
+                    {
+                        "key": "result",
+                        "label": "Результат актуальный",
+                        "type": "time",
+                        "required": True,
+                    },
+                    {
+                        "key": "force",
+                        "label": "Относил. Сила",
+                        "type": "time",
+                        "required": True,
+                    },
+                    {
+                        "label": "Норма World Class",
+                        "type": "info",
+                        "value": "Нап. < 5:00, Защ. < 4:40",
+                    },
+                ],
+            },
         ],
-        "columnsLength": 4,
-        "columns": ["Норматив", "Результат актуальный", "Относил. Сила", "Норма"],
-        "cells": [
-            {
-                "key": "press__current",
-                "rowIndex": 1,
-                "columnIndex": 1,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "key": "press__relative",
-                "rowIndex": 1,
-                "columnIndex": 2,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "rowIndex": 1,
-                "columnIndex": 3,
-                "type": "info",
-                "placeholder": ">1.4",
-            },
-            {
-                "key": "squat__current",
-                "rowIndex": 2,
-                "columnIndex": 1,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "key": "squat__relative",
-                "rowIndex": 2,
-                "columnIndex": 2,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "rowIndex": 2,
-                "columnIndex": 3,
-                "type": "info",
-                "placeholder": ">1.7",
-            },
-            {
-                "key": "ten__current",
-                "rowIndex": 3,
-                "columnIndex": 1,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "key": "ten__relative",
-                "rowIndex": 3,
-                "columnIndex": 2,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "rowIndex": 3,
-                "columnIndex": 3,
-                "type": "info",
-                "placeholder": "Нап(Forwards). <1,70 Защит(Backs) <1,60",
-            },
-            {
-                "key": "thirty__current",
-                "rowIndex": 4,
-                "columnIndex": 1,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "key": "thirty__relative",
-                "rowIndex": 4,
-                "columnIndex": 2,
-                "type": "number",
-                "required": True,
-            },
-            {
-                "rowIndex": 4,
-                "columnIndex": 3,
-                "type": "info",
-                "placeholder": "Нап(Forwards). <4,20 Защит(Backs) <4,00",
-            },
-            {
-                "key": "bron__current",
-                "rowIndex": 5,
-                "columnIndex": 1,
-                "type": "time",
-                "required": True,
-            },
-            {
-                "key": "bron__relative",
-                "rowIndex": 5,
-                "columnIndex": 2,
-                "type": "time",
-                "required": True,
-            },
-            {
-                "rowIndex": 5,
-                "columnIndex": 3,
-                "type": "info",
-                "placeholder": "Нап(Forwards). <5:00 Защит(Backs) <4:40",
-            },
-        ],
+    },
+    {
+        "key": "sport",
+        "label": "Спортивная подготовка",
+        "type": "select",
+        "options": ["Спортивная подготовка", "Личная подготовка"],
+        "required": True,
     },
 ]
 
