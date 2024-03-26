@@ -62,7 +62,7 @@ DEFAULT_ADD_DATA = [
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info1",
+                        "type": "info",
                         "value": "> 1.4",
                     },
                 ],
@@ -84,7 +84,7 @@ DEFAULT_ADD_DATA = [
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info2",
+                        "type": "info",
                         "value": "> 1.7",
                     },
                 ],
@@ -106,7 +106,7 @@ DEFAULT_ADD_DATA = [
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info3",
+                        "type": "info",
                         "value": "Нап. < 1.7, Защ. < 1.6",
                     },
                 ],
@@ -128,7 +128,7 @@ DEFAULT_ADD_DATA = [
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info4",
+                        "type": "info",
                         "value": "Нап. < 4.2, Защ. < 4.0",
                     },
                 ],
@@ -150,7 +150,7 @@ DEFAULT_ADD_DATA = [
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info5",
+                        "type": "info",
                         "value": "Нап. < 5:00, Защ. < 4:40",
                     },
                 ],
