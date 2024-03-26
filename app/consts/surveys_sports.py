@@ -49,20 +49,20 @@ DEFAULT_ADD_DATA = [
                 "label": "Жим лежа",
                 "fields": [
                     {
-                        "key": "result",
+                        "key": "result1",
                         "label": "Результат актуальный",
                         "type": "number",
                         "required": True,
                     },
                     {
-                        "key": "force",
+                        "key": "force1",
                         "label": "Относил. Сила",
                         "type": "number",
                         "required": True,
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info",
+                        "type": "info1",
                         "value": "> 1.4",
                     },
                 ],
@@ -71,20 +71,20 @@ DEFAULT_ADD_DATA = [
                 "label": "Приседания (кг)",
                 "fields": [
                     {
-                        "key": "result",
+                        "key": "result2",
                         "label": "Результат актуальный",
                         "type": "number",
                         "required": True,
                     },
                     {
-                        "key": "force",
+                        "key": "force2",
                         "label": "Относил. Сила",
                         "type": "number",
                         "required": True,
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info",
+                        "type": "info2",
                         "value": "> 1.7",
                     },
                 ],
@@ -93,20 +93,20 @@ DEFAULT_ADD_DATA = [
                 "label": "10м (с)",
                 "fields": [
                     {
-                        "key": "result",
+                        "key": "result3",
                         "label": "Результат актуальный",
                         "type": "number",
                         "required": True,
                     },
                     {
-                        "key": "force",
+                        "key": "force3",
                         "label": "Относил. Сила",
                         "type": "number",
                         "required": True,
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info",
+                        "type": "info3",
                         "value": "Нап. < 1.7, Защ. < 1.6",
                     },
                 ],
@@ -115,20 +115,20 @@ DEFAULT_ADD_DATA = [
                 "label": "30м (с)",
                 "fields": [
                     {
-                        "key": "result",
+                        "key": "result4",
                         "label": "Результат актуальный",
                         "type": "number",
                         "required": True,
                     },
                     {
-                        "key": "force",
+                        "key": "force4",
                         "label": "Относил. Сила",
                         "type": "number",
                         "required": True,
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info",
+                        "type": "info4",
                         "value": "Нап. < 4.2, Защ. < 4.0",
                     },
                 ],
@@ -137,20 +137,20 @@ DEFAULT_ADD_DATA = [
                 "label": "Бронко (мин)",
                 "fields": [
                     {
-                        "key": "result",
+                        "key": "result5",
                         "label": "Результат актуальный",
                         "type": "time",
                         "required": True,
                     },
                     {
-                        "key": "force",
+                        "key": "force5",
                         "label": "Относил. Сила",
                         "type": "time",
                         "required": True,
                     },
                     {
                         "label": "Норма World Class",
-                        "type": "info",
+                        "type": "info5",
                         "value": "Нап. < 5:00, Защ. < 4:40",
                     },
                 ],
