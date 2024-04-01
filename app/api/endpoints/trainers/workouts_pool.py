@@ -56,18 +56,10 @@ async def create_workout_pool(
     return workout_pool_out
 
 
-@router(
-    response_model=schemas.TrainerWorkoutPoolOut,
-    status_code=status.HTTP_200_OK,
-)
-@deps.auth_required(users=[UsersTypes.TRAINER])
-@inject
 async def get_workout_pool(
     id: UUID,
-    self_trainer: Trainers = Depends(deps.self_trainer),
-    workouts_pool_service: Services.workouts_pool = Depends(
-        Provide[Containers.workouts_pool.service],
-    ),
+    self_trainer: Trainers,
+    workouts_pool_service: Services.workouts_pool,
 ) -> Any:
     workout_pool_out = await workouts_pool_service.get_by_id(id=id)
     if not workout_pool_out or workout_pool_out.trainer_id != self_trainer.id:
@@ -79,17 +71,24 @@ async def get_workout_pool(
 
 
 @router(
-    response_model=list[schemas.TrainerWorkoutPoolOut],
+    response_model=list[schemas.TrainerWorkoutPoolOut] | schemas.TrainerWorkoutPoolOut,
     status_code=status.HTTP_200_OK,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def get_workouts_pool(
+    id: UUID | None = None,
     self_trainer: Trainers = Depends(deps.self_trainer),
     workouts_pool_service: Services.workouts_pool = Depends(
         Provide[Containers.workouts_pool.service],
     ),
 ) -> Any:
+    if id:
+        return await get_workout_pool(
+            id=id,
+            self_trainer=self_trainer,
+            workouts_pool_service=workouts_pool_service,
+        )
     return await workouts_pool_service.get_by_trainer_id(trainer_id=self_trainer.id)
 
 

@@ -1,7 +1,6 @@
 import json
 from contextlib import AbstractAsyncContextManager
 from enum import StrEnum
-from functools import partial
 from typing import Callable, Generic, Type, TypeVar
 
 from pydantic import BaseModel
@@ -16,6 +15,7 @@ class ActionTypes(StrEnum):
     LIMIT_LOGIN = "limit_login"
     RESET_EMAIL = "reset_email"
     RESET_PASSWORD = "reset_password"
+
 
 class BaseActionData(BaseModel): ...
 

@@ -1,6 +1,5 @@
 from typing import TypeAlias
 
-from .base import create_action
 from .auth.check_confirm_email import CheckConfirmEmailAction, CheckConfirmEmailData
 from .auth.confirm_email import (
     ConfirmSportsmanEmailAction,
@@ -16,6 +15,7 @@ from .auth.limit_login import (
 )
 from .auth.reset_email import ResetEmailAction, ResetEmailData
 from .auth.reset_password import ResetPasswordAction, ResetPasswordData
+from .base import create_action
 
 
 class Actions:

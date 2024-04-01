@@ -1,10 +1,12 @@
+import asyncio
+
 from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-import asyncio
-from .cache.listener import listen_redis_key_expired
+
 from .api.urls import urls_router
+from .cache.listener import listen_redis_key_expired
 from .conf.settings import settings
 from .containers import wire_containers
 from .docs import app_docs
