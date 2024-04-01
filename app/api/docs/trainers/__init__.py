@@ -21,11 +21,8 @@ from .teams import (
 )
 from .workouts import (
     create_workout_for_group,
-    create_workout_for_sportsman,
     create_workout_for_team,
-    delete_workout,
-    get_workout,
-    get_workouts,
+    create_workout_for_sportsman,
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,

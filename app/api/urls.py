@@ -68,12 +68,12 @@ url.POST("    /sportsman/groups/outs                ", endpoint=endpoints.sports
 url.POST("    /sportsman/groups/out/{id}            ", endpoint=endpoints.sportsmans.groups.out_off_group, docs=docs.sportsmans.out_off_group)
 
 # Trainer Workout
-url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team)
-url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team)
-url.GET("     /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.get_workouts_for_group)
-url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group)
-url.GET("     /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman)
-url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman)
+url.GET("     /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
+url.POST("    /trainer/workouts/team                ", endpoint=endpoints.trainers.workouts.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
+url.GET("     /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.get_workouts_for_group, docs=docs.trainers.get_workouts_for_group)
+url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
+url.GET("     /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
+url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
 url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts)
 url.GET("     /trainer/workouts/pool                ", endpoint=endpoints.trainers.workouts.get_workouts_by_pool_id)
 url.PATCH("   /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.update_workout)
