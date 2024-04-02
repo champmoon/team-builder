@@ -16,6 +16,7 @@ tags_mapper = {
     "sportsmans_teams": "Спортсмены → Команда",
     "sportsmans_groups": "Спортсмены → Группа",
     "sportsmans_workouts": "Спортсмены → Тренировка",
+    "sportsmans_stress_questionnaires": "Cпортсмены → Опросник по нагрузке",
 }
 
 

@@ -164,8 +164,8 @@ async def update_workout_pool(
             past_workouts_cnt += 1
         else:
             future_workouts_outs.append(workout_out)
-    if len(future_workouts_outs) == 0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workouts")
+    # if len(future_workouts_outs) == 0:
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workouts")
 
     new_workout_pool_out = await workouts_pool_service.create(
         schema_in=schemas.CreateWorkoutPoolInDB(

@@ -68,11 +68,8 @@ async def create_workout_for_sportsman(
         )
 
     sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
-    if not sportsman_out:
+    if not sportsman_out or sportsman_out.team_id != team_out.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
-
-    if sportsman_out.team_id != team_out.id:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     new_workout_out = await workouts_service.create(
         schema_in=schemas.CreateWorkoutInDB(
@@ -129,7 +126,7 @@ async def create_workout_for_sportsman(
 
 
 @router(
-    response_model=schemas.TrainerWorkoutOut,
+    response_model=schemas.TrainerGroupWorkoutOut,
     status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
@@ -218,7 +215,7 @@ async def create_workout_for_group(
         )
     )
 
-    return schemas.TrainerWorkoutOut(
+    return schemas.TrainerGroupWorkoutOut(
         id=new_workout_out.id,
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
@@ -233,11 +230,12 @@ async def create_workout_for_group(
         exercises=new_workout_out.workout_pool.exercises,
         rest_time=new_workout_out.rest_time,
         stress_questionnaire_time=new_workout_out.stress_questionnaire_time,
+        group_id=group_id,
     )
 
 
 @router(
-    response_model=schemas.TrainerWorkoutOut,
+    response_model=schemas.TrainerTeamWorkoutOut,
     status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
@@ -325,7 +323,7 @@ async def create_workout_for_team(
         )
     )
 
-    return schemas.TrainerWorkoutOut(
+    return schemas.TrainerTeamWorkoutOut(
         id=new_workout_out.id,
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
@@ -340,6 +338,7 @@ async def create_workout_for_team(
         exercises=new_workout_out.workout_pool.exercises,
         rest_time=new_workout_out.rest_time,
         stress_questionnaire_time=new_workout_out.stress_questionnaire_time,
+        team_id=team_out.id,
     )
 
 
@@ -661,7 +660,7 @@ async def get_workouts_by_pool_id(
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def get_workouts_for_sportsman(
-    sportsman_email_in: EmailStr,
+    email: EmailStr,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
@@ -682,18 +681,15 @@ async def get_workouts_for_sportsman(
         Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email_in)
+    sportsman_out = await sportsmans_service.get_by_email(email=email)
     if not sportsman_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out:
+    if not team_out or sportsman_out.team_id != team_out.id:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="_team must exist"
         )
-
-    if sportsman_out.team_id != team_out.id:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
     s_workouts_out = await sportsmans_workouts_service.get_all_by_sportsman_id(
         sportsman_id=sportsman_out.id

@@ -24,9 +24,16 @@ from .workouts import (
     create_workout_for_sportsman,
     create_workout_for_team,
     delete_workout,
-    get_workout,
     get_workouts,
+    get_workouts_by_pool_id,
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,
+    update_workout,
+)
+from .workouts_pool import (
+    create_workout_pool,
+    delete_workout_pool,
+    get_workouts_pool,
+    update_workout_pool,
 )

@@ -16,6 +16,7 @@ from .auth.limit_login import (
 from .auth.reset_email import ResetEmailAction, ResetEmailData
 from .auth.reset_password import ResetPasswordAction, ResetPasswordData
 from .base import create_action
+from .questionnaires.stress import StressQuestionnaireAction
 
 
 class Actions:
@@ -26,6 +27,8 @@ class Actions:
     reset_email: TypeAlias = ResetEmailAction
     limit_email: TypeAlias = LimitEmailAction
     reset_password: TypeAlias = ResetPasswordAction
+
+    stress_questionnaire: TypeAlias = StressQuestionnaireAction
 
 
 class Data:
