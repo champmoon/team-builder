@@ -1,4 +1,3 @@
-import json
 from contextlib import AbstractAsyncContextManager
 from typing import Callable
 
@@ -38,7 +37,7 @@ class StressQuestionnaireAction:
         shift_len = len(self.sportsman_key_match) - 1
         questionnaire_ids = []
         async for qs_math in all_qs_mathes:
-            questionnaire_ids.append(json.loads(qs_math)[shift_len:])
+            questionnaire_ids.append(qs_math.decode()[shift_len:])
 
         return questionnaire_ids
 
