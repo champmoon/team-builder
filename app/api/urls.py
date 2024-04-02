@@ -74,20 +74,20 @@ url.GET("     /trainer/workouts/group               ", endpoint=endpoints.traine
 url.POST("    /trainer/workouts/group               ", endpoint=endpoints.trainers.workouts.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
 url.GET("     /trainer/workouts/sportsman           ", endpoint=endpoints.trainers.workouts.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
 url.POST("    /trainer/workouts/individual          ", endpoint=endpoints.trainers.workouts.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
-url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts)
-url.GET("     /trainer/workouts/pool                ", endpoint=endpoints.trainers.workouts.get_workouts_by_pool_id)
-url.PATCH("   /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.update_workout)
-url.DELETE("  /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.delete_workout)
+url.GET("     /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.get_workouts, docs=docs.trainers.get_workouts)
+url.GET("     /trainer/workouts/pool                ", endpoint=endpoints.trainers.workouts.get_workouts_by_pool_id, docs=docs.trainers.get_workouts_by_pool_id)
+url.PATCH("   /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.update_workout, docs=docs.trainers.update_workout)
+url.DELETE("  /trainer/workouts                     ", endpoint=endpoints.trainers.workouts.delete_workout, docs=docs.trainers.delete_workout)
 
 # Trainer Workouts Pool 
-url.GET("     /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.get_workouts_pool)
-url.POST("    /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.create_workout_pool)
-url.DELETE("  /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.delete_workout_pool)
-url.PATCH("   /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.update_workout_pool)
+url.GET("     /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.get_workouts_pool, docs=docs.trainers.get_workouts_pool)
+url.POST("    /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.create_workout_pool, docs=docs.trainers.create_workout_pool)
+url.DELETE("  /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.delete_workout_pool, docs=docs.trainers.delete_workout_pool)
+url.PATCH("   /trainer/workouts-pool                ", endpoint=endpoints.trainers.workouts_pool.update_workout_pool, docs=docs.trainers.update_workout_pool)
 
 # Sportsman Workouts
-url.GET("     /sportsman/workouts/{id}              ", endpoint=endpoints.sportsmans.workouts.get_workout)
-url.GET("     /sportsman/workouts                   ", endpoint=endpoints.sportsmans.workouts.get_workouts)
+url.GET("     /sportsman/workouts/{id}              ", endpoint=endpoints.sportsmans.workouts.get_workout, docs=docs.sportsmans.get_workout)
+url.GET("     /sportsman/workouts                   ", endpoint=endpoints.sportsmans.workouts.get_workouts, docs=docs.sportsmans.get_workouts)
 
 
 
