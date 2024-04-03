@@ -30,6 +30,14 @@ from .groups import (
     SportsmanToGroupIn,
     UpdateGroupIn,
 )
+from .questinnaires import (
+    CreateHealthQuestionnaireIn,
+    CreateStressQuestionnaireIn,
+    HealthQuestionnaireOut,
+    StressQuestionnaireOut,
+    UpdateHealthQuestionnaireIn,
+    UpdateStressQuestionnaireIn,
+)
 from .sessions import CreateSessionIn
 from .sportsmans import (
     CreateSportsmanIn,

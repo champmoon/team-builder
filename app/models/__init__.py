@@ -5,7 +5,7 @@ from .admins import Admins
 from .exercises import Exercises
 from .exercises_types import ExercisesTypes
 from .groups import Groups
-from .questionnaires import StressQuestionnaires
+from .questionnaires import HealthQuestionnaires, StressQuestionnaires
 from .sessions import Sessions
 from .sportsmans import Sportsmans
 from .sportsmans_groups import SportsmansGroups
