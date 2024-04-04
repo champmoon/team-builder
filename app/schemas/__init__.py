@@ -55,6 +55,7 @@ from .sportsmans_workouts import (
     SportsmansSportsmanWorkoutOut,
     SportsmansTeamWorkoutOut,
     SportsmansWorkoutOut,
+    UpdateSportsmansWorkoutIn,
 )
 from .surveys import (
     SportsmanAnswerOut,

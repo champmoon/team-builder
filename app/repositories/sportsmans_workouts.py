@@ -3,11 +3,14 @@ from typing import Callable, Sequence, Type
 from uuid import UUID
 
 from pydantic import NaiveDatetime
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import SportsmansWorkouts
-from app.schemas.sportsmans_workouts import CreateSportsmansWorkoutIn
+from app.schemas.sportsmans_workouts import (
+    CreateSportsmansWorkoutIn,
+    UpdateSportsmansWorkoutIn,
+)
 
 from .workouts import Workouts
 
@@ -78,13 +81,34 @@ class SportsmansWorkoutsRepository:
 
         return getted.scalars().first()
 
-    async def create(self, schema_in: CreateSportsmansWorkoutIn) -> SportsmansWorkouts:
+    async def create(
+        self, schema_in: CreateSportsmansWorkoutIn, status_id: UUID
+    ) -> SportsmansWorkouts:
         async with self.session_factory() as session:
             created_sportsman_workout = await session.execute(
                 insert(self.model)
-                .values(**schema_in.model_dump())
+                .values(**schema_in.model_dump(), status_id=status_id)
                 .returning(self.model)
             )
             await session.commit()
 
         return created_sportsman_workout.scalars().one()
+
+    async def update_status(
+        self, schema_in: UpdateSportsmansWorkoutIn, status_id: UUID
+    ) -> SportsmansWorkouts:
+        stmt = (
+            update(self.model)
+            .where(
+                self.model.sportsman_id == schema_in.sportsman_id,
+                self.model.workout_id == schema_in.workout_id,
+            )
+            .values(status_id=status_id)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_sportsman = await session.execute(stmt)
+            await session.commit()
+
+        return updated_sportsman.scalars().one()

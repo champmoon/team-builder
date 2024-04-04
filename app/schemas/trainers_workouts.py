@@ -12,7 +12,6 @@ from .workouts_statuses import WorkoutsStatusesOut
 class CreateTrainerWorkoutIn(BaseSchema):
     trainer_id: UUID
     workout_id: UUID
-    status_id: UUID
 
 
 class TrainerWorkoutPoolOut(BaseSchemaFromDB):

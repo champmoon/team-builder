@@ -406,10 +406,6 @@ add_sportsman_to_group: Docs = {
                 }
             },
         },
-        409: {
-            "description": "Cпортсмен не состоит в команде тренера",
-            "content": {"application/json": {"example": {"detail": "sportsman"}}},
-        },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
             "content": {

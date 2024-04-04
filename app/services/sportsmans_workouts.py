@@ -4,13 +4,19 @@ from uuid import UUID
 from pydantic import NaiveDatetime
 
 from app import schemas
+from app.consts import WorkoutsStatusesEnum
 from app.models import SportsmansWorkouts
-from app.repositories import SportsmansWorkoutsRepository
+from app.repositories import SportsmansWorkoutsRepository, WorkoutsStatusesRepository
 
 
 class SportsmansWorkoutsService:
-    def __init__(self, repository: SportsmansWorkoutsRepository) -> None:
+    def __init__(
+        self,
+        repository: SportsmansWorkoutsRepository,
+        statuses_repository: WorkoutsStatusesRepository,
+    ) -> None:
         self.repository = repository
+        self.statuses_repository = statuses_repository
 
     async def get_all_by_sportsman_id(
         self,
@@ -40,7 +46,41 @@ class SportsmansWorkoutsService:
             workout_id=workout_id, sportsman_id=sportsman_id
         )
 
-    async def create(
+    async def planned(
         self, schema_in: schemas.CreateSportsmansWorkoutIn
     ) -> SportsmansWorkouts:
-        return await self.repository.create(schema_in=schema_in)
+        workout_status_out = await self.statuses_repository.get_by_status(
+            status=WorkoutsStatusesEnum.PLANNED
+        )
+        assert workout_status_out is not None
+
+        return await self.repository.create(
+            schema_in=schema_in,
+            status_id=workout_status_out.id,
+        )
+
+    async def in_progress(
+        self, schema_in: schemas.UpdateSportsmansWorkoutIn
+    ) -> SportsmansWorkouts:
+        workout_status_out = await self.statuses_repository.get_by_status(
+            status=WorkoutsStatusesEnum.IN_PROGRESS
+        )
+        assert workout_status_out is not None
+
+        return await self.repository.update_status(
+            schema_in=schema_in,
+            status_id=workout_status_out.id,
+        )
+
+    async def completed(
+        self, schema_in: schemas.UpdateSportsmansWorkoutIn
+    ) -> SportsmansWorkouts:
+        workout_status_out = await self.statuses_repository.get_by_status(
+            status=WorkoutsStatusesEnum.COMPLETED
+        )
+        assert workout_status_out is not None
+
+        return await self.repository.update_status(
+            schema_in=schema_in,
+            status_id=workout_status_out.id,
+        )

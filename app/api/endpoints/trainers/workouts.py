@@ -38,9 +38,6 @@ async def create_workout_for_sportsman(
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
     ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
-    ),
     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
         Provide[Containers.sportsmans_workouts.service]
     ),
@@ -80,23 +77,17 @@ async def create_workout_for_sportsman(
         ),
     )
 
-    workout_status_out = await workouts_statuses_service.get_by_status(
-        status=consts.WorkoutsStatusesEnum.PLANNED
-    )
-
-    await sportsmans_workouts_service.create(
+    await sportsmans_workouts_service.planned(
         schema_in=schemas.CreateSportsmansWorkoutIn(
             sportsman_id=sportsman_out.id,
             workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
         )
     )
 
-    await trainers_workouts_service.create(
+    trainer_workout_out = await trainers_workouts_service.planned(
         schema_in=schemas.CreateTrainerWorkoutIn(
             trainer_id=self_trainer.id,
             workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
         )
     )
 
@@ -112,9 +103,9 @@ async def create_workout_for_sportsman(
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
             description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(workout_status_out.status)
+                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
             ],
         ),
         date=new_workout_out.date,
@@ -142,9 +133,6 @@ async def create_workout_for_group(
     ),
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
-    ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
     ),
     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
         Provide[Containers.sportsmans_workouts.service]
@@ -187,24 +175,18 @@ async def create_workout_for_group(
         ),
     )
 
-    workout_status_out = await workouts_statuses_service.get_by_status(
-        status=consts.WorkoutsStatusesEnum.PLANNED
-    )
-
     for sportsman_out in sportsmans_out:
-        await sportsmans_workouts_service.create(
+        await sportsmans_workouts_service.planned(
             schema_in=schemas.CreateSportsmansWorkoutIn(
                 sportsman_id=sportsman_out.sportsman_id,
                 workout_id=new_workout_out.id,
-                status_id=workout_status_out.id,
             )
         )
 
-    await trainers_workouts_service.create(
+    trainer_workout_out = await trainers_workouts_service.planned(
         schema_in=schemas.CreateTrainerWorkoutIn(
             trainer_id=self_trainer.id,
             workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
         )
     )
 
@@ -220,9 +202,9 @@ async def create_workout_for_group(
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
             description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(workout_status_out.status)
+                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
             ],
         ),
         date=new_workout_out.date,
@@ -248,9 +230,6 @@ async def create_workout_for_team(
     ),
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
-    ),
-    workouts_statuses_service: Services.workouts_statuses = Depends(
-        Provide[Containers.workouts_statuses.service]
     ),
     sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
         Provide[Containers.sportsmans_workouts.service]
@@ -295,24 +274,18 @@ async def create_workout_for_team(
         ),
     )
 
-    workout_status_out = await workouts_statuses_service.get_by_status(
-        status=consts.WorkoutsStatusesEnum.PLANNED
-    )
-
     for sportsman_out in sportsmans_out:
-        await sportsmans_workouts_service.create(
+        await sportsmans_workouts_service.planned(
             schema_in=schemas.CreateSportsmansWorkoutIn(
                 sportsman_id=sportsman_out.id,
                 workout_id=new_workout_out.id,
-                status_id=workout_status_out.id,
             )
         )
 
-    await trainers_workouts_service.create(
+    trainer_workout_out = await trainers_workouts_service.planned(
         schema_in=schemas.CreateTrainerWorkoutIn(
             trainer_id=self_trainer.id,
             workout_id=new_workout_out.id,
-            status_id=workout_status_out.id,
         )
     )
 
@@ -328,9 +301,9 @@ async def create_workout_for_team(
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(workout_status_out.status),
+            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
             description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(workout_status_out.status)
+                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
             ],
         ),
         date=new_workout_out.date,
@@ -681,15 +654,16 @@ async def get_workouts_for_sportsman(
         Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
-    sportsman_out = await sportsmans_service.get_by_email(email=email)
-    if not sportsman_out:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
-
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
-    if not team_out or sportsman_out.team_id != team_out.id:
+    if not team_out:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="_team must exist"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_team must exist",
         )
+
+    sportsman_out = await sportsmans_service.get_by_email(email=email)
+    if not sportsman_out or sportsman_out.team_id != team_out.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     s_workouts_out = await sportsmans_workouts_service.get_all_by_sportsman_id(
         sportsman_id=sportsman_out.id

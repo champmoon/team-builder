@@ -78,11 +78,13 @@ class TrainersWorkoutsRepository:
 
         return getted.scalars().first()
 
-    async def create(self, schema_in: CreateTrainerWorkoutIn) -> TrainersWorkouts:
+    async def create(
+        self, schema_in: CreateTrainerWorkoutIn, status_id: UUID
+    ) -> TrainersWorkouts:
         async with self.session_factory() as session:
             created_trainer_workout = await session.execute(
                 insert(self.model)
-                .values(**schema_in.model_dump())
+                .values(**schema_in.model_dump(), status_id=status_id)
                 .returning(self.model)
             )
             await session.commit()

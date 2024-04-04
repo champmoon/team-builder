@@ -41,15 +41,19 @@ class StressQuestionnaireAction:
 
         return questionnaire_ids
 
-    # async def set(self, new_action_data: BaseActionDataType) -> None:
-    #     async with self.connection_factory() as connection:
-    #         await connection.set(
-    #             self.key, new_action_data.model_dump_json(), ex=self.timeout
-    #         )
+    async def set(self, timeout: int) -> None:
+        async with self.connection_factory() as connection:
+            await connection.set(self.full_key, self.full_key, ex=timeout)
 
-    # async def rmv(self) -> None:
-    #     async with self.connection_factory() as connection:
-    #         await connection.delete(self.key)
+    async def rmv(self) -> None:
+        async with self.connection_factory() as connection:
+            await connection.delete(self.full_key)
+
+    async def is_set(self) -> bool:
+        async with self.connection_factory() as connection:
+            raw_data = await connection.get(self.full_key)
+
+        return True if raw_data else False
 
     # async def ttl(self) -> int:
     #     async with self.connection_factory() as connection:

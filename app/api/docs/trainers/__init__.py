@@ -11,6 +11,11 @@ from .groups import (
     update_group,
 )
 from .profile import get_profile, update_profile, upload_avatar
+from .stress_questionnaires import (
+    get_all_stress_questionnaires_by_sportsman,
+    get_all_stress_questionnaires_by_workout,
+    get_stress_questionnaire,
+)
 from .surveys import get_survey, update_survey
 from .teams import (
     add_sportsman_to_team,

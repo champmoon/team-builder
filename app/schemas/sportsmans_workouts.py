@@ -12,8 +12,12 @@ from .workouts_statuses import WorkoutsStatusesOut
 class CreateSportsmansWorkoutIn(BaseSchema):
     sportsman_id: UUID
     workout_id: UUID
-    status_id: UUID
     execution_time: float | None = None
+
+
+class UpdateSportsmansWorkoutIn(BaseSchema):
+    sportsman_id: UUID
+    workout_id: UUID
 
 
 class SportsmansWorkoutOut(BaseSchemaFromDB):
