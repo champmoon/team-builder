@@ -182,7 +182,7 @@ async def add_sportsman_to_group(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     if sportsman_out.team_id != team_out.id:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
     await sportsmans_groups_service.create(
         schema_in=schemas.CreateSportsmanGroupIn(

@@ -1,1 +1,10 @@
-from . import auth, groups, profile, surveys, teams, workouts, workouts_pool
+from . import (
+    auth,
+    groups,
+    profile,
+    stress_questionnaires,
+    surveys,
+    teams,
+    workouts,
+    workouts_pool,
+)
