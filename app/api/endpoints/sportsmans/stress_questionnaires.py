@@ -15,7 +15,7 @@ router = EndPointRouter()
 
 
 @router(
-    response_model=list[schemas.GroupOut],
+    response_model=list[schemas.StressQuestionnaireOut],
     status_code=status.HTTP_200_OK,
 )
 @inject
@@ -26,6 +26,6 @@ async def get_active_stress_questionnaires(
         Provide[Containers.stress_questionnaires.service],
     ),
 ) -> Any:
-    await stress_questionnaires_service.get_active_stress_questionnaires(
+    return await stress_questionnaires_service.get_active_stress_questionnaires(
         sportsman_id=self_sportsman.id
     )
