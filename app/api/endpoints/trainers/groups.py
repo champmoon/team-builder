@@ -132,10 +132,20 @@ async def delete_group(
     groups_service: Services.groups = Depends(
         Provide[Containers.groups.service],
     ),
+    workouts_service: Services.workouts = Depends(
+        Provide[Containers.workouts.service],
+    ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
 ) -> Any:
     group_out = await groups_service.get_by_id(id=id)
     if not group_out or group_out.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
+
+    g_workouts_out = await tgs_workouts_service.get_all_by_group_id(group_id=id)
+    for g_workout_out in g_workouts_out:
+        await workouts_service.delete(id=g_workout_out.workout_id)
 
     await groups_service.delete(id=id)
     return group_out

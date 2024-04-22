@@ -60,10 +60,8 @@ async def startup_event() -> None:
     loop.create_task(listen_redis_key_expired())
 
 
-# TODO update workouts/workouts-pool
-# TODO create workouts api for sportsman
-# TODO make trainers -> sportsmans api
-
+# TODO AttributeError: module 'bcrypt' has no attribute '__about__'
+# TODO size upload file
 # TODO when sportsman added to group, group workout should be on new sportsman
 # TODO make workouts statuses api
 # TODO delete workouts when deletinig group, sportsman from team
