@@ -16,4 +16,3 @@ WORKOUTS_STATUSES_DESC = {
     WorkoutsStatusesEnum.ACTIVE: "Активна",
     WorkoutsStatusesEnum.CANCELED: "Отменена",
 }
-  
