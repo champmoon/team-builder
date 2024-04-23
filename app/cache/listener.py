@@ -1,6 +1,7 @@
-import logging
+import asyncio
 
-from .connection import get_connection
+import logging
+from app.cache.connection import get_connection
 
 logger = logging.getLogger(__name__)
 
@@ -13,3 +14,13 @@ async def listen_redis_key_expired() -> None:
 
     async for msg in pubsub.listen():
         logger.info(f"\nREDIS MESSAGE - {msg}\n")
+        try:
+            session = msg["data"].decode("utf-8")
+            print(session)
+
+        except Exception as e:
+            logger.error(e)
+
+
+if __name__ == "__main__":
+    asyncio.run(listen_redis_key_expired())

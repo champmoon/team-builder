@@ -75,9 +75,7 @@ class UpdateWorkoutPoolIn(BaseSchema):
 
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
-        if not any(
-            (self.name is None, self.estimated_time is None, self.exercises is None)
-        ):
+        if self.name is None and self.estimated_time is None and self.exercises is None:
             raise ValueError("at least not null")
         return self
 

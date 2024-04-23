@@ -202,4 +202,4 @@ async def update_workout_pool(
     else:
         await workouts_pool_service.set_unvisible(id=workout_pool_out.id)
 
-    return new_workout_pool_out
+    return await workouts_pool_service.get_by_id(id=new_workout_pool_out.id)
