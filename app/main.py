@@ -1,9 +1,12 @@
 import asyncio
+from typing import Any
+from starlette.responses import FileResponse
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from .utils import log_middleware
 
 from .api.urls import urls_router
 from .cache.listener import listen_redis_key_expired
@@ -19,13 +22,6 @@ app = FastAPI(
     description=app_docs["description"],
     debug=settings.DEBUG,
 )
-app.include_router(urls_router, prefix=settings.API_PREFIX)
-
-app.mount(
-    "/" + settings.STATIC_FILES_DIR,
-    StaticFiles(directory=settings.STATIC_FILES_DIR),
-)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,13 +29,43 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"],
     allow_headers=["*"],
 )
+app.include_router(urls_router, prefix=settings.API_PREFIX)
 
-if settings.DEBUG:
-    app.mount("/" + settings.FILES_DIR, StaticFiles(directory=settings.FILES_DIR))
 
-    from .utils import log_middleware
+app.mount(
+    "/" + settings.STATIC_FILES_DIR,
+    StaticFiles(directory=settings.STATIC_FILES_DIR),
+)
+app.mount(
+    "/" + settings.FILES_DIR,
+    StaticFiles(directory=settings.FILES_DIR),
+)
+app.mount(
+    "/",
+    StaticFiles(directory="spa", html=True),
+)
 
-    app.middleware(middleware_type="http")(log_middleware)
+
+app.middleware(middleware_type="http")(log_middleware)
+
+
+@app.middleware("http")
+async def add_version_header(request: Request, call_next: Any) -> Any:
+    if any(
+        (
+            "api" in request["path"],
+            "static" in request["path"],
+            "assets" in request["path"],
+            "icons" in request["path"],
+            "files" in request["path"],
+            "docs" in request["path"],
+            "openapi.json" in request["path"],
+        )
+    ):
+        return await call_next(request)
+
+    return FileResponse("spa/index.html")
+
 
 if not settings.DEBUG:
     import logging
