@@ -1,18 +1,18 @@
 import asyncio
 from typing import Any
-from starlette.responses import FileResponse
 
 from fastapi import FastAPI, Request
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from .utils import log_middleware
+from starlette.responses import FileResponse
 
 from .api.urls import urls_router
 from .cache.listener import listen_redis_key_expired
 from .conf.settings import settings
 from .containers import wire_containers
 from .docs import app_docs
+from .utils import log_middleware
 
 wire_containers()
 
