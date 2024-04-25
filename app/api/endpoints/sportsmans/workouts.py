@@ -82,6 +82,8 @@ async def get_workouts(
             exercises=workout_out.workout_pool.exercises,
             rest_time=workout_out.rest_time,
             stress_questionnaire_time=workout_out.stress_questionnaire_time,
+            comment=workout_out.comment,
+            goal=workout_out.goal,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -175,6 +177,8 @@ async def get_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -273,6 +277,8 @@ async def start_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -374,6 +380,8 @@ async def complete_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(

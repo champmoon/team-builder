@@ -25,6 +25,8 @@ class CreateWorkoutInDB(BaseSchema):
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=0)
+    comment: str | None = None
+    goal: str | None = None
 
 
 class CreateWorkoutForSportsmanIn(BaseSchema):
@@ -33,6 +35,8 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=0)
+    comment: str | None = None
+    goal: str | None = None
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -47,6 +51,8 @@ class CreateWorkoutForGroupIn(BaseSchema):
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=0)
+    comment: str | None = None
+    goal: str | None = None
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -60,6 +66,8 @@ class CreateWorkoutForTeamIn(BaseSchema):
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=0)
+    comment: str | None = None
+    goal: str | None = None
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -84,6 +92,8 @@ class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
     rest_time: int | None = Field(None, ge=0)
     stress_questionnaire_time: int | None = Field(None, ge=0)
+    comment: str | None = None
+    goal: str | None = None
 
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
@@ -94,6 +104,8 @@ class UpdateWorkoutIn(BaseSchema):
             self.date is None,
             self.rest_time is None,
             self.stress_questionnaire_time is None,
+            self.comment is None,
+            self.goal is None,
         )):
             raise ValueError("at least not null")
 

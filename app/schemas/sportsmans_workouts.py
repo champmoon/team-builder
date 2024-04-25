@@ -29,6 +29,8 @@ class SportsmansWorkoutOut(BaseSchemaFromDB):
     date: NaiveDatetime
     created_at: NaiveDatetime
     status: WorkoutsStatusesOut
+    comment: str | None = None
+    goal: str | None = None
     exercises: list[BasicExerciseOut | SupportExerciseOut]
 
 
