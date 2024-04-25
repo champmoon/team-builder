@@ -10,6 +10,4 @@ class EmailSettings(BaseSettings):
     DEFAULT_FROM_EMAIL: EmailStr
     EMAIL_USE_TLS: bool
     EMAIL_USE_SSL: bool
-    POP3_HOST: str
-    POP3_PORT: int
     CONFIRM_URL: str

@@ -23,16 +23,16 @@ class CreateWorkoutPoolIn(BaseSchema):
 class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
-    rest_time: int = Field(..., gt=0)
-    stress_questionnaire_time: int = Field(..., gt=0)
+    rest_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=0)
 
 
 class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
     sportsman_email: EmailStr
     date: NaiveDatetime
-    rest_time: int = Field(..., gt=0)
-    stress_questionnaire_time: int = Field(..., gt=0)
+    rest_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -45,8 +45,8 @@ class CreateWorkoutForGroupIn(BaseSchema):
     workout_pool_id: UUID
     group_id: UUID
     date: NaiveDatetime
-    rest_time: int = Field(..., gt=0)
-    stress_questionnaire_time: int = Field(..., gt=0)
+    rest_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -58,8 +58,8 @@ class CreateWorkoutForGroupIn(BaseSchema):
 class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
-    rest_time: int = Field(..., gt=0)
-    stress_questionnaire_time: int = Field(..., gt=0)
+    rest_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=0)
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
@@ -82,8 +82,8 @@ class UpdateWorkoutPoolIn(BaseSchema):
 
 class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
-    rest_time: int | None = Field(None, gt=0)
-    stress_questionnaire_time: int | None = Field(None, gt=0)
+    rest_time: int | None = Field(None, ge=0)
+    stress_questionnaire_time: int | None = Field(None, ge=0)
 
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
