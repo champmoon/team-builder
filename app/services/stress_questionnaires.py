@@ -1,6 +1,8 @@
 from typing import Callable, Sequence
 from uuid import UUID
 
+from pydantic import NaiveDatetime
+
 from app import schemas
 from app.cache import actions as acts
 from app.models import StressQuestionnaires
@@ -32,10 +34,18 @@ class StressQuestinnairesService:
     async def get_by_id(self, id: UUID) -> StressQuestionnaires | None:
         return await self.repository.get_by_id(id=id)
 
+    async def get_by_workout_id(self, workout_id: UUID) -> StressQuestionnaires | None:
+        return await self.repository.get_by_workout_id(workout_id=workout_id)
+
     async def get_all_by_sportsman_id(
-        self, sportsman_id: UUID
+        self,
+        sportsman_id: UUID,
+        start_date: NaiveDatetime | None = None,
+        end_date: NaiveDatetime | None = None,
     ) -> Sequence[StressQuestionnaires]:
-        return await self.repository.get_all_by_sportsman_id(sportsman_id=sportsman_id)
+        return await self.repository.get_all_by_sportsman_id(
+            sportsman_id=sportsman_id, start_date=start_date, end_date=end_date
+        )
 
     async def get_all_by_workout_id(
         self, workout_id: UUID

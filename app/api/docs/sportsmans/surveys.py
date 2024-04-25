@@ -48,14 +48,12 @@ get_survey: Docs = {
                                     "required": True,
                                 },
                             ],
-                            "addFields": [
-                                {
-                                    "key": "1",
-                                    "label": "1",
-                                    "type": "text",
-                                    "required": True,
-                                }
-                            ],
+                            "addFields": [{
+                                "key": "1",
+                                "label": "1",
+                                "type": "text",
+                                "required": True,
+                            }],
                         },
                     }
                 },
@@ -152,14 +150,12 @@ fill_survey: Docs = {
                                     "required": True,
                                 },
                             ],
-                            "addFields": [
-                                {
-                                    "key": "1",
-                                    "label": "1",
-                                    "type": "text",
-                                    "required": True,
-                                }
-                            ],
+                            "addFields": [{
+                                "key": "1",
+                                "label": "1",
+                                "type": "text",
+                                "required": True,
+                            }],
                         },
                     }
                 },

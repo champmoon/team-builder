@@ -2,6 +2,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
+from pydantic import NaiveDatetime
 from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -26,6 +27,14 @@ class StressQuestionnairesRepository:
 
         return getted_session.scalars().first()
 
+    async def get_by_workout_id(self, workout_id: UUID) -> StressQuestionnaires | None:
+        stmt = select(self.model).where(self.model.workout_id == workout_id)
+
+        async with self.session_factory() as session:
+            getted_session = await session.execute(stmt)
+
+        return getted_session.scalars().first()
+
     async def get_by_ids(self, ids: list[UUID]) -> Sequence[StressQuestionnaires]:
         stmt = select(self.model).where(self.model.id.in_(ids))
 
@@ -35,9 +44,25 @@ class StressQuestionnairesRepository:
         return getted_session.scalars().all()
 
     async def get_all_by_sportsman_id(
-        self, sportsman_id: UUID
+        self,
+        sportsman_id: UUID,
+        start_date: NaiveDatetime | None = None,
+        end_date: NaiveDatetime | None = None,
     ) -> Sequence[StressQuestionnaires]:
-        stmt = select(self.model).where(self.model.sportsman_id == sportsman_id)
+        where_start_date: tuple = ()
+        where_end_date: tuple = ()
+
+        if start_date:
+            where_start_date = (StressQuestionnaires.created_at >= start_date,)
+
+        if end_date:
+            where_end_date = (StressQuestionnaires.created_at <= end_date,)
+
+        stmt = select(self.model).where(
+            self.model.sportsman_id == sportsman_id,
+            *where_start_date,
+            *where_end_date,
+        )
 
         async with self.session_factory() as session:
             getted_group = await session.execute(stmt)

@@ -90,13 +90,11 @@ class UpdateWorkoutIn(BaseSchema):
         if self.date and self.date <= (now := datetime.utcnow()):
             raise ValueError(f"date - {self.date} less then now - {now}")
 
-        if not any(
-            (
-                self.date is None,
-                self.rest_time is None,
-                self.stress_questionnaire_time is None,
-            )
-        ):
+        if not any((
+            self.date is None,
+            self.rest_time is None,
+            self.stress_questionnaire_time is None,
+        )):
             raise ValueError("at least not null")
 
         return self
