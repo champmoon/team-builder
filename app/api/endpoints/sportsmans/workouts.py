@@ -82,6 +82,8 @@ async def get_workouts(
             exercises=workout_out.workout_pool.exercises,
             rest_time=workout_out.rest_time,
             stress_questionnaire_time=workout_out.stress_questionnaire_time,
+            comment=workout_out.comment,
+            goal=workout_out.goal,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -175,6 +177,8 @@ async def get_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -273,6 +277,8 @@ async def start_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -341,6 +347,9 @@ async def complete_workout(
     stress_questionnaires_service: Services.stress_questionnaires = Depends(
         Provide[Containers.stress_questionnaires.service],
     ),
+    health_questionnaires_service: Services.health_questionnaires = Depends(
+        Provide[Containers.health_questionnaires.service],
+    ),
 ) -> Any:
     workout_out = await workouts_service.get_by_id(id=id)
     if not workout_out:
@@ -374,6 +383,8 @@ async def complete_workout(
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        comment=workout_out.comment,
+        goal=workout_out.goal,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -421,5 +432,6 @@ async def complete_workout(
         ),
         timeout=workout_out.stress_questionnaire_time,
     )
+    await health_questionnaires_service.set_on_next_day(sportsman_id=self_sportsman.id)
 
     return workout_schema

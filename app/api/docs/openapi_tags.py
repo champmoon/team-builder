@@ -10,6 +10,7 @@ tags_mapper = {
     "trainers_workouts": "Тренеры → Тренировка",
     "trainers_workouts_pool": "Тренеры → Программа тренировок",
     "trainers_stress_questionnaires": "Тренеры → Опросник по нагрузке",
+    "trainers_health_questionnaires": "Тренеры → Опросник по здоровью",
     #
     "sportsmans_auth": "Спортсмены → Регистрация",
     "sportsmans_profile": "Спортсмены → Профиль",
@@ -18,6 +19,7 @@ tags_mapper = {
     "sportsmans_groups": "Спортсмены → Группа",
     "sportsmans_workouts": "Спортсмены → Тренировка",
     "sportsmans_stress_questionnaires": "Cпортсмены → Опросник по нагрузке",
+    "sportsmans_health_questionnaires": "Cпортсмены → Опросник по здоровью",
 }
 
 

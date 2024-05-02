@@ -1,5 +1,4 @@
 import os
-import poplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -19,18 +18,9 @@ class Email:
 
     email_from = settings.DEFAULT_FROM_EMAIL
 
-    pop3_host = settings.POP3_HOST
-    pop3_port = settings.POP3_PORT
-
     use_tls = settings.EMAIL_USE_TLS
 
     path_to_html = os.path.join(os.getcwd(), "app/utils/email", "template.html")
-
-    def pop3_auth(self) -> None:
-        pop_client = poplib.POP3(self.pop3_host, self.pop3_port)
-
-        pop_client.user(self.email_host_user)
-        pop_client.pass_(self.email_host_pass)
 
     async def _get_html_content(self, uri: str) -> str:
         async with aiofiles.open(self.path_to_html) as f:
@@ -41,8 +31,6 @@ class Email:
     async def send(
         self, to_email: EmailStr, uri: str, subject: str = "Team-Builder"
     ) -> None:
-        self.pop3_auth()
-
         message = MIMEMultipart()
         message["Subject"] = subject
 

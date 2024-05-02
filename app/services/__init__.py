@@ -5,6 +5,7 @@ from .auth import AuthService
 from .exercises import ExercisesService
 from .exercises_types import ExercisesTypesService
 from .groups import GroupsService
+from .health_questionnaires import HealthQuestinnairesService
 from .sessions import SessionsService
 from .sportsmans import SportsmansService
 from .sportsmans_groups import SportsmansGroupsService
@@ -39,3 +40,4 @@ class Services:
     sportsman_surveys: TypeAlias = SportsmanSurveysService
     workouts_pool: TypeAlias = WorkoutsPoolService
     stress_questionnaires: TypeAlias = StressQuestinnairesService
+    health_questionnaires: TypeAlias = HealthQuestinnairesService
