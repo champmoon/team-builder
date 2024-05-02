@@ -1,9 +1,10 @@
 import asyncio
 from typing import Any
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, applications
 from fastapi.logger import logger as fastapi_logger
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
 
@@ -58,6 +59,7 @@ async def add_version_header(request: Request, call_next: Any) -> Any:
         "icons" in request["path"],
         "files" in request["path"],
         "docs" in request["path"],
+        "redoc" in request["path"],
         "openapi.json" in request["path"],
     )):
         return await call_next(request)
@@ -84,8 +86,22 @@ async def startup_event() -> None:
     loop.create_task(listen_redis_key_expired())
 
 
-# TODO AttributeError: module 'bcrypt' has no attribute '__about__'
-# TODO size upload file
+def swagger_monkey_patch(*args: Any, **kwargs: Any) -> Any:
+    return get_swagger_ui_html(
+        *args,
+        **kwargs,
+        swagger_js_url=(
+            "https://gcore.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"
+        ),
+        swagger_css_url=(
+            "https://gcore.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css"
+        ),
+    )
+
+
+applications.get_swagger_ui_html = swagger_monkey_patch
+
+
 # TODO when sportsman added to group, group workout should be on new sportsman
 # TODO make workouts statuses api
 # TODO delete workouts when deletinig group, sportsman from team

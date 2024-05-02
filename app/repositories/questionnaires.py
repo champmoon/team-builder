@@ -3,7 +3,7 @@ from typing import Callable, Sequence, Type
 from uuid import UUID
 
 from pydantic import NaiveDatetime
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, not_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import schemas
@@ -43,9 +43,10 @@ class StressQuestionnairesRepository:
 
         return getted_session.scalars().all()
 
-    async def get_all_by_sportsman_id(
+    async def get_past_by_sportsman_id(
         self,
         sportsman_id: UUID,
+        exclude_ids: list[UUID],
         start_date: NaiveDatetime | None = None,
         end_date: NaiveDatetime | None = None,
     ) -> Sequence[StressQuestionnaires]:
@@ -60,6 +61,7 @@ class StressQuestionnairesRepository:
 
         stmt = select(self.model).where(
             self.model.sportsman_id == sportsman_id,
+            not_(self.model.id.in_(exclude_ids)),
             *where_start_date,
             *where_end_date,
         )

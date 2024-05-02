@@ -47,7 +47,7 @@ async def get_all_stress_questionnaires(
         Provide[Containers.stress_questionnaires.service],
     ),
 ) -> Any:
-    return await stress_questionnaires_service.get_all_by_sportsman_id(
+    return await stress_questionnaires_service.get_past_by_sportsman_id(
         sportsman_id=self_sportsman.id,
         start_date=start_date,
         end_date=end_date,
