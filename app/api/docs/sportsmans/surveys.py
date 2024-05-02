@@ -106,6 +106,9 @@ fill_survey: Docs = {
     "summary": "Обновление анкеты спортсмена",
     "description": """
     ```
+    Request Body:
+        answers - список объектов key value(list[objects])
+
     Auth:
         Этот запрос доступен только спортсменам.
     """,

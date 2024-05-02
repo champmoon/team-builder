@@ -38,6 +38,7 @@ url.GET("     /trainer/survey                                    ", endpoint=end
 url.PATCH("   /trainer/survey                                    ", endpoint=endpoints.trainers.surveys.update_survey, docs=docs.trainers.surveys.update_survey)
 url.GET("     /trainer/survey/sportsman                          ", endpoint=endpoints.trainers.surveys.get_sportsman_survey, docs=docs.trainers.surveys.get_sportsman_survey)
 url.PATCH("   /trainer/survey/sportsman                          ", endpoint=endpoints.trainers.surveys.set_update_sportsman_survey, docs=docs.trainers.surveys.set_update_sportsman_survey)
+url.POST("    /trainer/survey/sportsman                          ", endpoint=endpoints.trainers.surveys.fill_survey_for_sportsman, docs=docs.trainers.surveys.fill_survey_for_sportsman)
 url.PATCH("   /trainer/survey/team                               ", endpoint=endpoints.trainers.surveys.set_update_team_survey, docs=docs.trainers.surveys.set_update_team_survey)
 
 # Sportsman Survey
