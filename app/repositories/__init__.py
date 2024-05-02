@@ -4,7 +4,10 @@ from .admins import AdminsRepository
 from .exercises import ExercisesRepository
 from .exercises_types import ExercisesTypesRepository
 from .groups import GroupsRepository
-from .questionnaires import StressQuestionnairesRepository
+from .questionnaires import (
+    HealthQuestionnairesRepository,
+    StressQuestionnairesRepository,
+)
 from .sessions import SessionsRepository
 from .sportsmans import SportsmansRepository
 from .sportsmans_groups import SportsmansGroupsRepository
@@ -37,3 +40,4 @@ class Repositories:
     sportsman_surveys: TypeAlias = SportsmanSurveysRepository
     workouts_pool: TypeAlias = WorkoutsPoolRepository
     stress_questionnaires: TypeAlias = StressQuestionnairesRepository
+    health_questionnaires: TypeAlias = HealthQuestionnairesRepository
