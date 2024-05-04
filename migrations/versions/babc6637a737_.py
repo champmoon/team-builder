@@ -72,7 +72,7 @@ def downgrade() -> None:
     op.add_column(
         "workouts", sa.Column("name", sa.VARCHAR(), autoincrement=False, nullable=False)
     )
-    op.drop_constraint(None, "workouts", type_="foreignkey")
+    op.drop_constraint(None, "workouts", type_="foreignkey") # type: ignore
     op.drop_column("workouts", "workout_pool_id")
     op.drop_table("workouts_pool")
     # ### end Alembic commands ###

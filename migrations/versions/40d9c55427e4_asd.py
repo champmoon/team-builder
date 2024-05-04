@@ -40,7 +40,7 @@ def downgrade() -> None:
         "exercises",
         sa.Column("workout_id", sa.UUID(), autoincrement=False, nullable=False),
     )
-    op.drop_constraint(None, "exercises", type_="foreignkey")
+    op.drop_constraint(None, "exercises", type_="foreignkey")  # type: ignore
     op.create_foreign_key(
         "exercises_workout_id_fkey",
         "exercises",
