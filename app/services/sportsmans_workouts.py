@@ -46,6 +46,28 @@ class SportsmansWorkoutsService:
             workout_id=workout_id, sportsman_id=sportsman_id
         )
 
+    async def bind_sportsman_to_workouts(
+        self, sportsman_id: UUID, workouts_ids: Sequence[UUID]
+    ) -> None:
+        workout_status_out = await self.statuses_repository.get_by_status(
+            status=WorkoutsStatusesEnum.PLANNED
+        )
+        assert workout_status_out is not None
+
+        await self.repository.bind_sportsman_to_workouts(
+            sportsman_id=sportsman_id,
+            workouts_ids=workouts_ids,
+            planned_status_id=workout_status_out.id,
+        )
+
+    async def unbind_sportsman_to_workouts(
+        self, sportsman_id: UUID, workouts_ids: Sequence[UUID]
+    ) -> None:
+        await self.repository.unbind_sportsman_to_workouts(
+            sportsman_id=sportsman_id,
+            workouts_ids=workouts_ids,
+        )
+
     async def planned(
         self, schema_in: schemas.CreateSportsmansWorkoutIn
     ) -> SportsmansWorkouts:

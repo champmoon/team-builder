@@ -3,7 +3,7 @@ from typing import Callable, Sequence, Type
 from uuid import UUID
 
 from pydantic import NaiveDatetime
-from sqlalchemy import insert, select, update
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import SportsmansWorkouts
@@ -49,6 +49,7 @@ class SportsmansWorkoutsRepository:
                 *where_start_date,
                 *where_end_date,
             )
+            .order_by(Workouts.date)
         )
 
         stmt = stmt.offset(offset).limit(limit)
@@ -112,3 +113,40 @@ class SportsmansWorkoutsRepository:
             await session.commit()
 
         return updated_sportsman.scalars().one()
+
+    async def bind_sportsman_to_workouts(
+        self,
+        sportsman_id: UUID,
+        workouts_ids: Sequence[UUID],
+        planned_status_id: UUID,
+    ) -> None:
+        if len(workouts_ids) == 0:
+            return
+
+        async with self.session_factory() as session:
+            await session.execute(
+                insert(self.model).values([
+                    {
+                        "workout_id": workout_id,
+                        "sportsman_id": sportsman_id,
+                        "status_id": planned_status_id,
+                    }
+                    for workout_id in workouts_ids
+                ])
+            )
+            await session.commit()
+
+    async def unbind_sportsman_to_workouts(
+        self, sportsman_id: UUID, workouts_ids: Sequence[UUID]
+    ) -> None:
+        if len(workouts_ids) == 0:
+            return
+
+        async with self.session_factory() as session:
+            await session.execute(
+                delete(self.model).where(
+                    self.model.sportsman_id == sportsman_id,
+                    self.model.workout_id.in_(workouts_ids),
+                )
+            )
+            await session.commit()

@@ -28,6 +28,9 @@ class WorkoutsService:
     async def delete(self, id: UUID) -> Workouts:
         return await self.repository.delete(id=id)
 
+    async def delete_many(self, ids: Sequence[UUID]) -> None:
+        return await self.repository.delete_many(ids=ids)
+
     async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
         return await self.repository.update(id=id, schema_in=schema_in)
 

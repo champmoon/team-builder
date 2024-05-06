@@ -29,3 +29,9 @@ class TGSWorkoutsService:
 
     async def delete(self, id: UUID) -> TGSWorkouts:
         return await self.repository.delete(id=id)
+
+    async def get_future_group_workouts_ids(self, group_id: UUID) -> Sequence[UUID]:
+        return await self.repository.get_future_group_workouts_ids(group_id=group_id)
+
+    async def get_future_team_workouts_ids(self, team_id: UUID) -> Sequence[UUID]:
+        return await self.repository.get_future_team_workouts_ids(team_id=team_id)

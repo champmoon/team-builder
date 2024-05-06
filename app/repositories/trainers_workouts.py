@@ -46,6 +46,7 @@ class TrainersWorkoutsRepository:
                 *where_start_date,
                 *where_end_date,
             )
+            .order_by(Workouts.date)
         )
 
         stmt = stmt.offset(offset).limit(limit)

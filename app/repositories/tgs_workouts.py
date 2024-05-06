@@ -1,3 +1,4 @@
+import datetime
 from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
@@ -5,7 +6,7 @@ from uuid import UUID
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import TGSWorkouts
+from app.models import TGSWorkouts, Workouts
 from app.schemas import CreateTGSWorkoutIn
 
 
@@ -71,3 +72,33 @@ class TGSWorkoutsRepository:
             await session.commit()
 
         return deleted_workout.scalars().one()
+
+    async def get_future_group_workouts_ids(self, group_id: UUID) -> Sequence[UUID]:
+        now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+        stmt = (
+            select(self.model.workout_id)
+            .join(Workouts, self.model.workout_id == Workouts.id)
+            .where(
+                self.model.group_id == group_id,
+                Workouts.date > now,
+            )
+        )
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()
+
+    async def get_future_team_workouts_ids(self, team_id: UUID) -> Sequence[UUID]:
+        now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+        stmt = (
+            select(self.model.workout_id)
+            .join(Workouts, self.model.workout_id == Workouts.id)
+            .where(
+                self.model.team_id == team_id,
+                Workouts.date > now,
+            )
+        )
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()

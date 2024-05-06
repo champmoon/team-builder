@@ -36,28 +36,6 @@ async def get_self_groups(
     return group_out
 
 
-# @router(
-#     response_model=schemas.GroupOut,
-#     status_code=status.HTTP_200_OK,
-# )
-# @deps.auth_required(users=[UsersTypes.TRAINER])
-# @inject
-# async def get_self_group(
-#     id: UUID,
-#     self_trainer: Trainers = Depends(deps.self_trainer),
-#     groups_service: Services.groups = Depends(
-#         Provide[Containers.groups.service],
-#     ),
-# ) -> Any:
-#     group_out = await groups_service.get_by_id(id=id)
-#     if not group_out or group_out.trainer_id != self_trainer.id:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail=f"Group with id {id} not found",
-#         )
-#     return group_out
-
-
 @router(
     response_model=schemas.GroupOut,
     status_code=status.HTTP_200_OK,
@@ -143,9 +121,10 @@ async def delete_group(
     if not group_out or group_out.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="group")
 
-    g_workouts_out = await tgs_workouts_service.get_all_by_group_id(group_id=id)
-    for g_workout_out in g_workouts_out:
-        await workouts_service.delete(id=g_workout_out.workout_id)
+    future_group_workouts_ids = (
+        await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
+    )
+    await workouts_service.delete_many(ids=future_group_workouts_ids)
 
     await groups_service.delete(id=id)
     return group_out
@@ -171,6 +150,12 @@ async def add_sportsman_to_group(
     ),
     sportsmans_groups_service: Services.sportsmans_groups = Depends(
         Provide[Containers.sportsmans_groups.service],
+    ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
     group_id = add_sportsman_to_group_in.group_id
@@ -201,6 +186,14 @@ async def add_sportsman_to_group(
         )
     )
 
+    future_group_workouts_ids = (
+        await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
+    )
+    await sportsmans_workouts_service.bind_sportsman_to_workouts(
+        sportsman_id=sportsman_out.id,
+        workouts_ids=future_group_workouts_ids,
+    )
+
     return await groups_service.get_by_id(id=group_out.id)
 
 
@@ -225,6 +218,12 @@ async def adds_sportsmans_to_group(
     sportsmans_groups_service: Services.sportsmans_groups = Depends(
         Provide[Containers.sportsmans_groups.service],
     ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
+    ),
 ) -> Any:
     group_id = adds_sportsmans_to_group_in.group_id
     sportsmans_emails = adds_sportsmans_to_group_in.sportsmans_emails
@@ -240,6 +239,9 @@ async def adds_sportsmans_to_group(
             detail="_team must exist",
         )
 
+    future_group_workouts_ids = (
+        await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
+    )
     for sportsman_email in sportsmans_emails or []:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
@@ -250,6 +252,11 @@ async def adds_sportsmans_to_group(
                 sportsman_id=sportsman_out.id,
                 group_id=group_out.id,
             )
+        )
+
+        await sportsmans_workouts_service.bind_sportsman_to_workouts(
+            sportsman_id=sportsman_out.id,
+            workouts_ids=future_group_workouts_ids,
         )
 
     return await groups_service.get_by_id(id=group_out.id)
@@ -275,6 +282,12 @@ async def kick_sportsman_off_group(
     ),
     sportsmans_groups_service: Services.sportsmans_groups = Depends(
         Provide[Containers.sportsmans_groups.service],
+    ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
     group_id = kick_sportsman_to_group_in.group_id
@@ -305,6 +318,14 @@ async def kick_sportsman_off_group(
         )
     )
 
+    future_group_workouts_ids = (
+        await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
+    )
+    await sportsmans_workouts_service.unbind_sportsman_to_workouts(
+        sportsman_id=sportsman_out.id,
+        workouts_ids=future_group_workouts_ids,
+    )
+
     return await groups_service.get_by_id(id=group_out.id)
 
 
@@ -329,6 +350,12 @@ async def kicks_sportsmans_off_group(
     sportsmans_groups_service: Services.sportsmans_groups = Depends(
         Provide[Containers.sportsmans_groups.service],
     ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
+    ),
 ) -> Any:
     group_id = kicks_sportsmans_to_group_in.group_id
     sportsmans_emails = kicks_sportsmans_to_group_in.sportsmans_emails
@@ -344,6 +371,9 @@ async def kicks_sportsmans_off_group(
             detail="_team must exist",
         )
 
+    future_group_workouts_ids = (
+        await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
+    )
     for sportsman_email in sportsmans_emails or []:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
@@ -354,6 +384,11 @@ async def kicks_sportsmans_off_group(
                 sportsman_id=sportsman_out.id,
                 group_id=group_out.id,
             )
+        )
+
+        await sportsmans_workouts_service.unbind_sportsman_to_workouts(
+            sportsman_id=sportsman_out.id,
+            workouts_ids=future_group_workouts_ids,
         )
 
     return await groups_service.get_by_id(id=group_out.id)
