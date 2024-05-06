@@ -10,6 +10,13 @@ class SportsmansGroupsService:
     def __init__(self, repository: SportsmansGroupsRepository) -> None:
         self.repository = repository
 
+    async def get_by(
+        self, sportsman_id: UUID, group_id: UUID
+    ) -> SportsmansGroups | None:
+        return await self.repository.get_by(
+            sportsman_id=sportsman_id, group_id=group_id
+        )
+
     async def get_all_groups_by_sportsman_id(
         self, sportsman_id: UUID
     ) -> Sequence[SportsmansGroups]:

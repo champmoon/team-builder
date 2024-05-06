@@ -18,6 +18,19 @@ class SportsmansGroupsRepository:
         self.model = model
         self.session_factory = session_factory
 
+    async def get_by(
+        self, sportsman_id: UUID, group_id: UUID
+    ) -> SportsmansGroups | None:
+        stmt = select(self.model).where(
+            self.model.sportsman_id == sportsman_id,
+            self.model.group_id == group_id,
+        )
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalar()
+
     async def get_all_groups_by_sportsman_id(
         self, sportsman_id: UUID
     ) -> Sequence[SportsmansGroups]:

@@ -179,6 +179,12 @@ async def add_sportsman_to_group(
     if sportsman_out.team_id != team_out.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
+    sportsman_group_out = await sportsmans_groups_service.get_by(
+        sportsman_id=sportsman_out.id, group_id=group_id
+    )
+    if sportsman_group_out:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
+
     await sportsmans_groups_service.create(
         schema_in=schemas.CreateSportsmanGroupIn(
             sportsman_id=sportsman_out.id,
@@ -245,6 +251,12 @@ async def adds_sportsmans_to_group(
     for sportsman_email in sportsmans_emails or []:
         sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
+            continue
+
+        sportsman_group_out = await sportsmans_groups_service.get_by(
+            sportsman_id=sportsman_out.id, group_id=group_id
+        )
+        if sportsman_group_out:
             continue
 
         await sportsmans_groups_service.create(

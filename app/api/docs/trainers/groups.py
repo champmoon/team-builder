@@ -472,6 +472,10 @@ adds_sportsmans_to_group: Docs = {
             "description": "Группа не найдена",
             "content": {"application/json": {"example": {"detail": "group"}}},
         },
+        409: {
+            "description": "Спортсмен уже состоит в группе",
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
+        },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
             "content": {

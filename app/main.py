@@ -101,7 +101,6 @@ async def startup_event() -> None:
 # applications.get_swagger_ui_html = swagger_monkey_patch
 
 
-# TODO add complex primary keys and check belonging
-
 # TODO make workouts statuses api
 # TODO make update workouts statuses(cache)
+# TODO add possibility create new workout exercise
