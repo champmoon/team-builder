@@ -95,10 +95,23 @@ class SportsmansWorkoutsService:
         )
         assert workout_status_out is not None
 
-        return await self.repository.update_status(
+        updated_out = await self.repository.update_status(
             schema_in=schema_in,
             status_id=workout_status_out.id,
         )
+
+        today = datetime.datetime.now()
+        next_day = today + datetime.timedelta(days=1)
+        formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
+        exp_time = round((formatted_day - today).total_seconds())
+
+        workouts_status_action = self.workouts_status_action_part(
+            workout_id=str(schema_in.workout_id),  # type: ignore
+            sportsman_id=str(schema_in.sportsman_id),
+        )
+        await workouts_status_action.begin_sportsman_skipped(timeout=exp_time)
+
+        return updated_out
 
     async def completed(
         self, schema_in: schemas.UpdateSportsmansWorkoutIn
@@ -115,7 +128,7 @@ class SportsmansWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            sportsman_id=str(schema_in.sportsman_id),  # type: ignore
+            sportsman_id=str(schema_in.sportsman_id),
         )
         await workouts_status_action.rmv_sportsman_skipped()
 
@@ -136,7 +149,7 @@ class SportsmansWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            sportsman_id=str(schema_in.sportsman_id),  # type: ignore
+            sportsman_id=str(schema_in.sportsman_id),
         )
         await workouts_status_action.rmv_sportsman_skipped()
 
@@ -175,7 +188,7 @@ class SportsmansWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            sportsman_id=str(schema_in.sportsman_id),  # type: ignore
+            sportsman_id=str(schema_in.sportsman_id),
         )
         await workouts_status_action.begin_sportsman_skipped(timeout=exp_time)
 

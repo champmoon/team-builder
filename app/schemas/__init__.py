@@ -46,6 +46,7 @@ from .sportsmans import (
     SportsmanOut,
     SportsmansEmailIn,
     SportsmanWithGroupsOut,
+    SportsmanWithWorkoutStatusOut,
     UpdateSportsmanIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn

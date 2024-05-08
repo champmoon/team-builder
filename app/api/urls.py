@@ -90,10 +90,18 @@ url.PATCH("   /trainer/workouts-pool                             ", endpoint=end
 url.GET("     /sportsman/workouts/{id}                           ", endpoint=endpoints.sportsmans.get_workout, docs=docs.sportsmans.get_workout)
 url.GET("     /sportsman/workouts                                ", endpoint=endpoints.sportsmans.get_workouts, docs=docs.sportsmans.get_workouts)
 
+url.PATCH("   /trainer/workouts/start                            ", endpoint=endpoints.trainers.start_workout, docs=docs.trainers.start_workout)
+url.PATCH("   /trainer/workouts/sportsmans/start                 ", endpoint=endpoints.trainers.start_workout_for_sportsmans, docs=docs.trainers.start_workout_for_sportsmans)
+url.PATCH("   /trainer/workouts/complete                         ", endpoint=endpoints.trainers.complete_workout, docs=docs.trainers.complete_workout)
+url.PATCH("   /trainer/workouts/sportsmans/complete              ", endpoint=endpoints.trainers.complete_workout_for_sportsmans, docs=docs.trainers.complete_workout_for_sportsmans)
+url.PATCH("   /trainer/workouts/cancel                           ", endpoint=endpoints.trainers.cancel_workout, docs=docs.trainers.cancel_workout)
+url.PATCH("   /trainer/workouts/sportsmans/cancel                ", endpoint=endpoints.trainers.cancel_workout_for_sportsmans, docs=docs.trainers.cancel_workout_for_sportsmans)
+url.PATCH("   /trainer/workouts/statuses                         ", endpoint=endpoints.trainers.get_workout_statuses, docs=docs.trainers.get_workout_statuses)
+
 # Sportsman Workouts Management
 url.PATCH("   /sportsman/workouts/{id}/start                     ", endpoint=endpoints.sportsmans.start_workout, docs=docs.sportsmans.start_workout)
 url.PATCH("   /sportsman/workouts/{id}/complete                  ", endpoint=endpoints.sportsmans.complete_workout, docs=docs.sportsmans.complete_workout)
-url.PATCH("   /sportsman/workouts/{id}/cancel                    ", endpoint=endpoints.sportsmans.cancel_workout)
+url.PATCH("   /sportsman/workouts/{id}/cancel                    ", endpoint=endpoints.sportsmans.cancel_workout, docs=docs.sportsmans.cancel_workout)
 
 # Trainer Stress Questionnaires
 url.GET("     /trainer/stress-questions/sportsman                ", endpoint=endpoints.trainers.get_all_stress_questionnaires_by_sportsman, docs=docs.trainers.get_all_stress_questionnaires_by_sportsman)
@@ -127,6 +135,7 @@ urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_ma
 urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.tags_mapper["trainers_groups"]])
 urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
+urls_router.include_router(endpoints.trainers.workouts_management.router, tags=[docs.tags_mapper["trainers_workouts_management"]])
 urls_router.include_router(endpoints.trainers.workouts_pool.router, tags=[docs.tags_mapper["trainers_workouts_pool"]])
 urls_router.include_router(endpoints.trainers.stress_questionnaires.router, tags=[docs.tags_mapper["trainers_stress_questionnaires"]])
 urls_router.include_router(endpoints.trainers.health_questionnaires.router, tags=[docs.tags_mapper["trainers_health_questionnaires"]])

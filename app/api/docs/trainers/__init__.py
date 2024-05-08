@@ -47,6 +47,15 @@ from .workouts import (
     get_workouts_for_team,
     update_workout,
 )
+from .workouts_management import (
+    cancel_workout,
+    cancel_workout_for_sportsmans,
+    complete_workout,
+    complete_workout_for_sportsmans,
+    get_workout_statuses,
+    start_workout,
+    start_workout_for_sportsmans,
+)
 from .workouts_pool import (
     create_workout_pool,
     delete_workout_pool,

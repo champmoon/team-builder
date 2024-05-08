@@ -9,7 +9,6 @@ tags_mapper = {
     "trainers_groups": "Тренеры → Группа",
     "trainers_workouts": "Тренеры → Тренировка",
     "trainers_workouts_management": "Тренеры → Управление тренировкой",
-    "trainers_workouts_statuses": "Тренеры → Статусы тренировки",
     "trainers_workouts_pool": "Тренеры → Программа тренировок",
     "trainers_stress_questionnaires": "Тренеры → Опросник по нагрузке",
     "trainers_health_questionnaires": "Тренеры → Опросник по здоровью",

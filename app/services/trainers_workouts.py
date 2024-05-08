@@ -80,7 +80,7 @@ class TrainersWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),  # type: ignore
+            trainer_id=str(schema_in.trainer_id),
         )
         await workouts_status_action.rmv_trainer_skipped()
 
@@ -101,7 +101,7 @@ class TrainersWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),  # type: ignore
+            trainer_id=str(schema_in.trainer_id),
         )
         await workouts_status_action.rmv_trainer_skipped()
 
@@ -122,7 +122,7 @@ class TrainersWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),  # type: ignore
+            trainer_id=str(schema_in.trainer_id),
         )
         await workouts_status_action.rmv_trainer_skipped()
 
@@ -161,7 +161,7 @@ class TrainersWorkoutsService:
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),  # type: ignore
+            trainer_id=str(schema_in.trainer_id),
         )
         await workouts_status_action.begin_trainer_skipped(timeout=exp_time)
 
