@@ -89,8 +89,11 @@ url.PATCH("   /trainer/workouts-pool                             ", endpoint=end
 # Sportsman Workouts
 url.GET("     /sportsman/workouts/{id}                           ", endpoint=endpoints.sportsmans.get_workout, docs=docs.sportsmans.get_workout)
 url.GET("     /sportsman/workouts                                ", endpoint=endpoints.sportsmans.get_workouts, docs=docs.sportsmans.get_workouts)
+
+# Sportsman Workouts Management
 url.PATCH("   /sportsman/workouts/{id}/start                     ", endpoint=endpoints.sportsmans.start_workout, docs=docs.sportsmans.start_workout)
 url.PATCH("   /sportsman/workouts/{id}/complete                  ", endpoint=endpoints.sportsmans.complete_workout, docs=docs.sportsmans.complete_workout)
+url.PATCH("   /sportsman/workouts/{id}/cancel                    ", endpoint=endpoints.sportsmans.cancel_workout)
 
 # Trainer Stress Questionnaires
 url.GET("     /trainer/stress-questions/sportsman                ", endpoint=endpoints.trainers.get_all_stress_questionnaires_by_sportsman, docs=docs.trainers.get_all_stress_questionnaires_by_sportsman)
@@ -134,5 +137,6 @@ urls_router.include_router(endpoints.sportsmans.surveys.router, tags=[docs.tags_
 urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])
 urls_router.include_router(endpoints.sportsmans.groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])
 urls_router.include_router(endpoints.sportsmans.workouts.router, tags=[docs.tags_mapper["sportsmans_workouts"]])
+urls_router.include_router(endpoints.sportsmans.workouts_management.router, tags=[docs.tags_mapper["sportsmans_workouts_management"]])
 urls_router.include_router(endpoints.sportsmans.stress_questionnaires.router, tags=[docs.tags_mapper["sportsmans_stress_questionnaires"]])
 urls_router.include_router(endpoints.sportsmans.health_questionnaires.router, tags=[docs.tags_mapper["sportsmans_health_questionnaires"]])

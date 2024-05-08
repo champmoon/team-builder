@@ -20,4 +20,5 @@ from .stress_questionnaires import (
 )
 from .surveys import fill_survey, get_survey, get_survey_update_flag
 from .teams import get_self_team, out_off_team
-from .workouts import complete_workout, get_workout, get_workouts, start_workout
+from .workouts import get_workout, get_workouts
+from .workouts_management import complete_workout, start_workout

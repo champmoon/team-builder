@@ -74,6 +74,7 @@ from .trainers_workouts import (
     TrainerTeamWorkoutOut,
     TrainerWorkoutOut,
     TrainerWorkoutPoolOut,
+    UpdateTrainerWorkoutIn,
 )
 from .workouts import (
     CreateWorkoutForGroupIn,

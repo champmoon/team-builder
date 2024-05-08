@@ -1,5 +1,6 @@
 from dependency_injector import providers
 
+from app.cache.actions import Actions, create_action
 from app.models import Workouts, WorkoutsPool
 from app.repositories import WorkoutsPoolRepository, WorkoutsRepository
 from app.services import WorkoutsPoolService, WorkoutsService
@@ -13,7 +14,18 @@ class WorkoutContainer(BaseContainer):
         model=Workouts,
         session_factory=BaseContainer.session_factory.provided.session,
     )
-    service = providers.Factory(WorkoutsService, repository=repository)
+
+    workouts_status_action_part = providers.Callable(
+        create_action,
+        action_class=Actions.workouts_status,
+        connection_factory=BaseContainer.connection_factory.provided.connection,
+    )
+
+    service = providers.Factory(
+        WorkoutsService,
+        repository=repository,
+        workouts_status_action_part=workouts_status_action_part,
+    )
 
 
 class WorkoutPoolContainer(BaseContainer):
