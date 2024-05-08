@@ -1,6 +1,7 @@
 tags_mapper = {
     "general_auth": "Авторизация",
-    "general_exercises": "Упражнения",
+    "general_exercises": "Типы упражнения",
+    "general_workouts_statuses": "Cтатусы тренировок",
     #
     "trainers_auth": "Тренеры → Регистрация",
     "trainers_profile": "Тренеры → Профиль",
