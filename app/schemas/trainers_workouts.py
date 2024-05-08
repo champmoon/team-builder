@@ -14,6 +14,11 @@ class CreateTrainerWorkoutIn(BaseSchema):
     workout_id: UUID
 
 
+class UpdateTrainerWorkoutIn(BaseSchema):
+    trainer_id: UUID
+    workout_id: UUID
+
+
 class TrainerWorkoutPoolOut(BaseSchemaFromDB):
     id: UUID
     name: str

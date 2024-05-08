@@ -100,8 +100,3 @@ def swagger_monkey_patch(*args: Any, **kwargs: Any) -> Any:
 
 
 applications.get_swagger_ui_html = swagger_monkey_patch
-
-
-# TODO make workouts statuses api
-# TODO make update workouts statuses(cache)
-# TODO add possibility create new workout exercise

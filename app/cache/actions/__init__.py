@@ -18,6 +18,7 @@ from .auth.reset_password import ResetPasswordAction, ResetPasswordData
 from .base import create_action
 from .questionnaires.health import HealthQuestionnaireAction
 from .questionnaires.stress import StressQuestionnaireAction
+from .workouts.workout_status import WorkoutStatusAction
 
 
 class Actions:
@@ -31,6 +32,8 @@ class Actions:
 
     stress_questionnaire: TypeAlias = StressQuestionnaireAction
     health_questionnaire: TypeAlias = HealthQuestionnaireAction
+
+    workouts_status: TypeAlias = WorkoutStatusAction
 
 
 class Data:

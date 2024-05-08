@@ -7,6 +7,7 @@ class WorkoutsStatusesEnum(IntEnum):
     COMPLETED = 3
     ACTIVE = 4
     CANCELED = 5
+    SKIPPED = 6
 
 
 WORKOUTS_STATUSES_DESC = {
@@ -15,4 +16,5 @@ WORKOUTS_STATUSES_DESC = {
     WorkoutsStatusesEnum.COMPLETED: "Завершена",
     WorkoutsStatusesEnum.ACTIVE: "Активна",
     WorkoutsStatusesEnum.CANCELED: "Отменена",
+    WorkoutsStatusesEnum.SKIPPED: "Пропущена",
 }

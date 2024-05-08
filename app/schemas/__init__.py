@@ -46,6 +46,7 @@ from .sportsmans import (
     SportsmanOut,
     SportsmansEmailIn,
     SportsmanWithGroupsOut,
+    SportsmanWithWorkoutStatusOut,
     UpdateSportsmanIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
@@ -74,6 +75,7 @@ from .trainers_workouts import (
     TrainerTeamWorkoutOut,
     TrainerWorkoutOut,
     TrainerWorkoutPoolOut,
+    UpdateTrainerWorkoutIn,
 )
 from .workouts import (
     CreateWorkoutForGroupIn,

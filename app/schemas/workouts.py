@@ -24,7 +24,7 @@ class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
     goal: str | None = None
 
@@ -34,7 +34,7 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
     sportsman_email: EmailStr
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
     goal: str | None = None
 
@@ -50,7 +50,7 @@ class CreateWorkoutForGroupIn(BaseSchema):
     group_id: UUID
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
     goal: str | None = None
 
@@ -65,7 +65,7 @@ class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=0)
+    stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
     goal: str | None = None
 
@@ -91,7 +91,7 @@ class UpdateWorkoutPoolIn(BaseSchema):
 class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
     rest_time: int | None = Field(None, ge=0)
-    stress_questionnaire_time: int | None = Field(None, ge=0)
+    stress_questionnaire_time: int | None = Field(None, ge=1)
     comment: str | None = None
     goal: str | None = None
 

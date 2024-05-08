@@ -6,7 +6,8 @@ from pydantic import NaiveDatetime
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import SportsmansWorkouts
+from app.consts import WorkoutsStatusesEnum
+from app.models import SportsmansWorkouts, WorkoutsStatuses
 from app.schemas.sportsmans_workouts import (
     CreateSportsmansWorkoutIn,
     UpdateSportsmansWorkoutIn,
@@ -150,3 +151,23 @@ class SportsmansWorkoutsRepository:
                 )
             )
             await session.commit()
+
+    async def get_other_by_statuses(
+        self,
+        workout_id: UUID,
+        self_sportsman_id: UUID,
+        statuses: tuple[WorkoutsStatusesEnum, ...],
+    ) -> Sequence[SportsmansWorkouts]:
+        stmt = (
+            select(self.model)
+            .join(WorkoutsStatuses, WorkoutsStatuses.id == self.model.status_id)
+            .where(
+                self.model.workout_id == workout_id,
+                self.model.sportsman_id != self_sportsman_id,
+                WorkoutsStatuses.status.in_(statuses),
+            )
+        )
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()

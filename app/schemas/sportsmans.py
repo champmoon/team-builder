@@ -4,6 +4,7 @@ from pydantic import EmailStr, Field
 
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .validation import BaseAtLeastOneFieldValidator, Password
+from .workouts_statuses import WorkoutsStatusesOut
 
 
 class CreateSportsmanIn(BaseSchema):
@@ -81,3 +82,13 @@ class SportsmanWithGroupsOut(BaseSchemaFromDB):
     team_id: UUID | None = None
     avatar_uri: str | None = None
     groups: list[OnlyGroupOut]
+
+
+class SportsmanWithWorkoutStatusOut(BaseSchema):
+    sportsman_id: UUID
+    workout_id: UUID
+    email: str
+    first_name: str | None = None
+    middle_name: str | None = None
+    last_name: str | None = None
+    status: WorkoutsStatusesOut

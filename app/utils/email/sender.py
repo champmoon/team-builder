@@ -45,4 +45,3 @@ class Email:
                 to_addrs=to_email,
                 msg=message.as_string(),
             )
-        print("\nLASDJKLASJLDKAJKLSDJLKASD\n")
