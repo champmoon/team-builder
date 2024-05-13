@@ -100,9 +100,3 @@ def swagger_monkey_patch(*args: Any, **kwargs: Any) -> Any:
 
 
 applications.get_swagger_ui_html = swagger_monkey_patch
-
-
-# TODO when sportsman added to group, group workout should be on new sportsman
-# TODO make workouts statuses api
-# TODO delete workouts when deletinig group, sportsman from team
-# TODO make update workouts statuses(cache)

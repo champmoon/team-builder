@@ -31,9 +31,13 @@ class WorkoutsRepository:
         return getted.scalars().first()
 
     async def get_by_pool_id(self, pool_id: UUID) -> Sequence[Workouts]:
-        stmt = select(self.model).where(
-            self.model.workout_pool_id == pool_id,
-            self.model.is_visible == True,  # noqa
+        stmt = (
+            select(self.model)
+            .where(
+                self.model.workout_pool_id == pool_id,
+                self.model.is_visible == True,  # noqa
+            )
+            .order_by(self.model.date)
         )
 
         async with self.session_factory() as session:
@@ -74,6 +78,11 @@ class WorkoutsRepository:
             await session.commit()
 
         return deleted_workout.scalars().one()
+
+    async def delete_many(self, ids: Sequence[UUID]) -> None:
+        async with self.session_factory() as session:
+            await session.execute(delete(self.model).where(self.model.id.in_(ids)))
+            await session.commit()
 
     async def update(self, id: UUID, schema_in: schemas.UpdateWorkoutIn) -> Workouts:
         stmt = (

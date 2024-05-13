@@ -466,7 +466,7 @@ get_sportsman_survey: Docs = {
 
 
 set_update_sportsman_survey: Docs = {
-    "summary": "Дать возможность анкеты спортсмена",
+    "summary": "Дать возможность обновления анкеты спортсмена",
     "description": """
     ```
     Query Params:
@@ -479,6 +479,94 @@ set_update_sportsman_survey: Docs = {
         200: {
             "description": "Спортмен может теперь обновить анкету.",
             "content": {"application/json": {"example": {}}},
+        },
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Спортсмен не найден.",
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
+        },
+        409: {
+            "description": "Спортсмен не в этой команде.",
+            "content": {"application/json": {"example": {"detail": "sportsman"}}},
+        },
+    },
+}
+
+fill_survey_for_sportsman: Docs = {
+    "summary": "Заполнение анкеты спортсмена",
+    "description": """
+    ```
+    Query Params:
+        email - Email спортсмена(str).
+
+    Request Body:
+        answers - список объектов key value(list[objects])
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S:
+        Заполнение анкеты тренером никак не влият на флаг обновления
+        анкеты для спортсмена
+    """,
+    "responses": {
+        200: {
+            "description": "Тренер успешно обновил анкету спортсмена.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "answers": [{"key": "string", "value": "string"}],
+                        "survey": {
+                            "mainFields": [
+                                {
+                                    "key": "gender",
+                                    "label": "Пол",
+                                    "type": "select",
+                                    "options": ["Мужской", "Женский"],
+                                    "required": True,
+                                },
+                                {
+                                    "key": "position",
+                                    "label": "Игровая позиция",
+                                    "type": "text",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "height",
+                                    "label": "Рост",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "weight",
+                                    "label": "Вес",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                                {
+                                    "key": "age",
+                                    "label": "Возраст",
+                                    "type": "number",
+                                    "required": True,
+                                },
+                            ],
+                            "addFields": [{
+                                "key": "1",
+                                "label": "1",
+                                "type": "text",
+                                "required": True,
+                            }],
+                        },
+                    }
+                }
+            },
         },
         401: {
             "description": "Пользователь не авторизан, или `accessToken` просрочен.",
