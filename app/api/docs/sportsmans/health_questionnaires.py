@@ -110,7 +110,6 @@ get_health_questionnaire: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "sportsmanId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "workoutId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "rating": 7,
                         "createdAt": "2024-04-04T16:27:21.929Z",
                     },
@@ -155,7 +154,6 @@ fill_health_questionnaire: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "sportsmanId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "workoutId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "rating": 10,
                         "text": "AHYENNO",
                         "createdAt": "2024-04-04T16:27:21.929Z",

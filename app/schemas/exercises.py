@@ -3,14 +3,12 @@ from uuid import UUID
 
 from pydantic import Field, model_validator
 
-from app.consts import BasicExercisesTypesEnum, SupportExercisesTypesEnum
-
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .exercises_types import ExercisesTypesOut
 
 
 class CreateBasicExerciseIn(BaseSchema):
-    type: BasicExercisesTypesEnum
+    type: int
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
     rest: float | None = Field(..., gt=0)
@@ -32,7 +30,7 @@ class BasicExerciseOut(BaseSchemaFromDB):
 
 
 class CreateSupportExerciseIn(BaseSchema):
-    type: SupportExercisesTypesEnum
+    type: int
     time: int = Field(..., gt=0)
 
 

@@ -33,6 +33,17 @@ async def create_workout_pool(
         Provide[Containers.workouts_pool.service],
     ),
 ) -> Any:
+    try:
+        await exercises_service.pre_validation(
+            trainer_id=self_trainer.id,
+            exercises_in=create_workout_in.exercises,
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+
     new_workout_pool_out = await workouts_pool_service.create(
         schema_in=schemas.CreateWorkoutPoolInDB(
             name=create_workout_in.name,
@@ -43,6 +54,7 @@ async def create_workout_pool(
 
     await exercises_service.create(
         workout_pool_id=new_workout_pool_out.id,
+        trainer_id=self_trainer.id,
         exercises_in=create_workout_in.exercises,
     )
 
@@ -192,6 +204,7 @@ async def update_workout_pool(
         )
     await exercises_service.create(
         workout_pool_id=new_workout_pool_out.id,
+        trainer_id=self_trainer.id,
         exercises_in=new_exercises_in,
     )
 

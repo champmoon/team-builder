@@ -1,4 +1,10 @@
 from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
+from .exercises_types import (
+    create_exercise_type,
+    delete_exercise_type,
+    reset_exercises_types,
+    update_exercise_type,
+)
 from .groups import (
     add_sportsman_to_group,
     adds_sportsmans_to_group,

@@ -8,6 +8,7 @@ tags_mapper = {
     "trainers_surveys": "Тренеры → Анкета",
     "trainers_teams": "Тренеры → Команда",
     "trainers_groups": "Тренеры → Группа",
+    "trainers_exercises": "Тренеры → Типы упражнения",
     "trainers_workouts": "Тренеры → Тренировка",
     "trainers_workouts_management": "Тренеры → Управление тренировкой",
     "trainers_workouts_pool": "Тренеры → Программа тренировок",
