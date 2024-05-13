@@ -63,10 +63,12 @@ class HealthQuestinnairesService:
     ) -> HealthQuestionnaires:
         new_health_questionnaire_out = await self.repository.create(schema_in=schema_in)
 
-        today = datetime.datetime.now()
+        today = datetime.datetime.now() + datetime.timedelta(hours=3)
         next_day = today + datetime.timedelta(days=1)
         formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
         exp_time = round((formatted_day - today).total_seconds())
+        if exp_time < 0:
+            return new_health_questionnaire_out
 
         health_questionnaire_action = self.health_questionnaire_action_part(
             sportsman_id=str(schema_in.sportsman_id),  # type: ignore
@@ -80,10 +82,12 @@ class HealthQuestinnairesService:
         self,
         sportsman_id: UUID,
     ) -> None:
-        today = datetime.datetime.now()
+        today = datetime.datetime.now() + datetime.timedelta(hours=3)
         next_day = today + datetime.timedelta(days=1)
         formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
         exp_time = round((formatted_day - today).total_seconds())
+        if exp_time < 0:
+            return
 
         health_questionnaire_action = self.health_questionnaire_action_part(
             sportsman_id=str(sportsman_id)  # type: ignore

@@ -115,7 +115,9 @@ async def delete_workout_pool(
 
     workouts_outs = await workouts_service.get_by_pool_id(pool_id=workout_pool_out.id)
     past_workouts_cnt = 0
-    time_now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    time_now = datetime.timedelta(hours=3) + datetime.datetime.now(
+        datetime.UTC
+    ).replace(tzinfo=None)
     for workout_out in workouts_outs:
         if time_now > workout_out.date:
             past_workouts_cnt += 1
@@ -158,7 +160,9 @@ async def update_workout_pool(
     workouts_outs = await workouts_service.get_by_pool_id(pool_id=workout_pool_out.id)
     past_workouts_cnt = 0
     future_workouts_outs: list[Workouts] = []
-    time_now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    time_now = datetime.timedelta(hours=3) + datetime.datetime.now(
+        datetime.UTC
+    ).replace(tzinfo=None)
     for workout_out in workouts_outs:
         if time_now > workout_out.date:
             past_workouts_cnt += 1

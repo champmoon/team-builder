@@ -154,10 +154,12 @@ class TrainersWorkoutsService:
             status_id=workout_status_out.id,
         )
 
-        today = datetime.datetime.now()
+        today = datetime.datetime.now() + +datetime.timedelta(hours=3)
         next_day = today + datetime.timedelta(days=1)
         formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
         exp_time = round((formatted_day - today).total_seconds())
+        if exp_time < 0:
+            return updated_out
 
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(schema_in.workout_id),  # type: ignore

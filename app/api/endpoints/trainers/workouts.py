@@ -934,7 +934,10 @@ async def delete_workout(
     if not workout_out or workout_out.workout_pool.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")
 
-    time_now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    time_now = datetime.timedelta(hours=3) + datetime.datetime.now(
+        datetime.UTC
+    ).replace(tzinfo=None)
+
     if time_now > workout_out.date:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
 

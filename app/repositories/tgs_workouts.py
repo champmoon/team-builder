@@ -74,7 +74,9 @@ class TGSWorkoutsRepository:
         return deleted_workout.scalars().one()
 
     async def get_future_group_workouts_ids(self, group_id: UUID) -> Sequence[UUID]:
-        now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
         stmt = (
             select(self.model.workout_id)
             .join(Workouts, self.model.workout_id == Workouts.id)
@@ -89,7 +91,9 @@ class TGSWorkoutsRepository:
         return getted.scalars().all()
 
     async def get_future_team_workouts_ids(self, team_id: UUID) -> Sequence[UUID]:
-        now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
         stmt = (
             select(self.model.workout_id)
             .join(Workouts, self.model.workout_id == Workouts.id)
