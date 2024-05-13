@@ -39,16 +39,48 @@ class ExercisesService:
             workout_pool_id=workout_pool_id
         )
 
+    async def pre_validation(
+        self,
+        trainer_id: UUID,
+        exercises_in: list[
+            schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
+        ],
+    ) -> None:
+        for exercise_in in exercises_in:
+            exercise_type_out = await self.exercises_types_service.get_by_type(
+                type=exercise_in.type,
+                trainer_id=trainer_id,
+            )
+            if not exercise_type_out:
+                raise ValueError(f"exercise type - {exercise_in.type} not found")
+
+            if isinstance(exercise_in, schemas.CreateBasicExerciseIn):
+                if exercise_type_out.is_basic is False:
+                    raise ValueError(
+                        f"exercise with type - {exercise_type_out.type} is support, but"
+                        " received as basic"
+                    )
+            elif isinstance(exercise_in, schemas.CreateSupportExerciseIn):
+                if exercise_type_out.is_basic is True:
+                    raise ValueError(
+                        f"exercise with type - {exercise_type_out.type} is basic, but"
+                        " received as support"
+                    )
+            else:
+                raise ValueError
+
     async def create(
         self,
         workout_pool_id: UUID,
+        trainer_id: UUID,
         exercises_in: list[
             schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         ],
     ) -> None:
         for order, exercise_in in enumerate(exercises_in):
             exercise_type_out = await self.exercises_types_service.get_by_type(
-                type=consts.ExercisesTypesEnum(exercise_in.type)
+                type=exercise_in.type,
+                trainer_id=trainer_id,
             )
             if not exercise_type_out:
                 raise ExercisesTypesNotFoundException(type=exercise_in.type)

@@ -33,6 +33,17 @@ async def create_workout_pool(
         Provide[Containers.workouts_pool.service],
     ),
 ) -> Any:
+    try:
+        await exercises_service.pre_validation(
+            trainer_id=self_trainer.id,
+            exercises_in=create_workout_in.exercises,
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+
     new_workout_pool_out = await workouts_pool_service.create(
         schema_in=schemas.CreateWorkoutPoolInDB(
             name=create_workout_in.name,
@@ -43,6 +54,7 @@ async def create_workout_pool(
 
     await exercises_service.create(
         workout_pool_id=new_workout_pool_out.id,
+        trainer_id=self_trainer.id,
         exercises_in=create_workout_in.exercises,
     )
 
@@ -115,7 +127,9 @@ async def delete_workout_pool(
 
     workouts_outs = await workouts_service.get_by_pool_id(pool_id=workout_pool_out.id)
     past_workouts_cnt = 0
-    time_now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    time_now = datetime.timedelta(hours=3) + datetime.datetime.now(
+        datetime.UTC
+    ).replace(tzinfo=None)
     for workout_out in workouts_outs:
         if time_now > workout_out.date:
             past_workouts_cnt += 1
@@ -158,7 +172,9 @@ async def update_workout_pool(
     workouts_outs = await workouts_service.get_by_pool_id(pool_id=workout_pool_out.id)
     past_workouts_cnt = 0
     future_workouts_outs: list[Workouts] = []
-    time_now = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    time_now = datetime.timedelta(hours=3) + datetime.datetime.now(
+        datetime.UTC
+    ).replace(tzinfo=None)
     for workout_out in workouts_outs:
         if time_now > workout_out.date:
             past_workouts_cnt += 1
@@ -188,6 +204,7 @@ async def update_workout_pool(
         )
     await exercises_service.create(
         workout_pool_id=new_workout_pool_out.id,
+        trainer_id=self_trainer.id,
         exercises_in=new_exercises_in,
     )
 

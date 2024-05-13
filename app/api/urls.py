@@ -71,6 +71,12 @@ url.GET("     /sportsman/groups/{id}                             ", endpoint=end
 url.POST("    /sportsman/groups/outs                             ", endpoint=endpoints.sportsmans.outs_off_groups, docs=docs.sportsmans.outs_off_groups)
 url.POST("    /sportsman/groups/out/{id}                         ", endpoint=endpoints.sportsmans.out_off_group, docs=docs.sportsmans.out_off_group)
 
+# Trainer Exercise Type
+url.POST("     /trainer/exercises                                ", endpoint=endpoints.trainers.create_exercise_type, docs=docs.trainers.create_exercise_type)
+url.PATCH("    /trainer/exercises                                ", endpoint=endpoints.trainers.update_exercise_type, docs=docs.trainers.update_exercise_type)
+url.DELETE("   /trainer/exercises                                ", endpoint=endpoints.trainers.delete_exercise_type, docs=docs.trainers.delete_exercise_type)
+url.POST("     /trainer/exercises/reset                          ", endpoint=endpoints.trainers.reset_exercises_types, docs=docs.trainers.reset_exercises_types)
+
 # Trainer Workout
 url.GET("     /trainer/workouts/team                             ", endpoint=endpoints.trainers.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
 url.POST("    /trainer/workouts/team                             ", endpoint=endpoints.trainers.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
@@ -140,6 +146,7 @@ urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_ma
 urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_surveys"]])
 urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.tags_mapper["trainers_groups"]])
+urls_router.include_router(endpoints.trainers.exercises_types.router, tags=[docs.tags_mapper["trainers_exercises"]])
 urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
 urls_router.include_router(endpoints.trainers.workouts_management.router, tags=[docs.tags_mapper["trainers_workouts_management"]])
 urls_router.include_router(endpoints.trainers.workouts_pool.router, tags=[docs.tags_mapper["trainers_workouts_pool"]])

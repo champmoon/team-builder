@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from typing import Self
 from uuid import UUID
 
@@ -40,7 +40,10 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
-        if self.date <= (now := datetime.utcnow()):
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        if self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
         return self
 
@@ -56,7 +59,10 @@ class CreateWorkoutForGroupIn(BaseSchema):
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
-        if self.date <= (now := datetime.utcnow()):
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        if self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
         return self
 
@@ -71,7 +77,10 @@ class CreateWorkoutForTeamIn(BaseSchema):
 
     @model_validator(mode="after")
     def check_date(self) -> Self:
-        if self.date <= (now := datetime.utcnow()):
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        if self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
         return self
 
@@ -97,7 +106,10 @@ class UpdateWorkoutIn(BaseSchema):
 
     @model_validator(mode="after")
     def check_at_least(self) -> Self:
-        if self.date and self.date <= (now := datetime.utcnow()):
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        if self.date and self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
 
         if not any((

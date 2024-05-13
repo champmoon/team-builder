@@ -100,3 +100,5 @@ def swagger_monkey_patch(*args: Any, **kwargs: Any) -> Any:
 
 
 applications.get_swagger_ui_html = swagger_monkey_patch
+
+# TODO UTC created-at

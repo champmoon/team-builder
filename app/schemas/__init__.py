@@ -19,7 +19,11 @@ from .exercises import (
     CreateSupportExerciseIn,
     SupportExerciseOut,
 )
-from .exercises_types import CreateExercisesTypeIn, ExercisesTypesOut
+from .exercises_types import (
+    CreateExercisesTypeIn,
+    ExercisesTypesOut,
+    UpdateExercisesTypeIn,
+)
 from .groups import (
     CreateGroupIn,
     CreateGroupInDB,

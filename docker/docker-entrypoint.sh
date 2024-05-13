@@ -16,7 +16,6 @@ alembic upgrade head
 
 # Run scripts to fill db
 python app/scripts/pre_start/first_admin.py
-python app/scripts/pre_start/exercises_types.py
 python app/scripts/pre_start/workouts_statuses.py
 
 sh -c "$*"

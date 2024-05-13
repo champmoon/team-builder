@@ -102,6 +102,9 @@ async def register_trainer(
     team_surveys_service: Services.team_surveys = Depends(
         Provide[Containers.team_surveys.service],
     ),
+    exercises_types_service: Services.exercises_types = Depends(
+        Provide[Containers.exercises_types.service],
+    ),
 ) -> Any:
     trainer_out = await trainers_service.get_by_email(email=register_in.email)
     if trainer_out:
@@ -138,5 +141,7 @@ async def register_trainer(
         team_id=new_team_out.id,
         sport_type=SportsTypes(new_team_out.sport_type),
     )
+
+    await exercises_types_service.initialize_defaults(trainer_id=new_trainer_out.id)
 
     return new_trainer_out

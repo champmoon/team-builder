@@ -28,9 +28,12 @@ class WorkoutsService:
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         new_workout_out = await self.repository.create(schema_in=schema_in)
 
-        exp_time = round(
-            (new_workout_out.date - datetime.datetime.now()).total_seconds()
-        )
+        now_time = datetime.datetime.now() + datetime.timedelta(hours=3)
+
+        exp_time = round((new_workout_out.date - now_time).total_seconds())
+        if exp_time < 0:
+            return new_workout_out
+
         workouts_status_action = self.workouts_status_action_part(
             workout_id=str(new_workout_out.id)  # type: ignore
         )
