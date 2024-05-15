@@ -929,6 +929,9 @@ async def delete_workout(
     workouts_service: Services.workouts = Depends(
         Provide[Containers.workouts.service],
     ),
+    trainers_workouts_service: Services.trainers_workouts = Depends(
+        Provide[Containers.trainers_workouts.service]
+    ),
 ) -> None:
     workout_out = await workouts_service.get_by_id(id=id)
     if not workout_out or workout_out.workout_pool.trainer_id != self_trainer.id:
@@ -939,6 +942,16 @@ async def delete_workout(
     ).replace(tzinfo=None)
 
     if time_now > workout_out.date:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
+
+    trainer_workout_out = await trainers_workouts_service.get_by(
+        trainer_id=self_trainer.id,
+        workout_id=workout_out.id,
+    )
+    if (
+        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+        != consts.WorkoutsStatusesEnum.PLANNED
+    ):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
 
     await workouts_service.delete(id=id)
