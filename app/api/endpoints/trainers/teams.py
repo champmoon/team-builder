@@ -35,6 +35,29 @@ async def get_self_team(
     )
 
 
+@router(
+    response_model=schemas.TeamOut,
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER])
+@inject
+async def update_team_name(
+    name: str,
+    self_trainer: Trainers = Depends(deps.self_trainer),
+    teams_service: Services.teams = Depends(
+        Provide[Containers.teams.service],
+    ),
+) -> Any:
+    team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
+    if not team_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="_team must exist",
+        )
+
+    await teams_service.update_name(team_id=team_out.id, name=name)
+
+
 # @router(
 #     response_model=schemas.TeamOut,
 #     status_code=status.HTTP_200_OK,
