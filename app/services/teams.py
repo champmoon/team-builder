@@ -17,3 +17,6 @@ class TeamsService:
 
     async def create(self, schema_in: schemas.CreateTeamIn) -> Teams:
         return await self.repository.create(schema_in=schema_in)
+
+    async def update_name(self, id: UUID, name: str) -> Teams:
+        return await self.repository.update_name(id=id, name=name)

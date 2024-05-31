@@ -2,7 +2,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Teams
@@ -61,3 +61,17 @@ class TeamsRepository:
             await session.commit()
 
         return deleted_team.scalars().one()
+
+    async def update_name(self, id: UUID, name: str) -> Teams:
+        stmt = (
+            update(self.model)
+            .where(self.model.id == id)
+            .values(name=name)
+            .returning(self.model)
+        )
+
+        async with self.session_factory() as session:
+            updated_trainer = await session.execute(stmt)
+            await session.commit()
+
+        return updated_trainer.scalars().one()

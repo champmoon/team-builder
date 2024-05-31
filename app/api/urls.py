@@ -51,6 +51,7 @@ url.PATCH("   /sportsman/survey                                  ", endpoint=end
 
 # Trainer Team
 url.GET("     /trainer/team                                      ", endpoint=endpoints.trainers.get_self_team, docs=docs.trainers.get_self_team)
+url.PATCH("   /trainer/team                                      ", endpoint=endpoints.trainers.update_team_name)
 
 # Sportsman Team
 url.GET("     /sportsman/team                                    ", endpoint=endpoints.sportsmans.get_self_team, docs=docs.sportsmans.teams.get_self_team)

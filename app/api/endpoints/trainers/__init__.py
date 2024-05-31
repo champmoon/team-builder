@@ -33,7 +33,7 @@ from .surveys import (
     set_update_team_survey,
     update_survey,
 )
-from .teams import get_self_team
+from .teams import get_self_team, update_team_name
 from .workouts import (
     create_workout_for_group,
     create_workout_for_sportsman,
