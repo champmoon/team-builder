@@ -54,8 +54,7 @@ services:
       context: ../nginx
     container_name: new_tb_nginx
     ports:
-      - 80:80
-      - 443:443
+      - 5000:5000
     depends_on:
       - new_tb_api
     networks:
