@@ -102,6 +102,7 @@ async def create_workout_for_sportsman(
 
     return schemas.TrainerWorkoutOut(
         id=new_workout_out.id,
+        repeat_id=new_workout_out.repeat_id,
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
@@ -205,6 +206,7 @@ async def create_workout_for_group(
 
     return schemas.TrainerGroupWorkoutOut(
         id=new_workout_out.id,
+        repeat_id=new_workout_out.repeat_id,
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
@@ -308,6 +310,7 @@ async def create_workout_for_team(
 
     return schemas.TrainerTeamWorkoutOut(
         id=new_workout_out.id,
+        repeat_id=new_workout_out.repeat_id,
         name=new_workout_out.workout_pool.name,
         estimated_time=new_workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
@@ -391,6 +394,7 @@ async def get_workouts(
 
         base_workouts_schemas = schemas.TrainerWorkoutOut(
             id=workout_out.id,
+            repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
             status=schemas.WorkoutsStatusesOut(
@@ -471,6 +475,7 @@ async def get_workout(
 
     base_workouts_schemas = schemas.TrainerWorkoutOut(
         id=workout_out.id,
+        repeat_id=workout_out.repeat_id,
         name=workout_out.workout_pool.name,
         estimated_time=workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(
@@ -580,6 +585,7 @@ async def get_workouts_by_pool_id(
 
         base_workouts_schemas = schemas.TrainerWorkoutOut(
             id=workout_out.id,
+            repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
             status=schemas.WorkoutsStatusesOut(
@@ -711,6 +717,7 @@ async def get_workouts_for_sportsman(
 
         base_workouts_schemas = schemas.TrainerWorkoutOut(
             id=workout_out.id,
+            repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
             status=schemas.WorkoutsStatusesOut(
@@ -822,6 +829,7 @@ async def get_workouts_for_group(
             )
 
         workout_schema = schemas.TrainerGroupWorkoutOut(
+            repeat_id=workout_out.repeat_id,
             id=workout_out.id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
@@ -896,6 +904,7 @@ async def get_workouts_for_team(
 
         workout_schema = schemas.TrainerTeamWorkoutOut(
             id=workout_out.id,
+            repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
             status=schemas.WorkoutsStatusesOut(
@@ -948,6 +957,11 @@ async def delete_workout(
         trainer_id=self_trainer.id,
         workout_id=workout_out.id,
     )
+    if not trainer_workout_out:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="trainer_workout_out not in trainer_workouts db",
+        )
     if (
         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
         != consts.WorkoutsStatusesEnum.PLANNED
@@ -997,6 +1011,7 @@ async def update_workout(
 
     base_workouts_schemas = schemas.TrainerWorkoutOut(
         id=workout_out.id,
+        repeat_id=workout_out.repeat_id,
         name=workout_out.workout_pool.name,
         estimated_time=workout_out.workout_pool.estimated_time,
         status=schemas.WorkoutsStatusesOut(

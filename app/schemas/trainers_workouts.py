@@ -29,6 +29,7 @@ class TrainerWorkoutPoolOut(BaseSchemaFromDB):
 
 class TrainerWorkoutOut(BaseSchemaFromDB):
     id: UUID
+    repeat_id: UUID
     name: str
     estimated_time: float
     rest_time: int
