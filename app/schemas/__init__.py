@@ -88,6 +88,9 @@ from .workouts import (
     CreateWorkoutInDB,
     CreateWorkoutPoolIn,
     CreateWorkoutPoolInDB,
+    RepeatWorkoutForGroupIn,
+    RepeatWorkoutForSportsmanIn,
+    RepeatWorkoutForTeamIn,
     UpdateWorkoutIn,
     UpdateWorkoutPoolIn,
 )

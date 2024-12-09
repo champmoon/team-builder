@@ -25,6 +25,9 @@ class WorkoutsService:
     async def get_by_pool_id(self, pool_id: UUID) -> Sequence[Workouts]:
         return await self.repository.get_by_pool_id(pool_id=pool_id)
 
+    async def get_by_repeat_id(self, repeat_id: UUID) -> Sequence[Workouts]:
+        return await self.repository.get_by_repeat_id(repeat_id=repeat_id)
+
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         new_workout_out = await self.repository.create(schema_in=schema_in)
 

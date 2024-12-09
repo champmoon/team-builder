@@ -38,6 +38,7 @@ from .workouts import (
     create_workout_for_group,
     create_workout_for_sportsman,
     create_workout_for_team,
+    delete_repeat_workout,
     delete_workout,
     get_workout,
     get_workouts,
@@ -45,6 +46,9 @@ from .workouts import (
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,
+    repeat_workout_for_group,
+    repeat_workout_for_sportsman,
+    repeat_workout_for_team,
     update_workout,
 )
 from .workouts_management import (

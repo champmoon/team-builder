@@ -81,14 +81,18 @@ url.POST("     /trainer/exercises/reset                          ", endpoint=end
 # Trainer Workout
 url.GET("     /trainer/workouts/team                             ", endpoint=endpoints.trainers.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
 url.POST("    /trainer/workouts/team                             ", endpoint=endpoints.trainers.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
+url.POST("    /trainer/workouts/team/repeat                      ", endpoint=endpoints.trainers.repeat_workout_for_team)
 url.GET("     /trainer/workouts/group                            ", endpoint=endpoints.trainers.get_workouts_for_group, docs=docs.trainers.get_workouts_for_group)
 url.POST("    /trainer/workouts/group                            ", endpoint=endpoints.trainers.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
+url.POST("    /trainer/workouts/group/repeat                     ", endpoint=endpoints.trainers.create_workout_for_group)
 url.GET("     /trainer/workouts/sportsman                        ", endpoint=endpoints.trainers.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
 url.POST("    /trainer/workouts/individual                       ", endpoint=endpoints.trainers.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
+url.POST("    /trainer/workouts/individual/repeat                ", endpoint=endpoints.trainers.create_workout_for_sportsman)
 url.GET("     /trainer/workouts                                  ", endpoint=endpoints.trainers.get_workouts, docs=docs.trainers.get_workouts)
 url.GET("     /trainer/workouts/pool                             ", endpoint=endpoints.trainers.get_workouts_by_pool_id, docs=docs.trainers.get_workouts_by_pool_id)
 url.PATCH("   /trainer/workouts                                  ", endpoint=endpoints.trainers.update_workout, docs=docs.trainers.update_workout)
 url.DELETE("  /trainer/workouts                                  ", endpoint=endpoints.trainers.delete_workout, docs=docs.trainers.delete_workout)
+url.DELETE("  /trainer/workouts/repeat                           ", endpoint=endpoints.trainers.delete_repeat_workout)
 
 # Trainer Workouts Pool 
 url.GET("     /trainer/workouts-pool                             ", endpoint=endpoints.trainers.get_workouts_pool, docs=docs.trainers.get_workouts_pool)
