@@ -84,6 +84,7 @@ async def get_workouts(
             stress_questionnaire_time=workout_out.stress_questionnaire_time,
             comment=workout_out.comment,
             goal=workout_out.goal,
+            repeat_id=workout_out.repeat_id,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -179,6 +180,7 @@ async def get_workout(
         stress_questionnaire_time=workout_out.stress_questionnaire_time,
         comment=workout_out.comment,
         goal=workout_out.goal,
+        repeat_id=workout_out.repeat_id,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(

@@ -15,6 +15,7 @@ get_workouts_for_team: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
                             "status": {"status": 1, "description": "Запланирована"},
@@ -106,8 +107,8 @@ create_workout_for_team: Docs = {
         workoutPoolId - ID тренировки из пула.
                (uuid)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
@@ -123,8 +124,9 @@ create_workout_for_team: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
@@ -178,8 +180,8 @@ create_workout_for_team: Docs = {
                         ],
                         "workoutType": "Командная",
                         "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
-                },
+                    }]
+                }
             },
         },
         401: {
@@ -236,6 +238,7 @@ get_workouts_for_group: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
                             "status": {"status": 1, "description": "Запланирована"},
@@ -333,8 +336,8 @@ create_workout_for_group: Docs = {
 
         groupId - ID группы.(uuid)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
@@ -350,8 +353,9 @@ create_workout_for_group: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
@@ -405,7 +409,7 @@ create_workout_for_group: Docs = {
                         ],
                         "workoutType": "Групповая",
                         "groupId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
+                    }],
                 },
             },
         },
@@ -478,6 +482,7 @@ get_workouts_for_sportsman: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
                             "status": {"status": 1, "description": "Запланирована"},
@@ -588,8 +593,8 @@ create_workout_for_sportsman: Docs = {
 
         sportsmanEmail - email спортсмена.(str)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
@@ -605,8 +610,9 @@ create_workout_for_sportsman: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
@@ -660,7 +666,7 @@ create_workout_for_sportsman: Docs = {
                         ],
                         "workoutType": "Индивидуальная",
                         "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
+                    }]
                 },
             },
         },
@@ -737,6 +743,7 @@ get_workouts: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
                             "status": {"status": 1, "description": "Запланирована"},
@@ -856,6 +863,7 @@ get_workouts_by_pool_id: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
                             "status": {"status": 1, "description": "Запланирована"},
@@ -983,6 +991,7 @@ update_workout: Docs = {
                 "application/json": {
                     "example": {
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "status": {"status": 1, "description": "Запланирована"},

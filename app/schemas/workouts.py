@@ -32,7 +32,7 @@ class CreateWorkoutInDB(BaseSchema):
 class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
     sportsman_email: EmailStr
-    date: NaiveDatetime
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
@@ -43,15 +43,16 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
 class CreateWorkoutForGroupIn(BaseSchema):
     workout_pool_id: UUID
     group_id: UUID
-    date: NaiveDatetime
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
@@ -62,14 +63,15 @@ class CreateWorkoutForGroupIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
 class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
-    date: NaiveDatetime
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=1)
     comment: str | None = None
@@ -80,8 +82,9 @@ class CreateWorkoutForTeamIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
@@ -112,13 +115,13 @@ class UpdateWorkoutIn(BaseSchema):
         if self.date and self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
 
-        if not any((
-            self.date is None,
-            self.rest_time is None,
-            self.stress_questionnaire_time is None,
-            self.comment is None,
-            self.goal is None,
-        )):
+        if (
+            self.date is None
+            and self.rest_time is None
+            and self.stress_questionnaire_time is None
+            and self.comment is None
+            and self.goal is None
+        ):
             raise ValueError("at least not null")
 
         return self

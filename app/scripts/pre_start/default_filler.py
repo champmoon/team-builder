@@ -2,20 +2,19 @@ import asyncio
 import logging
 
 from app import schemas
-from app.conf.settings import settings
 from app.consts.sports_types import SportsTypes
 from app.db.session import DB
-from app.models import Trainers, Teams, ExercisesTypes, Sportsmans
+from app.models import ExercisesTypes, Sportsmans, Teams, Trainers
 from app.repositories import (
-    TrainersRepository,
-    TeamsRepository,
     ExercisesTypesRepository,
     SportsmansRepository,
+    TeamsRepository,
+    TrainersRepository,
 )
-from app.services.trainers import TrainersService
-from app.services.teams import TeamsService
 from app.services.exercises_types import ExercisesTypesService
 from app.services.sportsmans import SportsmansService
+from app.services.teams import TeamsService
+from app.services.trainers import TrainersService
 
 logging.basicConfig(level=logging.INFO)
 
