@@ -4,16 +4,16 @@ Command := $(firstword $(MAKECMDGOALS))
 Arguments := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
 build:
-	docker compose -f docker/docker-compose.yml --env-file .env up --build
+	docker-compose -f docker/docker-compose.yml --env-file .env up --build
 
 build-d:
-	docker compose -f docker/docker-compose.yml --env-file .env up --build -d
+	docker-compose -f docker/docker-compose.yml --env-file .env up --build -d
 
 down:
-	docker compose -f docker/docker-compose.yml --env-file .env down
+	docker-compose -f docker/docker-compose.yml --env-file .env down
 
 down-v:
-	docker compose -f docker/docker-compose.yml --env-file .env down -v
+	docker-compose -f docker/docker-compose.yml --env-file .env down -v
 
 # Example: make bash web
 bash:
