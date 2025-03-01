@@ -1350,7 +1350,10 @@ async def delete_repeat_workout(
     )
     for repeated_workout in repeated_workouts_out:
         if time_now > repeated_workout.date:
-            # raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
+            # raise HTTPException(
+            #     status_code=status.HTTP_400_BAD_REQUEST,
+            #     detail="workout",
+            # )
             continue
 
         trainer_workout_out = await trainers_workouts_service.get_by(
@@ -1367,7 +1370,10 @@ async def delete_repeat_workout(
             consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
             != consts.WorkoutsStatusesEnum.PLANNED
         ):
-            # raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
+            # raise HTTPException(
+            #     status_code=status.HTTP_400_BAD_REQUEST,
+            #     detail="workout",
+            # )
             continue
 
         await workouts_service.delete(id=repeated_workout.id)

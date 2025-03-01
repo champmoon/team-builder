@@ -55,7 +55,7 @@ async def update_team_name(
             detail="_team must exist",
         )
 
-    await teams_service.update_name(team_id=team_out.id, name=name)
+    await teams_service.update_name(id=team_out.id, name=name)
 
 
 # @router(
