@@ -1,17 +1,15 @@
 from uuid import UUID
 
-from app.schemas import SportsTypes
-
 from .base_class import ActionTypes, BaseAction, BaseActionData
 
 
 class ConfirmTrainerEmailData(BaseActionData):
     email: str
-    first_name: str | None = None
-    middle_name: str | None = None
-    last_name: str | None = None
-    team_name: str
-    sport_type: SportsTypes
+    # first_name: str | None = None
+    # middle_name: str | None = None
+    # last_name: str | None = None
+    # team_name: str
+    # sport_type: SportsTypes
 
 
 class ConfirmTrainerEmailAction(BaseAction[ConfirmTrainerEmailData]):
@@ -23,7 +21,7 @@ class ConfirmTrainerEmailAction(BaseAction[ConfirmTrainerEmailData]):
 
 class ConfirmSportsmanEmailData(BaseActionData):
     email: str
-    sport_type: SportsTypes
+    # sport_type: SportsTypes
     trainer_id: UUID
 
 

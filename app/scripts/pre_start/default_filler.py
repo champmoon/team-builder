@@ -2,7 +2,6 @@ import asyncio
 import logging
 
 from app import schemas
-from app.consts.sports_types import SportsTypes
 from app.db.session import DB
 from app.models import ExercisesTypes, Sportsmans, Teams, Trainers
 from app.repositories import (
@@ -23,8 +22,8 @@ logger = logging.getLogger(__name__)
 FIRST_TRAINER_EMAIL = "trainer@trainer.com"
 FIRST_TRAINER_PASSWORD = "trainer"
 
-FIRST_TEAM_NAME = "team"
-FIRST_TEAM_SPORT_TYPE = SportsTypes.BASKETBALL
+# FIRST_TEAM_NAME = "team"
+# FIRST_TEAM_SPORT_TYPE = SportsTypes.BASKETBALL
 
 FIRST_SPORTSMAN_EMAIL = "sportsman@sportsman.com"
 FIRST_SPORTSMAN_PASSWORD = "sportsman"
@@ -74,11 +73,11 @@ async def first_team(trainer: Trainers) -> Teams:
         team_out = await team_service.create(
             schemas.CreateTeamIn(
                 trainer_id=trainer.id,
-                name=FIRST_TEAM_NAME,
-                sport_type=FIRST_TEAM_SPORT_TYPE,
+                # name=FIRST_TEAM_NAME,
+                # sport_type=FIRST_TEAM_SPORT_TYPE,
             )
         )
-        logger.info(f"First team created with name - {team_out.name}")
+        logger.info("First team created")
 
     return team_out
 

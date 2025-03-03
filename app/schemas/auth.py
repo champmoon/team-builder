@@ -20,8 +20,8 @@ class TrainerRegisterIn(BaseSchema):
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
-    team_name: str
-    sport_type: SportsTypes
+    # team_name: str
+    # sport_type: SportsTypes
     password: Password = Field(min_length=5, max_length=30)
 
 
@@ -41,20 +41,20 @@ class LoginIn(BaseSchema):
 
 class SendTrainerEmailIn(BaseSchema):
     email: EmailStr
-    first_name: str | None = None
-    middle_name: str | None = None
-    last_name: str | None = None
-    team_name: str
-    sport_type: SportsTypes
+    # first_name: str | None = None
+    # middle_name: str | None = None
+    # last_name: str | None = None
+    # team_name: str
+    # sport_type: SportsTypes
 
 
 class TrainerEmailConfirmOut(BaseSchema):
     email: EmailStr
-    first_name: str | None = None
-    middle_name: str | None = None
-    last_name: str | None = None
-    team_name: str
-    sport_type: SportsTypes
+    # first_name: str | None = None
+    # middle_name: str | None = None
+    # last_name: str | None = None
+    # team_name: str
+    # sport_type: SportsTypes
 
 
 class SendSportsmanEmailIn(BaseSchema):
@@ -63,11 +63,11 @@ class SendSportsmanEmailIn(BaseSchema):
 
 class InnerSendSportsmanEmailIn(BaseSchema):
     email: EmailStr
-    sport_type: SportsTypes
+    # sport_type: SportsTypes
     trainer_id: UUID
 
 
 class SportsmanEmailConfirmOut(BaseSchema):
     email: EmailStr
-    sport_type: SportsTypes
+    # sport_type: SportsTypes
     trainer_id: UUID

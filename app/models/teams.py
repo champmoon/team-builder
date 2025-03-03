@@ -22,5 +22,5 @@ class Teams(Base, UUIDAsIDMixin):
         lazy="immediate",
         viewonly=True,
     )
-    name: Mapped[str]
-    sport_type: Mapped[str]
+    # name: Mapped[str]
+    # sport_type: Mapped[str]

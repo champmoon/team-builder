@@ -89,11 +89,11 @@ class AuthService:
         await confirm_email_action.set(
             acts.ConfirmTrainerEmailData(
                 email=confirm_data.email,
-                first_name=confirm_data.first_name,
-                middle_name=confirm_data.middle_name,
-                last_name=confirm_data.last_name,
-                team_name=confirm_data.team_name,
-                sport_type=confirm_data.sport_type,
+                # first_name=confirm_data.first_name,
+                # middle_name=confirm_data.middle_name,
+                # last_name=confirm_data.last_name,
+                # team_name=confirm_data.team_name,
+                # sport_type=confirm_data.sport_type,
             )
         )
         return confirm_email_uri
@@ -112,7 +112,7 @@ class AuthService:
         await confirm_email_action.set(
             acts.ConfirmSportsmanEmailData(
                 email=confirm_data.email,
-                sport_type=confirm_data.sport_type,
+                # sport_type=confirm_data.sport_type,
                 trainer_id=confirm_data.trainer_id,
             )
         )

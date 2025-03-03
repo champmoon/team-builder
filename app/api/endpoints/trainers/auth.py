@@ -18,7 +18,7 @@ router = EndPointRouter()
 @router(
     status_code=status.HTTP_202_ACCEPTED,
 )
-@deps.auth_required(users=[UsersTypes.ADMIN])
+# @deps.auth_required(users=[UsersTypes.ADMIN])
 @inject
 async def send_confirm_trainer_email(
     trainer_email_confirm_in: schemas.SendTrainerEmailIn,
@@ -77,11 +77,11 @@ async def confirm_trainer_email(
 
     return schemas.TrainerEmailConfirmOut(
         email=trainer_data_out.email,
-        first_name=trainer_data_out.first_name,
-        middle_name=trainer_data_out.middle_name,
-        last_name=trainer_data_out.last_name,
-        team_name=trainer_data_out.team_name,
-        sport_type=trainer_data_out.sport_type,
+        # first_name=trainer_data_out.first_name,
+        # middle_name=trainer_data_out.middle_name,
+        # last_name=trainer_data_out.last_name,
+        # team_name=trainer_data_out.team_name,
+        # sport_type=trainer_data_out.sport_type,
     )
 
 
@@ -99,9 +99,9 @@ async def register_trainer(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
-    team_surveys_service: Services.team_surveys = Depends(
-        Provide[Containers.team_surveys.service],
-    ),
+    # team_surveys_service: Services.team_surveys = Depends(
+    #     Provide[Containers.team_surveys.service],
+    # ),
     exercises_types_service: Services.exercises_types = Depends(
         Provide[Containers.exercises_types.service],
     ),
@@ -129,18 +129,19 @@ async def register_trainer(
             middle_name=register_in.middle_name,
         )
     )
-    new_team_out = await teams_service.create(
+    await teams_service.create(
         schema_in=schemas.CreateTeamIn(
             trainer_id=new_trainer_out.id,
-            name=register_in.team_name,
-            sport_type=register_in.sport_type,
+            # name=register_in.team_name,
+            # sport_type=register_in.sport_type,
         ),
     )
 
-    await team_surveys_service.create(
-        team_id=new_team_out.id,
-        sport_type=SportsTypes(new_team_out.sport_type),
-    )
+    # TODO: disable-surveys.md
+    # await team_surveys_service.create(
+    #     team_id=new_team_out.id,
+    #     sport_type=SportsTypes(new_team_out.sport_type),
+    # )
 
     await exercises_types_service.initialize_defaults(trainer_id=new_trainer_out.id)
 

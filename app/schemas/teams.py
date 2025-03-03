@@ -6,13 +6,13 @@ from .sportsmans import SportsmanForTeamOut
 
 class CreateTeamIn(BaseSchema):
     trainer_id: UUID
-    name: str
-    sport_type: str
+    # name: str
+    # sport_type: str
 
 
 class TeamOut(BaseSchemaFromDB):
     id: UUID
     trainer_id: UUID
-    name: str
-    sport_type: str
+    # name: str
+    # sport_type: str
     sportsmans: list[SportsmanForTeamOut]

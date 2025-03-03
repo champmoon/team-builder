@@ -57,7 +57,7 @@ async def send_confirm_sportsman_email(
 
     confirm_data = schemas.InnerSendSportsmanEmailIn(
         email=sportsman_email_confirm_in.email,
-        sport_type=team_out.sport_type,
+        # sport_type=team_out.sport_type,
         trainer_id=self_trainer.id,
     )
 
@@ -94,7 +94,7 @@ async def confirm_sportsman_email(
 
     return schemas.SportsmanEmailConfirmOut(
         email=sportsman_data_out.email,
-        sport_type=sportsman_data_out.sport_type,
+        # sport_type=sportsman_data_out.sport_type,
         trainer_id=sportsman_data_out.trainer_id,
     )
 
