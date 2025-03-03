@@ -1,24 +1,23 @@
 from uuid import UUID
 
-from pydantic import EmailStr
-
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .sportsmans import SportsmanForGroupOut
 
 
 class CreateGroupIn(BaseSchema):
     name: str
-    sportsmans_emails: list[EmailStr] | None = None
+    # sportsmans_emails: list[EmailStr] | None = None
+    sportsmans_ids: list[UUID] | None = None
 
 
 class SportsmansToGroupIn(BaseSchema):
     group_id: UUID
-    sportsmans_emails: list[EmailStr] | None = None
+    sportsmans_ids: list[UUID] | None = None
 
 
 class SportsmanToGroupIn(BaseSchema):
     group_id: UUID
-    sportsman_email: EmailStr
+    sportsman_id: UUID
 
 
 class CreateGroupInDB(BaseSchema):

@@ -468,7 +468,7 @@ get_workouts_for_sportsman: Docs = {
     "description": """
     ```
     Query params:
-        email - email спортсмена.(str)
+        id - id спортсмена.(UUID)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -591,7 +591,7 @@ create_workout_for_sportsman: Docs = {
         workoutPoolId - ID тренировки из пула.
                (uuid)
 
-        sportsmanEmail - email спортсмена.(str)
+        sportsmanId - id спортсмена.(UUID)
 
         dates - время начала тренировки.
                (list[datetime])

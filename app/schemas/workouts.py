@@ -2,7 +2,7 @@ import datetime
 from typing import Self
 from uuid import UUID
 
-from pydantic import EmailStr, Field, NaiveDatetime, model_validator
+from pydantic import Field, NaiveDatetime, model_validator
 
 from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
@@ -32,7 +32,7 @@ class CreateWorkoutInDB(BaseSchema):
 
 class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
-    sportsman_email: EmailStr
+    sportsman_id: UUID
     dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
     stress_questionnaire_time: int = Field(..., ge=1)
@@ -52,7 +52,7 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
 
 class RepeatWorkoutForSportsmanIn(BaseSchema):
     workout_id: UUID
-    sportsman_email: EmailStr
+    sportsman_id: UUID
     dates: list[NaiveDatetime]
 
     @model_validator(mode="after")

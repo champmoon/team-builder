@@ -59,12 +59,12 @@ async def create_group(
         schema_in=create_group_in,
         trainer_id=self_trainer.id,
     )
-    if not create_group_in.sportsmans_emails:
+    if not create_group_in.sportsmans_ids:
         return new_group_out
 
-    sportsmans_emails = create_group_in.sportsmans_emails
-    for sportsman_email in sportsmans_emails:
-        sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    sportsmans_ids = create_group_in.sportsmans_ids
+    for sportsman_id in sportsmans_ids:
+        sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
         if not sportsman_out:
             continue
 
@@ -159,7 +159,7 @@ async def add_sportsman_to_group(
     ),
 ) -> Any:
     group_id = add_sportsman_to_group_in.group_id
-    sportsman_email = add_sportsman_to_group_in.sportsman_email
+    sportsman_id = add_sportsman_to_group_in.sportsman_id
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
@@ -172,7 +172,7 @@ async def add_sportsman_to_group(
             detail="_team must exist",
         )
 
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
     if not sportsman_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
@@ -232,7 +232,7 @@ async def adds_sportsmans_to_group(
     ),
 ) -> Any:
     group_id = adds_sportsmans_to_group_in.group_id
-    sportsmans_emails = adds_sportsmans_to_group_in.sportsmans_emails
+    sportsmans_ids = adds_sportsmans_to_group_in.sportsmans_ids
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
@@ -248,8 +248,8 @@ async def adds_sportsmans_to_group(
     future_group_workouts_ids = (
         await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
     )
-    for sportsman_email in sportsmans_emails or []:
-        sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    for sportsman_id in sportsmans_ids or []:
+        sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
             continue
 
@@ -303,7 +303,7 @@ async def kick_sportsman_off_group(
     ),
 ) -> Any:
     group_id = kick_sportsman_to_group_in.group_id
-    sportsman_email = kick_sportsman_to_group_in.sportsman_email
+    sportsman_id = kick_sportsman_to_group_in.sportsman_id
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
@@ -316,7 +316,7 @@ async def kick_sportsman_off_group(
             detail="_team must exist",
         )
 
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
     if not sportsman_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
@@ -370,7 +370,7 @@ async def kicks_sportsmans_off_group(
     ),
 ) -> Any:
     group_id = kicks_sportsmans_to_group_in.group_id
-    sportsmans_emails = kicks_sportsmans_to_group_in.sportsmans_emails
+    sportsmans_ids = kicks_sportsmans_to_group_in.sportsmans_ids
 
     group_out = await groups_service.get_by_id(id=group_id)
     if not group_out or group_out.trainer_id != self_trainer.id:
@@ -386,8 +386,8 @@ async def kicks_sportsmans_off_group(
     future_group_workouts_ids = (
         await tgs_workouts_service.get_future_group_workouts_ids(group_id=group_out.id)
     )
-    for sportsman_email in sportsmans_emails or []:
-        sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    for sportsman_id in sportsmans_ids or []:
+        sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
         if not sportsman_out or sportsman_out.team_id != team_out.id:
             continue
 

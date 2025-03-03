@@ -128,8 +128,8 @@ create_group: Docs = {
         name - имя группы.
                (uuid)
 
-        sportsmansEmails - почты спортсмена.
-                           (array[string])(required=false)
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -418,8 +418,8 @@ adds_sportsmans_to_group: Docs = {
     Request Body:
         groupId - ID группы.
                   (uuid)
-        sportsmansEmails - почты спортсмена.
-                           (array[string])
+        sportsmansIds- почты спортсмена.
+                           (array[UUID])
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -581,8 +581,8 @@ kicks_sportsmans_off_group: Docs = {
     Request Body:
         groupid - ID группы.
                   (uuid)
-        sportsmansEmails - почты спортсмена.
-                           (array[string])
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])
 
     Auth:
         Этот запрос доступен только тренерам.

@@ -59,7 +59,7 @@ async def get_all_stress_questionnaires_by_sportsman(
 @router(
     response_model=list[schemas.StressQuestionnaireOut],
     status_code=status.HTTP_200_OK,
-    deprecated=True
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.TRAINER])
@@ -83,7 +83,7 @@ async def get_all_stress_questionnaires_by_workout(
 @router(
     response_model=schemas.StressQuestionnaireOut,
     status_code=status.HTTP_200_OK,
-    deprecated=True
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.TRAINER])

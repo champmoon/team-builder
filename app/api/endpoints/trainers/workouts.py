@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
-from pydantic import EmailStr, NaiveDatetime
+from pydantic import NaiveDatetime
 
 from app import consts, schemas
 from app.api import deps
@@ -56,7 +56,7 @@ async def create_workout_for_sportsman(
             status_code=status.HTTP_404_NOT_FOUND, detail="workout_pool"
         )
 
-    sportsman_email = create_workout_in.sportsman_email
+    sportsman_id = create_workout_in.sportsman_id
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
@@ -64,7 +64,7 @@ async def create_workout_for_sportsman(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="_team must exist"
         )
 
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
     if not sportsman_out or sportsman_out.team_id != team_out.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
@@ -164,7 +164,7 @@ async def repeat_workout_for_sportsman(
     if not workout_out or workout_out.workout_pool.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")
 
-    sportsman_email = repeat_workout_in.sportsman_email
+    sportsman_id = repeat_workout_in.sportsman_id
 
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
@@ -172,7 +172,7 @@ async def repeat_workout_for_sportsman(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="_team must exist"
         )
 
-    sportsman_out = await sportsmans_service.get_by_email(email=sportsman_email)
+    sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
     if not sportsman_out or sportsman_out.team_id != team_out.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
@@ -1008,7 +1008,7 @@ async def get_workouts_by_pool_id(
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def get_workouts_for_sportsman(
-    email: EmailStr,
+    sportsman_id: UUID,
     self_trainer: Trainers = Depends(deps.self_trainer),
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
@@ -1036,7 +1036,7 @@ async def get_workouts_for_sportsman(
             detail="_team must exist",
         )
 
-    sportsman_out = await sportsmans_service.get_by_email(email=email)
+    sportsman_out = await sportsmans_service.get_by_id(id=sportsman_id)
     if not sportsman_out or sportsman_out.team_id != team_out.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="sportsman")
 
@@ -1102,7 +1102,7 @@ async def get_workouts_for_sportsman(
         )
         team_id = tgs_workouts_out.team_id
         group_id = tgs_workouts_out.group_id
-        sportsman_id = tgs_workouts_out.sportsman_id
+        other_sportsman_id = tgs_workouts_out.sportsman_id
         if team_id:
             workout_schema = schemas.TrainerTeamWorkoutOut(
                 **base_workouts_schemas.model_dump(),
@@ -1113,10 +1113,10 @@ async def get_workouts_for_sportsman(
                 **base_workouts_schemas.model_dump(),
                 group_id=group_id,
             )
-        elif sportsman_id:
+        elif other_sportsman_id:
             workout_schema = schemas.TrainerSportsmanWorkoutOut(
                 **base_workouts_schemas.model_dump(),
-                sportsman_id=sportsman_id,
+                sportsman_id=other_sportsman_id,
             )
         else:
             raise HTTPException(
