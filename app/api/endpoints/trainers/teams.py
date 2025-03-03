@@ -38,6 +38,7 @@ async def get_self_team(
 @router(
     response_model=schemas.TeamOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject

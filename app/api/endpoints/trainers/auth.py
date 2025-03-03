@@ -4,10 +4,8 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
 
 from app import schemas
-from app.api import deps
 from app.cache.actions import ConfirmTrainerEmailAction
 from app.conf.settings import settings
-from app.consts import SportsTypes, UsersTypes
 from app.containers import Containers
 from app.services import Services
 from app.utils.router import EndPointRouter
