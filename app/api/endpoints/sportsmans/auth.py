@@ -113,12 +113,12 @@ async def register_sportsman(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
-    sportsman_surveys_service: Services.sportsman_surveys = Depends(
-        Provide[Containers.sportsman_surveys.service]
-    ),
-    team_surveys_service: Services.team_surveys = Depends(
-        Provide[Containers.team_surveys.service],
-    ),
+    # sportsman_surveys_service: Services.sportsman_surveys = Depends(
+    #     Provide[Containers.sportsman_surveys.service]
+    # ),
+    # team_surveys_service: Services.team_surveys = Depends(
+    #     Provide[Containers.team_surveys.service],
+    # ),
     tgs_workouts_service: Services.tgs_workouts = Depends(
         Provide[Containers.tgs_workouts.service]
     ),
@@ -138,12 +138,12 @@ async def register_sportsman(
     if not team_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="team")
 
-    team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
-    if not team_survey_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="_team survey must exist",
-        )
+    # team_survey_out = await team_surveys_service.get_by_team_id(team_id=team_out.id)
+    # if not team_survey_out:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #         detail="_team survey must exist",
+    #     )
 
     new_sportsman_out = await sportsmans_service.create(
         schema_in=schemas.CreateSportsmanIn(
@@ -156,10 +156,10 @@ async def register_sportsman(
         )
     )
 
-    await sportsman_surveys_service.create(
-        sportsman_id=new_sportsman_out.id,
-        team_survey_id=team_survey_out.id,
-    )
+    # await sportsman_surveys_service.create(
+    #     sportsman_id=new_sportsman_out.id,
+    #     team_survey_id=team_survey_out.id,
+    # )
 
     future_team_workouts_ids = await tgs_workouts_service.get_future_team_workouts_ids(
         team_id=team_out.id

@@ -19,6 +19,7 @@ router = EndPointRouter()
 @router(
     response_model=list[schemas.StressQuestionnaireOut],
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -36,6 +37,7 @@ async def get_active_stress_questionnaires(
 @router(
     response_model=list[schemas.StressQuestionnaireOut],
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -57,6 +59,7 @@ async def get_all_stress_questionnaires(
 @router(
     response_model=schemas.StressQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -78,6 +81,7 @@ async def get_stress_questionnaire(
 @router(
     response_model=schemas.StressQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -101,6 +105,7 @@ async def get_stress_questionnaire_by_workout_id(
 @router(
     response_model=schemas.StressQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])

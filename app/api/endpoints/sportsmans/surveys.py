@@ -19,6 +19,7 @@ router = EndPointRouter()
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.SportsmanSurveysOut,
+    deprecated=True
 )
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
 @inject
@@ -41,6 +42,7 @@ async def get_survey(
 
 @router(
     status_code=status.HTTP_200_OK,
+    deprecated=True
 )
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
 @inject
@@ -67,6 +69,7 @@ async def get_survey_update_flag(
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.SportsmanSurveysOut,
+    deprecated=True
 )
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
 @inject
