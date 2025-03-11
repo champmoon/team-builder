@@ -37,6 +37,16 @@ class SportsmansService:
     ) -> Sportsmans:
         return await self.repository.update(id=id, schema_in=schema_in)
 
+    async def update_password(
+        self, id: UUID, schema_in: schemas.UpdateSportsmanPasswordIn
+    ) -> Sportsmans:
+        return await self.repository.update(
+            id=id,
+            schema_in=schemas.InnerUpdateSportsmanPasswordIn(
+                hashed_password=Hasher(secret=schema_in.password).hash()
+            ),
+        )
+
     async def update_avatar(self, id: UUID, avatar_uri: str) -> Sportsmans:
         return await self.repository.update_avatar(id=id, avatar_uri=avatar_uri)
 

@@ -1,10 +1,8 @@
-from uuid import UUID
-
 from .base_class import ActionTypes, BaseAction, BaseActionData
 
 
 class ResetPasswordData(BaseActionData):
-    user_id: UUID
+    email: str
 
 
 class ResetPasswordAction(BaseAction[ResetPasswordData]):

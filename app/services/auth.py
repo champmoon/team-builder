@@ -129,23 +129,30 @@ class AuthService:
     #     )
     #     return confirm_email_uri
 
-    async def create_reset_email_uri(self, email: str, user_id: UUID) -> str:
+    # async def create_reset_email_uri(self, email: str, user_id: UUID) -> str:
+    #     confirm_token = uuid4()
+    #     change_email_uri = f"{settings.CONFIRM_URL}/reset?email={confirm_token}"
+
+    #     reset_email_action = self.reset_email_action_part(str(confirm_token))
+    #     await reset_email_action.set(
+    # acts.ResetEmailData(email=email, user_id=user_id))
+
+    #     return change_email_uri
+
+    async def create_reset_password_uri(self, email: str) -> str:
         confirm_token = uuid4()
-        change_email_uri = f"{settings.CONFIRM_URL}/reset?email={confirm_token}"
-
-        reset_email_action = self.reset_email_action_part(str(confirm_token))
-        await reset_email_action.set(acts.ResetEmailData(email=email, user_id=user_id))
-
-        return change_email_uri
-
-    async def create_reset_password_uri(self, user_id: UUID) -> str:
-        confirm_token = uuid4()
-        reset_password_uri = f"{settings.CONFIRM_URL}/reset?password={confirm_token}"
+        reset_password_uri = (
+            f"{settings.CONFIRM_URL}/reset-password?confirm_token={confirm_token}"
+        )
 
         reset_password_action = self.reset_password_action_part(str(confirm_token))
-        await reset_password_action.set(acts.ResetPasswordData(user_id=user_id))
+        await reset_password_action.set(acts.ResetPasswordData(email=email))
 
         return reset_password_uri
+
+    async def send_reset_password(self, email: str) -> None:
+        reset_password_uri = await self.create_reset_password_uri(email=email)
+        await self.send_email(to_email=email, confirm_email_uri=reset_password_uri)
 
     async def send_confirmation_email(self, confirm_data: schemas.SendEmailIn) -> None:
         confirm_email_uri = await self.create_confirmation_url(
@@ -165,15 +172,15 @@ class AuthService:
     #         to_email=confirm_data.email, confirm_email_uri=confirm_email_uri
     #     )
 
-    async def send_reset_email(self, email: str, user_id: UUID) -> None:
-        reset_email_uri = await self.create_reset_email_uri(
-            email=email, user_id=user_id
-        )
-        await self.send_email(to_email=email, confirm_email_uri=reset_email_uri)
+    # async def send_reset_email(self, email: str, user_id: UUID) -> None:
+    #     reset_email_uri = await self.create_reset_email_uri(
+    #         email=email, user_id=user_id
+    #     )
+    #     await self.send_email(to_email=email, confirm_email_uri=reset_email_uri)
 
-    async def send_reset_password_email(self, email: str, user_id: UUID) -> None:
-        reset_password_uri = await self.create_reset_password_uri(user_id=user_id)
-        await self.send_email(to_email=email, confirm_email_uri=reset_password_uri)
+    # async def send_reset_password_email(self, email: str, user_id: UUID) -> None:
+    #     reset_password_uri = await self.create_reset_password_uri(user_id=user_id)
+    #     await self.send_email(to_email=email, confirm_email_uri=reset_password_uri)
 
     async def send_email(self, to_email: str, confirm_email_uri: str) -> None:
         try:
@@ -266,6 +273,9 @@ class AuthService:
 
     async def is_email_confirmed(self, email: str) -> bool:
         return await self.check_confirm_email_action_part(email).is_confirmed()
+
+    async def reset_email_confirm(self, email: str) -> None:
+        return await self.check_confirm_email_action_part(email).reset()
 
     async def set_check_confirm_email(self, email: str) -> None:
         return await self.check_confirm_email_action_part(email).set_confirm_flag()

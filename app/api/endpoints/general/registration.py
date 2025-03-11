@@ -109,6 +109,8 @@ async def register(
     if not is_confirmed:
         raise HTTPException(status_code=status.HTTP_423_LOCKED)
 
+    await auth_service.reset_email_confirm(email=register_in.email)
+
     new_client_out: Trainers | Sportsmans
     if data_out.is_trainer:
         trainer_out = await trainers_service.get_by_email(email=register_in.email)

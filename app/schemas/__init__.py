@@ -7,9 +7,12 @@ from .auth import (
     EmailConfirmOut,
     InnerSendSportsmanEmailIn,
     LoginIn,
+    PasswordConfirmOut,
     RefreshTokenIn,
     RegisterIn,
+    ResetPasswordIn,
     SendEmailIn,
+    SendPasswordIn,
     SendSportsmanEmailIn,
     SportsmanEmailConfirmOut,
     VerifyResponse,
@@ -48,12 +51,14 @@ from .sessions import CreateSessionIn
 from .sportsmans import (
     CreateSportsmanIn,
     CreateSportsmanInDB,
+    InnerUpdateSportsmanPasswordIn,
     ListSportsmansEmailsIn,
     SportsmanOut,
     SportsmansEmailIn,
     SportsmanWithGroupsOut,
     SportsmanWithWorkoutStatusOut,
     UpdateSportsmanIn,
+    UpdateSportsmanPasswordIn,
 )
 from .sportsmans_groups import CreateSportsmanGroupIn, DeleteSportsmanGroupIn
 from .sportsmans_workouts import (
@@ -73,7 +78,14 @@ from .surveys import (
 from .teams import CreateTeamIn, TeamOut
 from .tgs_workouts import CreateTGSWorkoutIn
 from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut
-from .trainers import CreateTrainerIn, CreateTrainerInDB, TrainerOut, UpdateTrainerIn
+from .trainers import (
+    CreateTrainerIn,
+    CreateTrainerInDB,
+    InnerUpdateTrainerPasswordIn,
+    TrainerOut,
+    UpdateTrainerIn,
+    UpdateTrainerPasswordIn,
+)
 from .trainers_workouts import (
     CreateTrainerWorkoutIn,
     TrainerGroupWorkoutOut,

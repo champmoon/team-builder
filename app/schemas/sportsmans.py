@@ -92,3 +92,11 @@ class SportsmanWithWorkoutStatusOut(BaseSchema):
     middle_name: str | None = None
     last_name: str | None = None
     status: WorkoutsStatusesOut
+
+
+class UpdateSportsmanPasswordIn(BaseSchema):
+    password: str
+
+
+class InnerUpdateSportsmanPasswordIn(BaseSchema):
+    hashed_password: str

@@ -6,7 +6,11 @@ from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Sportsmans
-from app.schemas.sportsmans import CreateSportsmanInDB, UpdateSportsmanIn
+from app.schemas.sportsmans import (
+    CreateSportsmanInDB,
+    InnerUpdateSportsmanPasswordIn,
+    UpdateSportsmanIn,
+)
 
 
 class SportsmansRepository:
@@ -61,7 +65,9 @@ class SportsmansRepository:
 
         return created_sportsman.scalars().one()
 
-    async def update(self, id: UUID, schema_in: UpdateSportsmanIn) -> Sportsmans:
+    async def update(
+        self, id: UUID, schema_in: UpdateSportsmanIn | InnerUpdateSportsmanPasswordIn
+    ) -> Sportsmans:
         stmt = (
             update(self.model)
             .where(self.model.id == id)

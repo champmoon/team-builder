@@ -15,6 +15,11 @@ url.POST("    /auth/register                                     ", endpoint=end
 url.POST("    /auth/email                                        ", endpoint=endpoints.general.send_confirm_email, docs=docs.general.send_email)
 url.POST("    /auth/email/confirm                                ", endpoint=endpoints.general.confirm_email, docs=docs.general.confirm_email)
 
+# General Password reset
+url.POST("    /auth/password                                     ", endpoint=endpoints.general.reset_password, docs=docs.general.reset_password)
+url.POST("    /auth/password/send                                ", endpoint=endpoints.general.send_confirm_password, docs=docs.general.send_confirm_password)
+url.POST("    /auth/password/confirm                             ", endpoint=endpoints.general.confirm_password, docs=docs.general.confirm_password)
+
 # General Exercises Types
 url.GET("     /exercises/types                                   ", endpoint=endpoints.general.get_exercises_types, docs=docs.general.get_exercises_types)
 
@@ -147,7 +152,8 @@ url.PATCH("   /sportsman/health-questions/{id}                   ", endpoint=end
 
 # General
 urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["general_auth"]])
-urls_router.include_router(endpoints.general.registration.router, tags=[docs.tags_mapper["general_reg"]])
+urls_router.include_router(endpoints.general.registration.router, tags=[docs.tags_mapper["general_registration"]])
+urls_router.include_router(endpoints.general.password.router, tags=[docs.tags_mapper["general_password"]])
 urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["general_exercises"]])
 urls_router.include_router(endpoints.general.workouts_statuses.router, tags=[docs.tags_mapper["general_workouts_statuses"]])
 

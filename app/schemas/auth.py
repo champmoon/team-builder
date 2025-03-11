@@ -48,6 +48,11 @@ class RegisterIn(BaseSchema):
     password: Password = Field(min_length=5, max_length=30)
 
 
+class ResetPasswordIn(BaseSchema):
+    email: EmailStr
+    password: Password = Field(min_length=5, max_length=30)
+
+
 class LoginIn(BaseSchema):
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)
@@ -81,6 +86,10 @@ class EmailConfirmOut(BaseSchema):
     email: EmailStr
 
 
+class PasswordConfirmOut(BaseSchema):
+    email: EmailStr
+
+
 class SendSportsmanEmailIn(BaseSchema):
     email: EmailStr
 
@@ -100,3 +109,7 @@ class SportsmanEmailConfirmOut(BaseSchema):
 class ClientOut(BaseSchemaFromDB):
     id: UUID
     email: str
+
+
+class SendPasswordIn(BaseSchema):
+    email: EmailStr
