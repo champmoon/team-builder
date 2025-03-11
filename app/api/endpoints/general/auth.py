@@ -10,6 +10,7 @@ from app.containers import Containers
 from app.models import Admins, Sportsmans, Trainers
 from app.services import Services
 from app.utils import UsersScope
+from app.utils.jwt import JWTManager
 from app.utils.router import EndPointRouter
 
 router = EndPointRouter()
@@ -144,8 +145,16 @@ async def refresh(
 
 @router(
     status_code=status.HTTP_200_OK,
+    response_model=schemas.VerifyResponse,
 )
-@deps.auth_required(users=UsersScope.all())
+# @deps.auth_required(users=UsersScope.all())
 @inject
-async def verify() -> Response:
-    return Response(status_code=status.HTTP_200_OK)
+async def verify(
+    access_data_in: schemas.AccessTokenIn,
+) -> Any:
+    jwt_manager = JWTManager()
+    token_data = jwt_manager.decode_access_token(access_data_in.access_token)
+    if not token_data:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    return schemas.VerifyResponse(user_type=token_data.user_type)

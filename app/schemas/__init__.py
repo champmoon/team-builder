@@ -11,6 +11,8 @@ from .auth import (
     SportsmanRegisterIn,
     TrainerEmailConfirmOut,
     TrainerRegisterIn,
+    AccessTokenIn,
+    VerifyResponse
 )
 from .exercises import (
     BasicExerciseOut,

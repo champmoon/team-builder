@@ -4,15 +4,20 @@ from pydantic import EmailStr, Field
 
 from .base_class import BaseSchema
 from .validation import Password
+from app.consts import UsersTypes
 
 
 class ConfirmTokenIn(BaseSchema):
     confirm_token: UUID
 
+class AccessTokenIn(BaseSchema):
+    access_token: str
 
 class RefreshTokenIn(BaseSchema):
     refresh_token: UUID
 
+class VerifyResponse(BaseSchema):
+    user_type: UsersTypes
 
 class TrainerRegisterIn(BaseSchema):
     email: EmailStr
