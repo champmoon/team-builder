@@ -1,18 +1,18 @@
 from ..consts.sports_types import SportsTypes
 from .admins import CreateAdminIn, CreateAdminInDB
 from .auth import (
+    AccessTokenIn,
+    ClientOut,
     ConfirmTokenIn,
+    EmailConfirmOut,
     InnerSendSportsmanEmailIn,
     LoginIn,
     RefreshTokenIn,
+    RegisterIn,
+    SendEmailIn,
     SendSportsmanEmailIn,
-    SendTrainerEmailIn,
     SportsmanEmailConfirmOut,
-    SportsmanRegisterIn,
-    TrainerEmailConfirmOut,
-    TrainerRegisterIn,
-    AccessTokenIn,
-    VerifyResponse
+    VerifyResponse,
 )
 from .exercises import (
     BasicExerciseOut,

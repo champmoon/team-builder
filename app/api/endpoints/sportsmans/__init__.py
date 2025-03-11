@@ -1,8 +1,8 @@
-from .auth import (
-    confirm_sportsman_email,
-    register_sportsman,
-    send_confirm_sportsman_email,
-)
+# from .auth import (
+#     confirm_sportsman_email,
+#     register_sportsman,
+#     send_confirm_sportsman_email,
+# )
 from .groups import get_self_group, get_self_groups, out_off_group, outs_off_groups
 from .health_questionnaires import (
     fill_health_questionnaire,

@@ -1,4 +1,4 @@
-from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
+# from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
 from .exercises_types import (
     create_exercise_type,
     delete_exercise_type,

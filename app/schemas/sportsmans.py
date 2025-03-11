@@ -8,7 +8,7 @@ from .workouts_statuses import WorkoutsStatusesOut
 
 
 class CreateSportsmanIn(BaseSchema):
-    team_id: UUID
+    team_id: UUID | None = None
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)
     first_name: str | None = None
@@ -17,7 +17,7 @@ class CreateSportsmanIn(BaseSchema):
 
 
 class CreateSportsmanInDB(BaseSchema):
-    team_id: UUID
+    team_id: UUID | None = None
     email: EmailStr
     hashed_password: str
     first_name: str | None = None

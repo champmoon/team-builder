@@ -9,6 +9,9 @@ url.POST("    /auth/login                                        ", endpoint=end
 url.POST("    /auth/logout                                       ", endpoint=endpoints.general.logout, docs=docs.general.logout)
 url.POST("    /auth/refresh                                      ", endpoint=endpoints.general.refresh, docs=docs.general.refresh)
 url.POST("    /auth/verify                                       ", endpoint=endpoints.general.verify, docs=docs.general.verify)
+url.POST("    /auth/register                                     ", endpoint=endpoints.general.register, docs=docs.general.register)
+url.POST("    /auth/email                                        ", endpoint=endpoints.general.send_confirm_email, docs=docs.general.send_email)
+url.POST("    /auth/email/confirm                                ", endpoint=endpoints.general.confirm_email, docs=docs.general.confirm_email)
 
 # General Exercises Types
 url.GET("     /exercises/types                                   ", endpoint=endpoints.general.get_exercises_types, docs=docs.general.get_exercises_types)
@@ -17,14 +20,14 @@ url.GET("     /exercises/types                                   ", endpoint=end
 url.GET("     /workouts/statuses                                 ", endpoint=endpoints.general.get_workouts_statuses, docs=docs.general.get_workouts_statuses)
 
 # Trainer Register
-url.POST("    /trainer/register                                  ", endpoint=endpoints.trainers.register_trainer, docs=docs.trainers.register_trainer)
-url.POST("    /trainer/email                                     ", endpoint=endpoints.trainers.send_confirm_trainer_email, docs=docs.trainers.send_confirm_trainer_email)
-url.POST("    /trainer/email/confirm                             ", endpoint=endpoints.trainers.confirm_trainer_email, docs=docs.trainers.confirm_trainer_email)
+# url.POST("    /trainer/register                                  ", endpoint=endpoints.trainers.register_trainer, docs=docs.trainers.register_trainer)
+# url.POST("    /trainer/email                                     ", endpoint=endpoints.trainers.send_confirm_trainer_email, docs=docs.trainers.send_confirm_trainer_email)
+# url.POST("    /trainer/email/confirm                             ", endpoint=endpoints.trainers.confirm_trainer_email, docs=docs.trainers.confirm_trainer_email)
 
 # Sportsman Register
-url.POST("    /sportsman/register                                ", endpoint=endpoints.sportsmans.register_sportsman, docs=docs.sportsmans.register_sportsman)
-url.POST("    /sportsman/email                                   ", endpoint=endpoints.sportsmans.send_confirm_sportsman_email, docs=docs.sportsmans.send_confirm_sportsman_email)
-url.POST("    /sportsman/email/confirm                           ", endpoint=endpoints.sportsmans.confirm_sportsman_email, docs=docs.sportsmans.confirm_sportsman_email)
+# url.POST("    /sportsman/register                                ", endpoint=endpoints.sportsmans.register_sportsman, docs=docs.sportsmans.register_sportsman)
+# url.POST("    /sportsman/email                                   ", endpoint=endpoints.sportsmans.send_confirm_sportsman_email, docs=docs.sportsmans.send_confirm_sportsman_email)
+# url.POST("    /sportsman/email/confirm                           ", endpoint=endpoints.sportsmans.confirm_sportsman_email, docs=docs.sportsmans.confirm_sportsman_email)
 
 # Trainer Profile
 url.GET("     /trainer/profile                                   ", endpoint=endpoints.trainers.get_profile, docs=docs.trainers.get_profile)
@@ -146,7 +149,7 @@ urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.
 urls_router.include_router(endpoints.general.workouts_statuses.router, tags=[docs.tags_mapper["general_workouts_statuses"]])
 
 # Trainer
-urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.tags_mapper["trainers_auth"]])
+# urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.tags_mapper["trainers_auth"]])
 urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_mapper["trainers_profile"]])
 urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_surveys"]])
 urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
@@ -159,7 +162,7 @@ urls_router.include_router(endpoints.trainers.stress_questionnaires.router, tags
 urls_router.include_router(endpoints.trainers.health_questionnaires.router, tags=[docs.tags_mapper["trainers_health_questionnaires"]])
 
 # Sportsman
-urls_router.include_router(endpoints.sportsmans.auth.router, tags=[docs.tags_mapper["sportsmans_auth"]])
+# urls_router.include_router(endpoints.sportsmans.auth.router, tags=[docs.tags_mapper["sportsmans_auth"]])
 urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])
 urls_router.include_router(endpoints.sportsmans.surveys.router, tags=[docs.tags_mapper["sportsmans_surveys"]])
 urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])

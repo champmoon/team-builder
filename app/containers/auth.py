@@ -13,15 +13,15 @@ class AuthContainer(BaseContainer):
         connection_factory=BaseContainer.connection_factory.provided.connection,
     )
 
-    confirm_trainer_email_action_part = providers.Callable(
+    confirm_email_action_part = providers.Callable(
         create_action,
-        action_class=Actions.confirm_trainer_email,
+        action_class=Actions.confirm_email,
         connection_factory=BaseContainer.connection_factory.provided.connection,
     )
 
-    confirm_sportsman_email_action_part = providers.Callable(
+    get_confirm_email_action_part = providers.Callable(
         create_action,
-        action_class=Actions.confirm_sportsman_email,
+        action_class=Actions.get_confirm_email,
         connection_factory=BaseContainer.connection_factory.provided.connection,
     )
 
@@ -52,8 +52,8 @@ class AuthContainer(BaseContainer):
     service = providers.Factory(
         AuthService,
         limit_login_action_part=limit_login_action_part,
-        confirm_trainer_email_action_part=confirm_trainer_email_action_part,
-        confirm_sportsman_email_action_part=confirm_sportsman_email_action_part,
+        confirm_email_action_part=confirm_email_action_part,
+        get_confirm_email_action_part=get_confirm_email_action_part,
         check_confirm_email_action_part=check_confirm_email_action_part,
         limit_email_action_part=limit_email_action_part,
         reset_email_action_part=reset_email_action_part,
