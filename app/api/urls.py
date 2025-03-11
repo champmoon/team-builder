@@ -9,6 +9,8 @@ url.POST("    /auth/login                                        ", endpoint=end
 url.POST("    /auth/logout                                       ", endpoint=endpoints.general.logout, docs=docs.general.logout)
 url.POST("    /auth/refresh                                      ", endpoint=endpoints.general.refresh, docs=docs.general.refresh)
 url.POST("    /auth/verify                                       ", endpoint=endpoints.general.verify, docs=docs.general.verify)
+
+# General Registration
 url.POST("    /auth/register                                     ", endpoint=endpoints.general.register, docs=docs.general.register)
 url.POST("    /auth/email                                        ", endpoint=endpoints.general.send_confirm_email, docs=docs.general.send_email)
 url.POST("    /auth/email/confirm                                ", endpoint=endpoints.general.confirm_email, docs=docs.general.confirm_email)
@@ -145,6 +147,7 @@ url.PATCH("   /sportsman/health-questions/{id}                   ", endpoint=end
 
 # General
 urls_router.include_router(endpoints.general.auth.router, tags=[docs.tags_mapper["general_auth"]])
+urls_router.include_router(endpoints.general.registration.router, tags=[docs.tags_mapper["general_reg"]])
 urls_router.include_router(endpoints.general.exercises_types.router, tags=[docs.tags_mapper["general_exercises"]])
 urls_router.include_router(endpoints.general.workouts_statuses.router, tags=[docs.tags_mapper["general_workouts_statuses"]])
 
