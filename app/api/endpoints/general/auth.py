@@ -66,8 +66,7 @@ async def login(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user")
 
     session_out = await session_service.create(
-        user_id=user_out.id,
-        user_type=user_type,
+        user_id=user_out.id, user_type=user_type, remember_me=login_in.remember_me
     )
     return await auth_service.create_tokens(
         tokens_data=schemas.TokensEncodedSchema(
@@ -125,7 +124,10 @@ async def refresh(
         refresh_token=session_out.refresh_token
     )
 
-    if session_service.is_refresh_token_expired(created_at=session_out.created_at):
+    if session_service.is_refresh_token_expired(
+        created_at=session_out.created_at,
+        remember_me=session_out.remember_me,
+    ):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="refresh_token",
@@ -134,6 +136,7 @@ async def refresh(
     new_session_out = await session_service.create(
         user_id=session_out.user_id,
         user_type=session_out.user_type,
+        remember_me=session_out.remember_me,
     )
 
     return await auth_service.create_tokens(

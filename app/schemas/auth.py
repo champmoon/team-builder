@@ -51,6 +51,7 @@ class RegisterIn(BaseSchema):
 class LoginIn(BaseSchema):
     email: EmailStr
     password: Password = Field(min_length=5, max_length=30)
+    remember_me: bool = False
     # first_name: str | None = None
     # middle_name: str | None = None
     # last_name: str | None = None

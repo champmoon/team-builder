@@ -15,11 +15,14 @@ class SessionsService:
     async def get_by_refresh_token(self, refresh_token: UUID) -> Sessions | None:
         return await self.repository.get_by_refresh_token(refresh_token=refresh_token)
 
-    async def create(self, user_id: UUID, user_type: UsersTypes) -> Sessions:
+    async def create(
+        self, user_id: UUID, user_type: UsersTypes, remember_me: bool
+    ) -> Sessions:
         create_session_in = CreateSessionIn(
             user_id=user_id,
             refresh_token=uuid4(),
             user_type=user_type,
+            remember_me=remember_me,
         )
         return await self.repository.create(schema_in=create_session_in)
 
@@ -31,7 +34,12 @@ class SessionsService:
             refresh_token=refresh_token
         )
 
-    def is_refresh_token_expired(self, created_at: datetime) -> bool:
+    def is_refresh_token_expired(self, created_at: datetime, remember_me: bool) -> bool:
+        if remember_me:
+            return (
+                created_at
+                + timedelta(minutes=settings.REMEMBER_ME_REFRESH_TOKEN_EXPIRE_MINUTES)
+            ) <= datetime.utcnow()
         return (
             created_at + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
         ) <= datetime.utcnow()

@@ -9,3 +9,4 @@ class CreateSessionIn(BaseSchema):
     user_id: UUID
     refresh_token: UUID
     user_type: UsersTypes
+    remember_me: bool
