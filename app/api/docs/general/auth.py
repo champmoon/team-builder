@@ -11,6 +11,11 @@ login: Docs = {
         password - пароль тренера / спортсмена.
                    (string)(5 <= len <= 30)
 
+        rememberMe - флаг продления refresh токена.
+                     (bool)(default=false)
+                     Если false - refresh живет 1 день.
+                     Если true - 1 месяц
+
     Auth:
         Этот запрос публичный.
     """,
