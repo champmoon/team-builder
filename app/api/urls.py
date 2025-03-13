@@ -44,7 +44,7 @@ url.POST("    /trainer/profile/avatar                            ", endpoint=end
 # Sportsman Profile
 url.GET("     /sportsman/profile                                 ", endpoint=endpoints.sportsmans.get_profile, docs=docs.sportsmans.get_profile)
 url.PATCH("   /sportsman/profile                                 ", endpoint=endpoints.sportsmans.update_profile, docs=docs.sportsmans.update_profile)
-url.POST("    /sportsman/profile/avatar                          ", endpoint=endpoints.sportsmans.upload_avatar, docs=docs.trainers.upload_avatar)
+url.POST("    /sportsman/profile/avatar                          ", endpoint=endpoints.sportsmans.upload_avatar, docs=docs.sportsmans.upload_avatar)
 
 # Trainer Survey
 url.GET("     /trainer/survey                                    ", endpoint=endpoints.trainers.get_survey, docs=docs.trainers.get_survey)
