@@ -58,7 +58,7 @@ async def login(
 
     is_match_passwords = await auth_service.is_match_passwords(
         login_password=login_in.password,
-        hashed_password=user_out.hashed_password,
+        hashed_password=user_out.hashed_password,  # type:ignore[arg-type]
     )
     if not is_match_passwords:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user")

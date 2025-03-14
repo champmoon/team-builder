@@ -36,6 +36,13 @@ url.GET("     /workouts/statuses                                 ", endpoint=end
 # url.POST("    /sportsman/email                                   ", endpoint=endpoints.sportsmans.send_confirm_sportsman_email, docs=docs.sportsmans.send_confirm_sportsman_email)
 # url.POST("    /sportsman/email/confirm                           ", endpoint=endpoints.sportsmans.confirm_sportsman_email, docs=docs.sportsmans.confirm_sportsman_email)
 
+# Trainer Local sportsmans
+url.GET("     /trainer/local-sportsmans                          ", endpoint=endpoints.trainers.get_local_sportsmans, docs=docs.trainers.get_local_sportsmans)
+url.POST("    /trainer/local-sportsmans                          ", endpoint=endpoints.trainers.create_local_sportsmans, docs=docs.trainers.create_local_sportsmans)
+url.PATCH("   /trainer/local-sportsmans                          ", endpoint=endpoints.trainers.update_local_sportsman, docs=docs.trainers.update_local_sportsman)
+url.DELETE("  /trainer/local-sportsmans                          ", endpoint=endpoints.trainers.delete_local_sportsmans, docs=docs.trainers.delete_local_sportsmans)
+url.POST("    /trainer/local-sportsmans/merge                    ", endpoint=endpoints.trainers.merge_local_sportsman, docs=docs.trainers.merge_local_sportsman)
+
 # Trainer Profile
 url.GET("     /trainer/profile                                   ", endpoint=endpoints.trainers.get_profile, docs=docs.trainers.get_profile)
 url.PATCH("   /trainer/profile                                   ", endpoint=endpoints.trainers.update_profile, docs=docs.trainers.update_profile)
@@ -159,6 +166,7 @@ urls_router.include_router(endpoints.general.workouts_statuses.router, tags=[doc
 
 # Trainer
 # urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.tags_mapper["trainers_auth"]])
+urls_router.include_router(endpoints.trainers.local_sportsmans.router, tags=[docs.tags_mapper["trainers_local_sportsmans"]])
 urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_mapper["trainers_profile"]])
 # urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_surveys"]])
 urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])

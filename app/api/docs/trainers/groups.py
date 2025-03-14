@@ -139,7 +139,7 @@ create_group: Docs = {
         которые будут в новой команде.
     """,
     "responses": {
-        200: {
+        201: {
             "description": "Создана группа тренера",
             "content": {
                 "application/json": {

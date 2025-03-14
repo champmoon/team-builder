@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Sportsmans
 from app.schemas.sportsmans import (
+    CreateLocalSportsmanInDB,
     CreateSportsmanInDB,
     InnerUpdateSportsmanPasswordIn,
     UpdateSportsmanIn,
@@ -54,7 +55,9 @@ class SportsmansRepository:
 
         return getted_sportsmans.scalars().all()
 
-    async def create(self, schema_in: CreateSportsmanInDB) -> Sportsmans:
+    async def create(
+        self, schema_in: CreateSportsmanInDB | CreateLocalSportsmanInDB
+    ) -> Sportsmans:
         async with self.session_factory() as session:
             created_sportsman = await session.execute(
                 insert(self.model)

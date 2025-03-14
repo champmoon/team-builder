@@ -6,6 +6,7 @@ tags_mapper = {
     "general_workouts_statuses": "Cтатусы тренировок",
     #
     # "trainers_auth": "Тренеры → Регистрация",
+    "trainers_local_sportsmans": "Тренеры → Локальные спортсмены",
     "trainers_profile": "Тренеры → Профиль",
     "trainers_surveys": "Тренеры → Анкета",
     "trainers_teams": "Тренеры → Команда",

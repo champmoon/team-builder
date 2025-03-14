@@ -3,7 +3,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TGSWorkouts, Workouts
@@ -106,3 +106,14 @@ class TGSWorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().all()
+
+    async def merge(self, local_sportsman_id: UUID, true_sportsman_id: UUID) -> None:
+        stmt = (
+            update(self.model)
+            .where(self.model.sportsman_id == local_sportsman_id)
+            .values(sportsman_id=true_sportsman_id)
+        )
+
+        async with self.session_factory() as session:
+            await session.execute(stmt)
+            await session.commit()

@@ -209,3 +209,13 @@ class SportsmansWorkoutsService:
             self_sportsman_id=self_sportsman_id,
             statuses=statuses,
         )
+
+    async def merge(
+        self,
+        local_sportsman_id: UUID,
+        true_sportsman_id: UUID,
+    ) -> None:
+        return await self.repository.merge(
+            local_sportsman_id=local_sportsman_id,
+            true_sportsman_id=true_sportsman_id,
+        )

@@ -171,3 +171,14 @@ class SportsmansWorkoutsRepository:
             getted = await session.execute(stmt)
 
         return getted.scalars().all()
+
+    async def merge(self, local_sportsman_id: UUID, true_sportsman_id: UUID) -> None:
+        stmt = (
+            update(self.model)
+            .where(self.model.sportsman_id == local_sportsman_id)
+            .values(sportsman_id=true_sportsman_id)
+        )
+
+        async with self.session_factory() as session:
+            await session.execute(stmt)
+            await session.commit()

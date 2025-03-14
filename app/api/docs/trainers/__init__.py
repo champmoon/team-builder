@@ -20,6 +20,13 @@ from .health_questionnaires import (
     get_all_health_questionnaires_by_sportsman,
     get_health_questionnaire,
 )
+from .local_sportsmans import (
+    create_local_sportsmans,
+    delete_local_sportsmans,
+    get_local_sportsmans,
+    merge_local_sportsman,
+    update_local_sportsman,
+)
 from .profile import get_profile, update_profile, upload_avatar
 from .stress_questionnaires import (
     get_all_stress_questionnaires_by_sportsman,

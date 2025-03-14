@@ -38,7 +38,7 @@ async def get_self_groups(
 
 @router(
     response_model=schemas.GroupOut,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_201_CREATED,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject

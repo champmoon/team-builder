@@ -32,6 +32,18 @@ class SportsmansService:
             )
         )
 
+    async def create_local(
+        self, team_id: UUID, schema_in: schemas.CreateLocalSportsmanIn
+    ) -> Sportsmans:
+        return await self.repository.create(
+            schema_in=schemas.CreateLocalSportsmanInDB(
+                team_id=team_id,
+                first_name=schema_in.first_name,
+                middle_name=schema_in.middle_name,
+                last_name=schema_in.last_name,
+            )
+        )
+
     async def update(
         self, id: UUID, schema_in: schemas.UpdateSportsmanIn
     ) -> Sportsmans:
@@ -55,3 +67,6 @@ class SportsmansService:
 
     async def kick_off_team(self, sportsman_id: UUID) -> Sportsmans:
         return await self.repository.kick_off_team(id=sportsman_id)
+
+    async def delete(self, id: UUID) -> Sportsmans:
+        return await self.repository.delete(id=id)

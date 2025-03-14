@@ -49,10 +49,13 @@ from .questinnaires import (
 )
 from .sessions import CreateSessionIn
 from .sportsmans import (
+    CreateLocalSportsmanIn,
+    CreateLocalSportsmanInDB,
     CreateSportsmanIn,
     CreateSportsmanInDB,
     InnerUpdateSportsmanPasswordIn,
     ListSportsmansEmailsIn,
+    MergeLocalSportsman,
     SportsmanOut,
     SportsmansEmailIn,
     SportsmanWithGroupsOut,
