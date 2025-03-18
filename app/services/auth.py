@@ -81,7 +81,7 @@ class AuthService:
         await confirm_email_action.set(
             acts.ConfirmEmailData(
                 email=confirm_data.email,
-                is_trainer=confirm_data.is_trainer,
+                user_type=confirm_data.user_type,
             )
         )
         return confirm_email_uri

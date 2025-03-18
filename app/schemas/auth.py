@@ -79,7 +79,7 @@ class LoginIn(BaseSchema):
 
 class SendEmailIn(BaseSchema):
     email: EmailStr
-    is_trainer: bool
+    user_type: UsersTypes
 
 
 class EmailConfirmOut(BaseSchema):

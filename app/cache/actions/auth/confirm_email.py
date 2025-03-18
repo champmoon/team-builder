@@ -1,3 +1,4 @@
+from app.consts.users_types import UsersTypes
 from .base_class import ActionTypes, BaseAction, BaseActionData
 
 # class ConfirmTrainerEmailData(BaseActionData):
@@ -32,7 +33,7 @@ from .base_class import ActionTypes, BaseAction, BaseActionData
 class ConfirmEmailData(BaseActionData):
     email: str
     # sport_type: SportsTypes
-    is_trainer: bool
+    user_type: UsersTypes
 
 
 class ConfirmEmailAction(BaseAction[ConfirmEmailData]):

@@ -6,6 +6,7 @@ from fastapi import Depends, HTTPException, status
 from app import schemas
 from app.cache.actions.auth.confirm_email import ConfirmEmailAction
 from app.conf.settings import settings
+from app.consts.users_types import UsersTypes
 from app.containers import Containers
 from app.models import Sportsmans, Trainers
 from app.services import Services
@@ -35,7 +36,7 @@ async def send_confirm_email(
             detail={"detail": "email", "expire": timer},
         )
 
-    if send_email_in.is_trainer:
+    if send_email_in.user_type == UsersTypes.TRAINER:
         trainer_out = await trainer_service.get_by_email(email=send_email_in.email)
         if trainer_out:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="trainer")
@@ -112,7 +113,7 @@ async def register(
     await auth_service.reset_email_confirm(email=register_in.email)
 
     new_client_out: Trainers | Sportsmans
-    if data_out.is_trainer:
+    if data_out.user_type == UsersTypes.TRAINER:
         trainer_out = await trainers_service.get_by_email(email=register_in.email)
         if trainer_out:
             raise HTTPException(
