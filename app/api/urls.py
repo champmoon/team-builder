@@ -69,9 +69,14 @@ url.POST("    /sportsman/profile/avatar                          ", endpoint=end
 # Trainer Team
 url.GET("     /trainer/team                                      ", endpoint=endpoints.trainers.get_self_team, docs=docs.trainers.get_self_team)
 # url.PATCH("   /trainer/team                                      ", endpoint=endpoints.trainers.update_team_name)
+url.POST("    /trainer/sportsman/invite                          ", endpoint=endpoints.trainers.send_invite_sportsman_to_team, docs=docs.trainers.send_invite_sportsman_to_team)
+url.POST("    /trainer/team/invite                               ", endpoint=endpoints.trainers.create_invite_link,  docs=docs.trainers.create_invite_link)
+url.POST("    /trainer/team/kick                                 ", endpoint=endpoints.trainers.kicks_sportsmans_off_team,  docs=docs.trainers.kicks_sportsmans_off_team)
 
 # Sportsman Team
 url.GET("     /sportsman/team                                    ", endpoint=endpoints.sportsmans.get_self_team, docs=docs.sportsmans.teams.get_self_team)
+url.POST("    /sportsman/team/join                               ", endpoint=endpoints.sportsmans.join_team, docs=docs.sportsmans.teams.join_team)
+url.POST("    /sportsman/team/out                                ", endpoint=endpoints.sportsmans.out_off_team, docs=docs.sportsmans.teams.out_off_team)
 
 # Trainer Group
 url.GET("     /trainer/groups                                    ", endpoint=endpoints.trainers.get_self_groups, docs=docs.trainers.get_self_groups)
@@ -167,9 +172,9 @@ urls_router.include_router(endpoints.general.workouts_statuses.router, tags=[doc
 # Trainer
 # urls_router.include_router(endpoints.trainers.auth.router, tags=[docs.tags_mapper["trainers_auth"]])
 urls_router.include_router(endpoints.trainers.local_sportsmans.router, tags=[docs.tags_mapper["trainers_local_sportsmans"]])
+urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 urls_router.include_router(endpoints.trainers.profile.router, tags=[docs.tags_mapper["trainers_profile"]])
 # urls_router.include_router(endpoints.trainers.surveys.router, tags=[docs.tags_mapper["trainers_surveys"]])
-urls_router.include_router(endpoints.trainers.teams.router, tags=[docs.tags_mapper["trainers_teams"]])
 urls_router.include_router(endpoints.trainers.groups.router, tags=[docs.tags_mapper["trainers_groups"]])
 urls_router.include_router(endpoints.trainers.exercises_types.router, tags=[docs.tags_mapper["trainers_exercises"]])
 urls_router.include_router(endpoints.trainers.workouts.router, tags=[docs.tags_mapper["trainers_workouts"]])
@@ -180,9 +185,9 @@ urls_router.include_router(endpoints.trainers.workouts_pool.router, tags=[docs.t
 
 # Sportsman
 # urls_router.include_router(endpoints.sportsmans.auth.router, tags=[docs.tags_mapper["sportsmans_auth"]])
+urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])
 urls_router.include_router(endpoints.sportsmans.profile.router, tags=[docs.tags_mapper["sportsmans_profile"]])
 # urls_router.include_router(endpoints.sportsmans.surveys.router, tags=[docs.tags_mapper["sportsmans_surveys"]])
-urls_router.include_router(endpoints.sportsmans.teams.router, tags=[docs.tags_mapper["sportsmans_teams"]])
 urls_router.include_router(endpoints.sportsmans.groups.router, tags=[docs.tags_mapper["sportsmans_groups"]])
 urls_router.include_router(endpoints.sportsmans.workouts.router, tags=[docs.tags_mapper["sportsmans_workouts"]])
 # urls_router.include_router(endpoints.sportsmans.workouts_management.router, tags=[docs.tags_mapper["sportsmans_workouts_management"]])

@@ -17,6 +17,7 @@ class ActionTypes(StrEnum):
     LIMIT_LOGIN = "limit_login"
     RESET_EMAIL = "reset_email"
     RESET_PASSWORD = "reset_password"
+    INVITE = "invite"
 
 
 class BaseActionData(BaseModel): ...

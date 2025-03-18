@@ -54,6 +54,7 @@ from .sportsmans import (
     CreateSportsmanIn,
     CreateSportsmanInDB,
     InnerUpdateSportsmanPasswordIn,
+    InviteSportsmanToTeamIn,
     ListSportsmansEmailsIn,
     MergeLocalSportsman,
     SportsmanOut,
@@ -78,7 +79,7 @@ from .surveys import (
     TeamSurveysAddFieldsUpdateIn,
     TeamSurveysOut,
 )
-from .teams import CreateTeamIn, TeamOut
+from .teams import CreateTeamIn, TeamInviteLink, TeamOut
 from .tgs_workouts import CreateTGSWorkoutIn
 from .tokens import TokensDecodedSchema, TokensEncodedSchema, TokensOut
 from .trainers import (

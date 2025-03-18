@@ -1,5 +1,7 @@
 from typing import TypeAlias
 
+from app.cache.actions.auth.invite import InviteAction, InviteData
+
 from .auth.check_confirm_email import CheckConfirmEmailAction, CheckConfirmEmailData
 from .auth.confirm_email import (
     ConfirmEmailAction,
@@ -28,6 +30,7 @@ class Actions:
     reset_email: TypeAlias = ResetEmailAction
     limit_email: TypeAlias = LimitEmailAction
     reset_password: TypeAlias = ResetPasswordAction
+    invite: TypeAlias = InviteAction
 
     stress_questionnaire: TypeAlias = StressQuestionnaireAction
     health_questionnaire: TypeAlias = HealthQuestionnaireAction
@@ -43,3 +46,4 @@ class Data:
     limit_email: TypeAlias = LimitEmailData
     reset_email: TypeAlias = ResetEmailData
     reset_password: TypeAlias = ResetPasswordData
+    invite: TypeAlias = InviteData

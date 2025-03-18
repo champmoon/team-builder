@@ -49,6 +49,12 @@ class AuthContainer(BaseContainer):
         connection_factory=BaseContainer.connection_factory.provided.connection,
     )
 
+    invite_action_part = providers.Callable(
+        create_action,
+        action_class=Actions.invite,
+        connection_factory=BaseContainer.connection_factory.provided.connection,
+    )
+
     service = providers.Factory(
         AuthService,
         limit_login_action_part=limit_login_action_part,
@@ -58,4 +64,5 @@ class AuthContainer(BaseContainer):
         limit_email_action_part=limit_email_action_part,
         reset_email_action_part=reset_email_action_part,
         reset_password_action_part=reset_password_action_part,
+        invite_action_part=invite_action_part,
     )

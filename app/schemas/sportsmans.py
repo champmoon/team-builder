@@ -85,6 +85,11 @@ class SportsmansEmailIn(BaseSchema):
     sportsman_email: EmailStr
 
 
+class InviteSportsmanToTeamIn(BaseSchema):
+    email: EmailStr
+    local_sportsman_id: UUID | None = None
+
+
 class OnlyGroupOut(BaseSchemaFromDB):
     id: UUID
     trainer_id: UUID

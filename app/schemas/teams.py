@@ -16,3 +16,7 @@ class TeamOut(BaseSchemaFromDB):
     # name: str
     # sport_type: str
     sportsmans: list[SportsmanForTeamOut]
+
+
+class TeamInviteLink(BaseSchema):
+    link: str

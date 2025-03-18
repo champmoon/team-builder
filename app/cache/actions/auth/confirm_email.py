@@ -1,4 +1,5 @@
 from app.consts.users_types import UsersTypes
+
 from .base_class import ActionTypes, BaseAction, BaseActionData
 
 # class ConfirmTrainerEmailData(BaseActionData):

@@ -69,6 +69,12 @@ async def create_local_sportsmans(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
+    tgs_workouts_service: Services.tgs_workouts = Depends(
+        Provide[Containers.tgs_workouts.service]
+    ),
+    sportsmans_workouts_service: Services.sportsmans_workouts = Depends(
+        Provide[Containers.sportsmans_workouts.service]
+    ),
 ) -> Any:
     team_out = await teams_service.get_by_trainer_id(trainer_id=self_trainer.id)
     if not team_out:
@@ -76,6 +82,14 @@ async def create_local_sportsmans(
 
     new_fake_out = await sportsmans_service.create_local(
         team_id=team_out.id, schema_in=create_sportsman_in
+    )
+
+    future_team_workouts_ids = await tgs_workouts_service.get_future_team_workouts_ids(
+        team_id=team_out.id
+    )
+    await sportsmans_workouts_service.bind_sportsman_to_workouts(
+        sportsman_id=new_fake_out.id,
+        workouts_ids=future_team_workouts_ids,
     )
 
     return new_fake_out
