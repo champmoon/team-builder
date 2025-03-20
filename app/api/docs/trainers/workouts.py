@@ -22,7 +22,7 @@ get_workouts_for_team: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -79,7 +79,7 @@ get_workouts_for_team: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "e32cb56e-28a7-4abe-89de-b4b4d5b76e9b",
                         },
@@ -113,8 +113,8 @@ create_workout_for_team: Docs = {
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                                  (int)(>=0)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -130,7 +130,7 @@ create_workout_for_team: Docs = {
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "status": {"status": 1, "description": "Запланирована"},
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
@@ -245,7 +245,7 @@ get_workouts_for_group: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -302,7 +302,7 @@ get_workouts_for_group: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Групповая",
                             "groupId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -342,8 +342,8 @@ create_workout_for_group: Docs = {
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                                  (int)(>=0)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -359,7 +359,7 @@ create_workout_for_group: Docs = {
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "status": {"status": 1, "description": "Запланирована"},
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
@@ -489,7 +489,7 @@ get_workouts_for_sportsman: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -546,7 +546,7 @@ get_workouts_for_sportsman: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -559,7 +559,7 @@ get_workouts_for_sportsman: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -599,8 +599,8 @@ create_workout_for_sportsman: Docs = {
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                                  (int)(>=0)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -616,7 +616,7 @@ create_workout_for_sportsman: Docs = {
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "status": {"status": 1, "description": "Запланирована"},
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
@@ -750,7 +750,7 @@ get_workouts: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -807,7 +807,7 @@ get_workouts: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -820,7 +820,7 @@ get_workouts: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -870,7 +870,7 @@ get_workouts_by_pool_id: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -927,7 +927,7 @@ get_workouts_by_pool_id: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -940,7 +940,7 @@ get_workouts_by_pool_id: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -977,8 +977,8 @@ update_workout: Docs = {
         restTime - время отдыха после тренировки(в сек).
                    (int|null)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int|null)(>0)
+        price - цена тренировки.
+                                  (int|null)(>=0)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -998,7 +998,7 @@ update_workout: Docs = {
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "exercises": [
                             {
                                 "type": {

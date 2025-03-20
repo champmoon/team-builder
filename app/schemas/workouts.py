@@ -24,7 +24,7 @@ class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
     repeat_id: UUID | None = None
@@ -35,7 +35,7 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
     sportsman_id: UUID
     dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -71,7 +71,7 @@ class CreateWorkoutForGroupIn(BaseSchema):
     group_id: UUID
     dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -106,7 +106,7 @@ class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
     dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -151,7 +151,7 @@ class UpdateWorkoutPoolIn(BaseSchema):
 class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
     rest_time: int | None = Field(None, ge=0)
-    stress_questionnaire_time: int | None = Field(None, ge=1)
+    price: int | None = Field(None, ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -166,7 +166,7 @@ class UpdateWorkoutIn(BaseSchema):
         if (
             self.date is None
             and self.rest_time is None
-            and self.stress_questionnaire_time is None
+            and self.price is None
             and self.comment is None
             and self.goal is None
         ):

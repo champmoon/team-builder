@@ -24,7 +24,7 @@ get_workout: Docs = {
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "exercises": [
                             {
                                 "type": {
@@ -122,7 +122,7 @@ get_workouts: Docs = {
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "exercises": [
                                 {
                                     "type": {
@@ -179,7 +179,7 @@ get_workouts: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -192,7 +192,7 @@ get_workouts: Docs = {
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },

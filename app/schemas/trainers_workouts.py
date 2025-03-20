@@ -33,7 +33,7 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
     name: str
     estimated_time: float
     rest_time: int
-    stress_questionnaire_time: int
+    price: int
     date: NaiveDatetime
     created_at: NaiveDatetime
     status: WorkoutsStatusesOut

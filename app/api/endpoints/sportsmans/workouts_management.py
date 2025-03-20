@@ -41,7 +41,7 @@ async def get_workout_schema(
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,
         rest_time=workout_out.rest_time,
-        stress_questionnaire_time=workout_out.stress_questionnaire_time,
+        price=workout_out.price,
         comment=workout_out.comment,
         goal=workout_out.goal,
         repeat_id=workout_out.repeat_id,
@@ -261,7 +261,7 @@ async def complete_workout(
             sportsman_id=self_sportsman.id,
             workout_id=workout_out.id,
         ),
-        timeout=workout_out.stress_questionnaire_time,
+        timeout=workout_out.price,
     )
 
     await health_questionnaires_service.set_on_next_day(sportsman_id=self_sportsman.id)
@@ -367,7 +367,7 @@ async def cancel_workout(
             sportsman_id=self_sportsman.id,
             workout_id=workout_out.id,
         ),
-        timeout=workout_out.stress_questionnaire_time,
+        timeout=workout_out.price,
     )
 
     await health_questionnaires_service.set_on_next_day(sportsman_id=self_sportsman.id)
