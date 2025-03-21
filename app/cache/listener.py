@@ -2,7 +2,7 @@ import logging
 
 from redis.asyncio.lock import Lock
 
-from app.api.tasks import dispath_tasks
+# from app.api.tasks import dispath_tasks
 from app.cache.connection import get_connection
 
 logger = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ async def listen_redis_key_expired() -> None:
             if not is_acquired:
                 continue
 
-            await dispath_tasks(key=key)
+            # await dispath_tasks(key=key)
 
         except Exception as e:
             logger.error(e)

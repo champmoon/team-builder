@@ -5,7 +5,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
 from pydantic import NaiveDatetime
 
-from app import consts, schemas
+from app import schemas
 from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers
@@ -69,14 +69,16 @@ async def get_workouts(
             id=workout_out.id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(
-                    sportsmans_workout_out.status.status
-                ),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(sportsmans_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(
+            #         sportsmans_workout_out.status.status
+            #     ),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(sportsmans_workout_out.status.status)
+            #     ],
+            # ),
+            is_paid=sportsmans_workout_out.is_paid,
+            is_attend=sportsmans_workout_out.is_attend,
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -163,16 +165,18 @@ async def get_workout(
     if not sportsman_workout_out:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="workout")
 
-    base_workouts_schemas = schemas.TrainerWorkoutOut(
+    base_workouts_schemas = schemas.SportsmansWorkoutOut(
         id=workout_out.id,
         name=workout_out.workout_pool.name,
         estimated_time=workout_out.workout_pool.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(sportsman_workout_out.status.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(sportsman_workout_out.status.status)
-            ],
-        ),
+        # status=schemas.WorkoutsStatusesOut(
+        #     status=consts.WorkoutsStatusesEnum(sportsman_workout_out.status.status),
+        #     description=consts.WORKOUTS_STATUSES_DESC[
+        #         consts.WorkoutsStatusesEnum(sportsman_workout_out.status.status)
+        #     ],
+        # ),
+        is_paid=sportsman_workout_out.is_paid,
+        is_attend=sportsman_workout_out.is_attend,
         date=workout_out.date,
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,

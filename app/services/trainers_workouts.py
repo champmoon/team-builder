@@ -1,4 +1,3 @@
-import datetime
 from typing import Callable, Sequence
 from uuid import UUID
 
@@ -6,7 +5,6 @@ from pydantic import NaiveDatetime
 
 from app import schemas
 from app.cache import actions as acts
-from app.consts import WorkoutsStatusesEnum
 from app.models import TrainersWorkouts
 from app.repositories import TrainersWorkoutsRepository, WorkoutsStatusesRepository
 
@@ -52,119 +50,132 @@ class TrainersWorkoutsService:
             workout_id=workout_id, trainer_id=trainer_id
         )
 
-    async def planned(
+    async def create(
         self, schema_in: schemas.CreateTrainerWorkoutIn
     ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.PLANNED
-        )
-        assert workout_status_out is not None
+        # workout_status_out = await self.statuses_repository.get_by_status(
+        #     status=WorkoutsStatusesEnum.PLANNED
+        # )
+        # assert workout_status_out is not None
 
         return await self.repository.create(
             schema_in=schema_in,
-            status_id=workout_status_out.id,
+            # status_id=workout_status_out.id,
         )
 
-    async def in_progress(
-        self, schema_in: schemas.UpdateTrainerWorkoutIn
-    ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.IN_PROGRESS
-        )
-        assert workout_status_out is not None
+    # async def planned(
+    #     self, schema_in: schemas.CreateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.PLANNED
+    #     )
+    #     assert workout_status_out is not None
 
-        updated_out = await self.repository.update_status(
-            schema_in=schema_in,
-            status_id=workout_status_out.id,
-        )
+    #     return await self.repository.create(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),
-        )
-        await workouts_status_action.rmv_trainer_skipped()
+    # async def in_progress(
+    #     self, schema_in: schemas.UpdateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.IN_PROGRESS
+    #     )
+    #     assert workout_status_out is not None
 
-        return updated_out
+    #     updated_out = await self.repository.update_status(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-    async def completed(
-        self, schema_in: schemas.UpdateTrainerWorkoutIn
-    ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.COMPLETED
-        )
-        assert workout_status_out is not None
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(schema_in.workout_id),  # type: ignore
+    #         trainer_id=str(schema_in.trainer_id),
+    #     )
+    #     await workouts_status_action.rmv_trainer_skipped()
 
-        updated_out = await self.repository.update_status(
-            schema_in=schema_in,
-            status_id=workout_status_out.id,
-        )
+    #     return updated_out
 
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),
-        )
-        await workouts_status_action.rmv_trainer_skipped()
+    # async def completed(
+    #     self, schema_in: schemas.UpdateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.COMPLETED
+    #     )
+    #     assert workout_status_out is not None
 
-        return updated_out
+    #     updated_out = await self.repository.update_status(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-    async def canceled(
-        self, schema_in: schemas.UpdateTrainerWorkoutIn
-    ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.CANCELED
-        )
-        assert workout_status_out is not None
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(schema_in.workout_id),  # type: ignore
+    #         trainer_id=str(schema_in.trainer_id),
+    #     )
+    #     await workouts_status_action.rmv_trainer_skipped()
 
-        updated_out = await self.repository.update_status(
-            schema_in=schema_in,
-            status_id=workout_status_out.id,
-        )
+    #     return updated_out
 
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),
-        )
-        await workouts_status_action.rmv_trainer_skipped()
+    # async def canceled(
+    #     self, schema_in: schemas.UpdateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.CANCELED
+    #     )
+    #     assert workout_status_out is not None
 
-        return updated_out
+    #     updated_out = await self.repository.update_status(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-    async def skipped(
-        self, schema_in: schemas.UpdateTrainerWorkoutIn
-    ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.SKIPPED
-        )
-        assert workout_status_out is not None
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(schema_in.workout_id),  # type: ignore
+    #         trainer_id=str(schema_in.trainer_id),
+    #     )
+    #     await workouts_status_action.rmv_trainer_skipped()
 
-        return await self.repository.update_status(
-            schema_in=schema_in,
-            status_id=workout_status_out.id,
-        )
+    #     return updated_out
 
-    async def active(
-        self, schema_in: schemas.UpdateTrainerWorkoutIn
-    ) -> TrainersWorkouts:
-        workout_status_out = await self.statuses_repository.get_by_status(
-            status=WorkoutsStatusesEnum.ACTIVE
-        )
-        assert workout_status_out is not None
+    # async def skipped(
+    #     self, schema_in: schemas.UpdateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.SKIPPED
+    #     )
+    #     assert workout_status_out is not None
 
-        updated_out = await self.repository.update_status(
-            schema_in=schema_in,
-            status_id=workout_status_out.id,
-        )
+    #     return await self.repository.update_status(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-        today = datetime.datetime.now() + +datetime.timedelta(hours=3)
-        next_day = today + datetime.timedelta(days=1)
-        formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
-        exp_time = round((formatted_day - today).total_seconds())
-        if exp_time < 0:
-            return updated_out
+    # async def active(
+    #     self, schema_in: schemas.UpdateTrainerWorkoutIn
+    # ) -> TrainersWorkouts:
+    #     workout_status_out = await self.statuses_repository.get_by_status(
+    #         status=WorkoutsStatusesEnum.ACTIVE
+    #     )
+    #     assert workout_status_out is not None
 
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(schema_in.workout_id),  # type: ignore
-            trainer_id=str(schema_in.trainer_id),
-        )
-        await workouts_status_action.begin_trainer_skipped(timeout=exp_time)
+    #     updated_out = await self.repository.update_status(
+    #         schema_in=schema_in,
+    #         status_id=workout_status_out.id,
+    #     )
 
-        return updated_out
+    #     today = datetime.datetime.now() + +datetime.timedelta(hours=3)
+    #     next_day = today + datetime.timedelta(days=1)
+    #     formatted_day = next_day.replace(hour=0, minute=0, second=1, microsecond=0)
+    #     exp_time = round((formatted_day - today).total_seconds())
+    #     if exp_time < 0:
+    #         return updated_out
+
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(schema_in.workout_id),  # type: ignore
+    #         trainer_id=str(schema_in.trainer_id),
+    #     )
+    #     await workouts_status_action.begin_trainer_skipped(timeout=exp_time)
+
+    #     return updated_out

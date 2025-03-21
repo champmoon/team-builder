@@ -6,7 +6,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException, status
 from pydantic import NaiveDatetime
 
-from app import consts, schemas
+from app import schemas
 from app.api import deps
 from app.consts import UsersTypes
 from app.containers import Containers
@@ -83,14 +83,14 @@ async def create_workout_for_sportsman(
             ),
         )
 
-        await sportsmans_workouts_service.planned(
+        await sportsmans_workouts_service.create(
             schema_in=schemas.CreateSportsmansWorkoutIn(
                 sportsman_id=sportsman_out.id,
                 workout_id=new_workout_out.id,
             )
         )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -110,14 +110,14 @@ async def create_workout_for_sportsman(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -190,14 +190,14 @@ async def repeat_workout_for_sportsman(
             ),
         )
 
-        await sportsmans_workouts_service.planned(
+        await sportsmans_workouts_service.create(
             schema_in=schemas.CreateSportsmansWorkoutIn(
                 sportsman_id=sportsman_out.id,
                 workout_id=new_workout_out.id,
             )
         )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -217,14 +217,14 @@ async def repeat_workout_for_sportsman(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -305,14 +305,14 @@ async def create_workout_for_group(
         )
 
         for sportsman_out in sportsmans_out:
-            await sportsmans_workouts_service.planned(
+            await sportsmans_workouts_service.create(
                 schema_in=schemas.CreateSportsmansWorkoutIn(
                     sportsman_id=sportsman_out.sportsman_id,
                     workout_id=new_workout_out.id,
                 )
             )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -332,14 +332,14 @@ async def create_workout_for_group(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -412,14 +412,14 @@ async def repeat_workout_for_group(
         )
 
         for sportsman_out in sportsmans_out:
-            await sportsmans_workouts_service.planned(
+            await sportsmans_workouts_service.create(
                 schema_in=schemas.CreateSportsmansWorkoutIn(
                     sportsman_id=sportsman_out.sportsman_id,
                     workout_id=new_workout_out.id,
                 )
             )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -439,14 +439,14 @@ async def repeat_workout_for_group(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -526,14 +526,14 @@ async def create_workout_for_team(
         )
 
         for sportsman_out in sportsmans_out:
-            await sportsmans_workouts_service.planned(
+            await sportsmans_workouts_service.create(
                 schema_in=schemas.CreateSportsmansWorkoutIn(
                     sportsman_id=sportsman_out.id,
                     workout_id=new_workout_out.id,
                 )
             )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -553,14 +553,14 @@ async def create_workout_for_team(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -632,14 +632,14 @@ async def repeat_workout_for_team(
         )
 
         for sportsman_out in sportsmans_out:
-            await sportsmans_workouts_service.planned(
+            await sportsmans_workouts_service.create(
                 schema_in=schemas.CreateSportsmansWorkoutIn(
                     sportsman_id=sportsman_out.id,
                     workout_id=new_workout_out.id,
                 )
             )
 
-        trainer_workout_out = await trainers_workouts_service.planned(
+        await trainers_workouts_service.create(
             schema_in=schemas.CreateTrainerWorkoutIn(
                 trainer_id=self_trainer.id,
                 workout_id=new_workout_out.id,
@@ -659,14 +659,14 @@ async def repeat_workout_for_team(
                 repeat_id=new_workout_out.repeat_id,
                 name=new_workout_out.workout_pool.name,
                 estimated_time=new_workout_out.workout_pool.estimated_time,
-                status=schemas.WorkoutsStatusesOut(
-                    status=consts.WorkoutsStatusesEnum(
-                        trainer_workout_out.status.status
-                    ),
-                    description=consts.WORKOUTS_STATUSES_DESC[
-                        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                    ],
-                ),
+                # status=schemas.WorkoutsStatusesOut(
+                #     status=consts.WorkoutsStatusesEnum(
+                #         trainer_workout_out.status.status
+                #     ),
+                #     description=consts.WORKOUTS_STATUSES_DESC[
+                #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+                #     ],
+                # ),
                 date=new_workout_out.date,
                 created_at=new_workout_out.workout_pool.created_at,
                 exercises=new_workout_out.workout_pool.exercises,
@@ -748,12 +748,12 @@ async def get_workouts(
             repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+            #     ],
+            # ),
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -829,12 +829,12 @@ async def get_workout(
         repeat_id=workout_out.repeat_id,
         name=workout_out.workout_pool.name,
         estimated_time=workout_out.workout_pool.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-            ],
-        ),
+        # status=schemas.WorkoutsStatusesOut(
+        #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+        #     description=consts.WORKOUTS_STATUSES_DESC[
+        #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+        #     ],
+        # ),
         date=workout_out.date,
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,
@@ -939,12 +939,12 @@ async def get_workouts_by_pool_id(
             repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+            #     ],
+            # ),
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -1071,12 +1071,12 @@ async def get_workouts_for_sportsman(
             repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+            #     ],
+            # ),
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -1184,12 +1184,12 @@ async def get_workouts_for_group(
             id=workout_out.id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+            #     ],
+            # ),
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -1258,12 +1258,12 @@ async def get_workouts_for_team(
             repeat_id=workout_out.repeat_id,
             name=workout_out.workout_pool.name,
             estimated_time=workout_out.workout_pool.estimated_time,
-            status=schemas.WorkoutsStatusesOut(
-                status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-                description=consts.WORKOUTS_STATUSES_DESC[
-                    consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-                ],
-            ),
+            # status=schemas.WorkoutsStatusesOut(
+            #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+            #     description=consts.WORKOUTS_STATUSES_DESC[
+            #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+            #     ],
+            # ),
             date=workout_out.date,
             created_at=workout_out.workout_pool.created_at,
             exercises=workout_out.workout_pool.exercises,
@@ -1313,11 +1313,11 @@ async def delete_workout(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="trainer_workout_out not in trainer_workouts db",
         )
-    if (
-        consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-        != consts.WorkoutsStatusesEnum.PLANNED
-    ):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
+    # if (
+    #     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+    #     != consts.WorkoutsStatusesEnum.PLANNED
+    # ):
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="workout")
 
     await workouts_service.delete(id=id)
 
@@ -1366,15 +1366,15 @@ async def delete_repeat_workout(
             #     detail="trainer_workout_out not in trainer_workouts db",
             # )
             continue
-        if (
-            consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-            != consts.WorkoutsStatusesEnum.PLANNED
-        ):
-            # raise HTTPException(
-            #     status_code=status.HTTP_400_BAD_REQUEST,
-            #     detail="workout",
-            # )
-            continue
+        # if (
+        #     consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+        #     != consts.WorkoutsStatusesEnum.PLANNED
+        # ):
+        #     # raise HTTPException(
+        #     #     status_code=status.HTTP_400_BAD_REQUEST,
+        #     #     detail="workout",
+        #     # )
+        #     continue
 
         await workouts_service.delete(id=repeated_workout.id)
 
@@ -1422,12 +1422,12 @@ async def update_workout(
         repeat_id=workout_out.repeat_id,
         name=workout_out.workout_pool.name,
         estimated_time=workout_out.workout_pool.estimated_time,
-        status=schemas.WorkoutsStatusesOut(
-            status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
-            description=consts.WORKOUTS_STATUSES_DESC[
-                consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
-            ],
-        ),
+        # status=schemas.WorkoutsStatusesOut(
+        #     status=consts.WorkoutsStatusesEnum(trainer_workout_out.status.status),
+        #     description=consts.WORKOUTS_STATUSES_DESC[
+        #         consts.WorkoutsStatusesEnum(trainer_workout_out.status.status)
+        #     ],
+        # ),
         date=workout_out.date,
         created_at=workout_out.workout_pool.created_at,
         exercises=workout_out.workout_pool.exercises,

@@ -92,6 +92,7 @@ from .trainers import (
 )
 from .trainers_workouts import (
     CreateTrainerWorkoutIn,
+    SportsmansWorkoutsManagmentIn,
     TrainerGroupWorkoutOut,
     TrainerSportsmanWorkoutOut,
     TrainerTeamWorkoutOut,

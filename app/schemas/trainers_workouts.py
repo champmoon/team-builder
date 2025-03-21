@@ -6,7 +6,6 @@ from app import consts
 
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .exercises import BasicExerciseOut, SupportExerciseOut
-from .workouts_statuses import WorkoutsStatusesOut
 
 
 class CreateTrainerWorkoutIn(BaseSchema):
@@ -36,7 +35,6 @@ class TrainerWorkoutOut(BaseSchemaFromDB):
     price: int
     date: NaiveDatetime
     created_at: NaiveDatetime
-    status: WorkoutsStatusesOut
     comment: str | None = None
     goal: str | None = None
     exercises: list[BasicExerciseOut | SupportExerciseOut]
@@ -55,3 +53,8 @@ class TrainerGroupWorkoutOut(TrainerWorkoutOut):
 class TrainerTeamWorkoutOut(TrainerWorkoutOut):
     workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.TEAM
     team_id: UUID
+
+
+class SportsmansWorkoutsManagmentIn(BaseSchema):
+    workout_id: UUID
+    sportsmans_ids: list[UUID] | None = None

@@ -1,4 +1,3 @@
-import datetime
 from typing import Callable, Sequence
 from uuid import UUID
 
@@ -31,30 +30,30 @@ class WorkoutsService:
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         new_workout_out = await self.repository.create(schema_in=schema_in)
 
-        now_time = datetime.datetime.now() + datetime.timedelta(hours=3)
+        # now_time = datetime.datetime.now() + datetime.timedelta(hours=3)
 
-        exp_time = round((new_workout_out.date - now_time).total_seconds())
-        if exp_time < 0:
-            return new_workout_out
+        # exp_time = round((new_workout_out.date - now_time).total_seconds())
+        # if exp_time < 0:
+        #     return new_workout_out
 
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(new_workout_out.id)  # type: ignore
-        )
-        await workouts_status_action.set_planned(timeout=exp_time)
+        # workouts_status_action = self.workouts_status_action_part(
+        #     workout_id=str(new_workout_out.id)  # type: ignore
+        # )
+        # await workouts_status_action.set_planned(timeout=exp_time)
 
         return new_workout_out
 
-    async def start(self, workout_id: UUID) -> None:
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(workout_id)  # type: ignore
-        )
-        await workouts_status_action.rmv_planned()
+    # async def start(self, workout_id: UUID) -> None:
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(workout_id)  # type: ignore
+    #     )
+    #     await workouts_status_action.rmv_planned()
 
-    async def is_planned(self, workout_id: UUID) -> bool:
-        workouts_status_action = self.workouts_status_action_part(
-            workout_id=str(workout_id)  # type: ignore
-        )
-        return await workouts_status_action.is_planned()
+    # async def is_planned(self, workout_id: UUID) -> bool:
+    #     workouts_status_action = self.workouts_status_action_part(
+    #         workout_id=str(workout_id)  # type: ignore
+    #     )
+    #     return await workouts_status_action.is_planned()
 
     async def set_unvisible(self, id: UUID) -> Workouts:
         return await self.repository.set_unvisible(id=id)

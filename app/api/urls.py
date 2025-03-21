@@ -126,13 +126,15 @@ url.PATCH("   /trainer/workouts-pool                             ", endpoint=end
 url.GET("     /sportsman/workouts/{id}                           ", endpoint=endpoints.sportsmans.get_workout, docs=docs.sportsmans.get_workout)
 url.GET("     /sportsman/workouts                                ", endpoint=endpoints.sportsmans.get_workouts, docs=docs.sportsmans.get_workouts)
 
-url.PATCH("   /trainer/workouts/start                            ", endpoint=endpoints.trainers.start_workout, docs=docs.trainers.start_workout)
-url.PATCH("   /trainer/workouts/sportsmans/start                 ", endpoint=endpoints.trainers.start_workout_for_sportsmans, docs=docs.trainers.start_workout_for_sportsmans)
-url.PATCH("   /trainer/workouts/complete                         ", endpoint=endpoints.trainers.complete_workout, docs=docs.trainers.complete_workout)
-url.PATCH("   /trainer/workouts/sportsmans/complete              ", endpoint=endpoints.trainers.complete_workout_for_sportsmans, docs=docs.trainers.complete_workout_for_sportsmans)
-url.PATCH("   /trainer/workouts/cancel                           ", endpoint=endpoints.trainers.cancel_workout, docs=docs.trainers.cancel_workout)
-url.PATCH("   /trainer/workouts/sportsmans/cancel                ", endpoint=endpoints.trainers.cancel_workout_for_sportsmans, docs=docs.trainers.cancel_workout_for_sportsmans)
-url.PATCH("   /trainer/workouts/statuses                         ", endpoint=endpoints.trainers.get_workout_statuses, docs=docs.trainers.get_workout_statuses)
+# Trainer Workouts Managment
+url.PATCH("   /trainer/workouts/attend/yes                       ", endpoint=endpoints.trainers.set_attend_yes)
+url.PATCH("   /trainer/workouts/attend/no                        ", endpoint=endpoints.trainers.set_attend_no)
+url.PATCH("   /trainer/workouts/paid/yes                         ", endpoint=endpoints.trainers.set_paid_no)
+url.PATCH("   /trainer/workouts/paid/no                          ", endpoint=endpoints.trainers.set_paid_yes)
+url.GET("     /trainer/workouts/stats                            ", endpoint=endpoints.trainers.get_stats)
+# url.PATCH("   /trainer/workouts/cancel                           ", endpoint=endpoints.trainers.cancel_workout, docs=docs.trainers.cancel_workout)
+# url.PATCH("   /trainer/workouts/sportsmans/cancel                ", endpoint=endpoints.trainers.cancel_workout_for_sportsmans, docs=docs.trainers.cancel_workout_for_sportsmans)
+# url.PATCH("   /trainer/workouts/statuses                         ", endpoint=endpoints.trainers.get_workout_statuses, docs=docs.trainers.get_workout_statuses)
 
 # Sportsman Workouts Management
 # url.PATCH("   /sportsman/workouts/{id}/start                     ", endpoint=endpoints.sportsmans.start_workout, docs=docs.sportsmans.start_workout)
