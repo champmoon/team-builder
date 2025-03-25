@@ -19,7 +19,8 @@ app = FastAPI(
     version=settings.VERSION,
     title=app_docs["title"],
     description=app_docs["description"],
-    debug=settings.DEBUG,
+    # debug=settings.DEBUG,
+    debug=True,
 )
 app.add_middleware(
     CORSMiddleware,
