@@ -32,6 +32,12 @@ register: Docs = {
                 "application/json": {"example": {"detail": "trainer/sportsman"}}
             },
         },
+        410: {
+            "description": "Протух",
+            "content": {
+                "application/json": {"example": {}}
+            },
+        },
         422: {
             "description": "Ошибка валидации, какой-то параметр был передан неверно.",
             "content": {

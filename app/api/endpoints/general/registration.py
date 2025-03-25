@@ -45,13 +45,15 @@ async def send_confirm_email(
     if sportsman_out:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="sportsman")
 
-    if settings.DEBUG:
-        confirmation_uri = await auth_service.create_confirmation_url(
-            confirm_data=send_email_in
-        )
-        await auth_service.set_email_sended(email=send_email_in.email)
+    # if settings.DEBUG:
+    #     confirmation_uri = await auth_service.create_confirmation_url(
+    #         confirm_data=send_email_in
+    #     )
+    #     await auth_service.set_email_sended(email=send_email_in.email)
 
-        return {"uri": confirmation_uri, "expire": ConfirmEmailAction.timeout}
+    #     return {"uri": confirmation_uri, "expire": ConfirmEmailAction.timeout}
+    
+    raise ValueError
 
     await auth_service.send_confirmation_email(confirm_data=send_email_in)
     await auth_service.set_email_sended(email=send_email_in.email)
@@ -104,7 +106,7 @@ async def register(
         email=str(register_in.email)
     )
     if not data_out:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(status_code=status.HTTP_410_GONE)
 
     is_confirmed = await auth_service.is_email_confirmed(email=register_in.email)
     if not is_confirmed:
