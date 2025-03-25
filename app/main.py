@@ -15,12 +15,14 @@ from .utils import log_middleware
 
 wire_containers()
 
+DEBUG = True
+
+
 app = FastAPI(
     version=settings.VERSION,
     title=app_docs["title"],
     description=app_docs["description"],
-    # debug=settings.DEBUG,
-    debug=True,
+    debug=DEBUG,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -66,7 +68,7 @@ async def add_version_header(request: Request, call_next: Any) -> Any:
     return FileResponse("spa/index.html")
 
 
-if not settings.DEBUG:
+if not DEBUG:
     import logging
 
     gunicorn_error_logger = logging.getLogger("gunicorn.error")
