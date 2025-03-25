@@ -4,7 +4,7 @@ get_workout: Docs = {
     "summary": "Получение тренировки",
     "description": """
     ```
-    Path params:
+    Query params:
         id - ID тренировки.(uuid)
 
     Auth:

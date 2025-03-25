@@ -34,11 +34,11 @@ class SportsmansWorkoutOut(BaseSchemaFromDB):
     comment: str | None = None
     goal: str | None = None
     exercises: list[BasicExerciseOut | SupportExerciseOut]
+    sportsman_id: UUID
 
 
 class SportsmansSportsmanWorkoutOut(SportsmansWorkoutOut):
     workout_type: consts.WorkoutsTypes = consts.WorkoutsTypes.INDIVIDUAL
-    sportsman_id: UUID
 
 
 class SportsmansGroupWorkoutOut(SportsmansWorkoutOut):

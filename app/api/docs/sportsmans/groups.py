@@ -53,7 +53,7 @@ get_self_group: Docs = {
     "summary": "Получение группы спортсмена",
     "description": """
     ```
-    Path Params:
+    Query Params:
         id - ID группы.
              (uuid)
 

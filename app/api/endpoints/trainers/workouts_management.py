@@ -54,6 +54,7 @@ async def get_workouts_schema(
             repeat_id=workout_out.repeat_id,
             is_paid=sportsman_workout_out.is_paid,
             is_attend=sportsman_workout_out.is_attend,
+            sportsman_id=sportsman_workout_out.sportsman_id,
         )
 
         workout_schema: (
@@ -77,7 +78,6 @@ async def get_workouts_schema(
         elif sportsman_id:
             workout_schema = schemas.SportsmansSportsmanWorkoutOut(
                 **base_workouts_schemas.model_dump(),
-                sportsman_id=sportsman_id,
             )
         else:
             # raise HTTPException(
@@ -314,7 +314,7 @@ async def set_paid_no(
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def get_stats(
-    workout_id: UUID,
+    id: UUID,
     self_trainer: Trainers = Depends(deps.self_trainer),
     workouts_service: Services.workouts = Depends(Provide[Containers.workouts.service]),
     trainers_workouts_service: Services.trainers_workouts = Depends(
@@ -324,7 +324,7 @@ async def get_stats(
         Provide[Containers.sportsmans_workouts.service]
     ),
 ) -> Any:
-    workout_out = await workouts_service.get_by_id(id=workout_id)
+    workout_out = await workouts_service.get_by_id(id=id)
     if not workout_out or workout_out.workout_pool.trainer_id != self_trainer.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
@@ -338,9 +338,7 @@ async def get_stats(
     return await get_workouts_schema(
         workout_out=workout_out,
         sportsmans_workouts_out=(
-            await sportsmans_workouts_service.get_all_by_workout_id(
-                workout_id=workout_id
-            )
+            await sportsmans_workouts_service.get_all_by_workout_id(workout_id=id)
         ),
     )
 

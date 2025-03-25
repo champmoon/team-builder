@@ -89,8 +89,8 @@ url.POST("    /trainer/groups/adds                               ", endpoint=end
 url.POST("    /trainer/groups/kicks                              ", endpoint=endpoints.trainers.kicks_sportsmans_off_group, docs=docs.trainers.kicks_sportsmans_off_group)
 
 # Sportsman Group
-url.GET("     /sportsman/groups                                  ", endpoint=endpoints.sportsmans.get_self_groups, docs=docs.sportsmans.get_self_groups)
-url.GET("     /sportsman/groups/{id}                             ", endpoint=endpoints.sportsmans.get_self_group, docs=docs.sportsmans.get_self_group)
+url.GET("     /sportsman/groups                                  ", endpoint=endpoints.sportsmans.get_self_group, docs=docs.sportsmans.get_self_group)
+url.GET("     /sportsman/groups/all                              ", endpoint=endpoints.sportsmans.get_self_groups, docs=docs.sportsmans.get_self_groups)
 url.POST("    /sportsman/groups/outs                             ", endpoint=endpoints.sportsmans.outs_off_groups, docs=docs.sportsmans.outs_off_groups)
 # url.POST("    /sportsman/groups/out/{id}                         ", endpoint=endpoints.sportsmans.out_off_group, docs=docs.sportsmans.out_off_group)
 
@@ -103,18 +103,18 @@ url.POST("     /trainer/exercises/reset                          ", endpoint=end
 # Trainer Workout
 url.GET("     /trainer/workouts/team                             ", endpoint=endpoints.trainers.get_workouts_for_team, docs=docs.trainers.get_workouts_for_team)
 url.POST("    /trainer/workouts/team                             ", endpoint=endpoints.trainers.create_workout_for_team, docs=docs.trainers.create_workout_for_team)
-url.POST("    /trainer/workouts/team/repeat                      ", endpoint=endpoints.trainers.repeat_workout_for_team)
+url.POST("    /trainer/workouts/team/repeat                      ", endpoint=endpoints.trainers.repeat_workout_for_team, docs=docs.trainers.repeat_workout_for_team)
 url.GET("     /trainer/workouts/group                            ", endpoint=endpoints.trainers.get_workouts_for_group, docs=docs.trainers.get_workouts_for_group)
 url.POST("    /trainer/workouts/group                            ", endpoint=endpoints.trainers.create_workout_for_group, docs=docs.trainers.create_workout_for_group)
-url.POST("    /trainer/workouts/group/repeat                     ", endpoint=endpoints.trainers.repeat_workout_for_group)
+url.POST("    /trainer/workouts/group/repeat                     ", endpoint=endpoints.trainers.repeat_workout_for_group, docs=docs.trainers.repeat_workout_for_group)
 url.GET("     /trainer/workouts/sportsman                        ", endpoint=endpoints.trainers.get_workouts_for_sportsman, docs=docs.trainers.get_workouts_for_sportsman)
 url.POST("    /trainer/workouts/individual                       ", endpoint=endpoints.trainers.create_workout_for_sportsman, docs=docs.trainers.create_workout_for_sportsman)
-url.POST("    /trainer/workouts/individual/repeat                ", endpoint=endpoints.trainers.repeat_workout_for_sportsman)
+url.POST("    /trainer/workouts/individual/repeat                ", endpoint=endpoints.trainers.repeat_workout_for_sportsman, docs=docs.trainers.repeat_workout_for_sportsman)
 url.GET("     /trainer/workouts                                  ", endpoint=endpoints.trainers.get_workouts, docs=docs.trainers.get_workouts)
 url.GET("     /trainer/workouts/pool                             ", endpoint=endpoints.trainers.get_workouts_by_pool_id, docs=docs.trainers.get_workouts_by_pool_id)
 url.PATCH("   /trainer/workouts                                  ", endpoint=endpoints.trainers.update_workout, docs=docs.trainers.update_workout)
 url.DELETE("  /trainer/workouts                                  ", endpoint=endpoints.trainers.delete_workout, docs=docs.trainers.delete_workout)
-url.DELETE("  /trainer/workouts/repeat                           ", endpoint=endpoints.trainers.delete_repeat_workout)
+url.DELETE("  /trainer/workouts/repeat                           ", endpoint=endpoints.trainers.delete_repeat_workout, docs=docs.trainers.delete_workout_repeat)
 
 # Trainer Workouts Pool 
 url.GET("     /trainer/workouts-pool                             ", endpoint=endpoints.trainers.get_workouts_pool, docs=docs.trainers.get_workouts_pool)
@@ -123,15 +123,15 @@ url.DELETE("  /trainer/workouts-pool                             ", endpoint=end
 url.PATCH("   /trainer/workouts-pool                             ", endpoint=endpoints.trainers.update_workout_pool, docs=docs.trainers.update_workout_pool)
 
 # Sportsman Workouts
-url.GET("     /sportsman/workouts/{id}                           ", endpoint=endpoints.sportsmans.get_workout, docs=docs.sportsmans.get_workout)
-url.GET("     /sportsman/workouts                                ", endpoint=endpoints.sportsmans.get_workouts, docs=docs.sportsmans.get_workouts)
+url.GET("     /sportsman/workouts                                ", endpoint=endpoints.sportsmans.get_workout, docs=docs.sportsmans.get_workout)
+url.GET("     /sportsman/workouts/all                            ", endpoint=endpoints.sportsmans.get_workouts, docs=docs.sportsmans.get_workouts)
 
 # Trainer Workouts Managment
-url.PATCH("   /trainer/workouts/attend/yes                       ", endpoint=endpoints.trainers.set_attend_yes)
-url.PATCH("   /trainer/workouts/attend/no                        ", endpoint=endpoints.trainers.set_attend_no)
-url.PATCH("   /trainer/workouts/paid/yes                         ", endpoint=endpoints.trainers.set_paid_no)
-url.PATCH("   /trainer/workouts/paid/no                          ", endpoint=endpoints.trainers.set_paid_yes)
-url.GET("     /trainer/workouts/stats                            ", endpoint=endpoints.trainers.get_stats)
+url.PATCH("   /trainer/workouts/attend/yes                       ", endpoint=endpoints.trainers.set_attend_yes, docs=docs.trainers.set_attend_yes)
+url.PATCH("   /trainer/workouts/attend/no                        ", endpoint=endpoints.trainers.set_attend_no, docs=docs.trainers.set_attend_no)
+url.PATCH("   /trainer/workouts/paid/yes                         ", endpoint=endpoints.trainers.set_paid_no, docs=docs.trainers.set_paid_no)
+url.PATCH("   /trainer/workouts/paid/no                          ", endpoint=endpoints.trainers.set_paid_yes, docs=docs.trainers.set_paid_yes)
+url.GET("     /trainer/workouts/stats                            ", endpoint=endpoints.trainers.get_stats, docs=docs.trainers.get_stats)
 # url.PATCH("   /trainer/workouts/cancel                           ", endpoint=endpoints.trainers.cancel_workout, docs=docs.trainers.cancel_workout)
 # url.PATCH("   /trainer/workouts/sportsmans/cancel                ", endpoint=endpoints.trainers.cancel_workout_for_sportsmans, docs=docs.trainers.cancel_workout_for_sportsmans)
 # url.PATCH("   /trainer/workouts/statuses                         ", endpoint=endpoints.trainers.get_workout_statuses, docs=docs.trainers.get_workout_statuses)

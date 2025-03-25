@@ -87,6 +87,7 @@ async def get_workouts(
             comment=workout_out.comment,
             goal=workout_out.goal,
             repeat_id=workout_out.repeat_id,
+            sportsman_id=sportsmans_workout_out.sportsman_id,
         )
 
         tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -119,7 +120,6 @@ async def get_workouts(
         elif sportsman_id:
             workout_schema = schemas.SportsmansSportsmanWorkoutOut(
                 **base_workouts_schemas.model_dump(),
-                sportsman_id=sportsman_id,
             )
         else:
             raise HTTPException(
@@ -185,6 +185,7 @@ async def get_workout(
         comment=workout_out.comment,
         goal=workout_out.goal,
         repeat_id=workout_out.repeat_id,
+        sportsman_id=sportsman_workout_out.sportsman_id,
     )
 
     tgs_workouts_out = await tgs_workouts_service.get_by_workout_id(
@@ -217,7 +218,6 @@ async def get_workout(
     elif sportsman_id:
         workout_schema = schemas.SportsmansSportsmanWorkoutOut(
             **base_workouts_schemas.model_dump(),
-            sportsman_id=sportsman_id,
         )
     else:
         raise HTTPException(

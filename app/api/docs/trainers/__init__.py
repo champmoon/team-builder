@@ -54,11 +54,15 @@ from .workouts import (
     create_workout_for_sportsman,
     create_workout_for_team,
     delete_workout,
+    delete_workout_repeat,
     get_workouts,
     get_workouts_by_pool_id,
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,
+    repeat_workout_for_group,
+    repeat_workout_for_sportsman,
+    repeat_workout_for_team,
     update_workout,
 )
 from .workouts_management import (
@@ -66,7 +70,12 @@ from .workouts_management import (
     cancel_workout_for_sportsmans,
     complete_workout,
     complete_workout_for_sportsmans,
+    get_stats,
     get_workout_statuses,
+    set_attend_no,
+    set_attend_yes,
+    set_paid_no,
+    set_paid_yes,
     start_workout,
     start_workout_for_sportsmans,
 )

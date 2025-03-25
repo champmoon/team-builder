@@ -1,5 +1,177 @@
 from ..base_docs import Docs
 
+set_attend_yes: Docs = {
+    "summary": "Проставить положительную посещаемость",
+    "description": """
+    ```
+    Request body:
+        id - ID тренировки.(uuid)
+
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])(required=false)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        sportsmansIds необязательный параметр,
+        если его указать, то изменяться только эти спортсмена,
+        иначе все, у которых есть эта тренировка.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена.",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
+set_attend_no: Docs = {
+    "summary": "Проставить отрицательную посещаемость",
+    "description": """
+    ```
+    Request body:
+        id - ID тренировки.(uuid)
+
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])(required=false)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        sportsmansIds необязательный параметр,
+        если его указать, то изменяться только эти спортсмена,
+        иначе все, у которых есть эта тренировка.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена.",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
+set_paid_yes: Docs = {
+    "summary": "Проставить положительную оплату",
+    "description": """
+    ```
+    Request body:
+        id - ID тренировки.(uuid)
+
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])(required=false)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        sportsmansIds необязательный параметр,
+        если его указать, то изменяться только эти спортсмена,
+        иначе все, у которых есть эта тренировка.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена.",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
+set_paid_no: Docs = {
+    "summary": "Проставить отрицательную оплату",
+    "description": """
+    ```
+    Request body:
+        id - ID тренировки.(uuid)
+
+        sportsmansIds - почты спортсмена.
+                           (array[UUID])(required=false)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        sportsmansIds необязательный параметр,
+        если его указать, то изменяться только эти спортсмена,
+        иначе все, у которых есть эта тренировка.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена.",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
+get_stats: Docs = {
+    "summary": "Получить стастику по тренировкам спортсменов",
+    "description": """
+    ```
+    Request body:
+        id - ID тренировки.(uuid)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        Возвращает статистику все спортсменов, у которых есть эта тренировка.
+        Статистика включает поля посещаемости и оплаты для каждого спортсмена
+        этой тренировки.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена.",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
 start_workout: Docs = {
     "summary": "Старт тренировки",
     "description": """
