@@ -19,6 +19,7 @@ router = EndPointRouter()
 @router(
     response_model=schemas.HealthQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -42,6 +43,7 @@ async def get_active_health_questionnaire(
 @router(
     response_model=list[schemas.HealthQuestionnaireOut],
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -63,6 +65,7 @@ async def get_all_health_questionnaires(
 @router(
     response_model=schemas.HealthQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])
@@ -85,6 +88,7 @@ async def get_health_questionnaire(
 @router(
     response_model=schemas.HealthQuestionnaireOut,
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 @inject
 @deps.auth_required(users=[UsersTypes.SPORTSMAN])

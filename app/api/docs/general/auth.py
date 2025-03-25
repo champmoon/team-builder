@@ -11,6 +11,11 @@ login: Docs = {
         password - пароль тренера / спортсмена.
                    (string)(5 <= len <= 30)
 
+        rememberMe - флаг продления refresh токена.
+                     (bool)(default=false)
+                     Если false - refresh живет 1 день.
+                     Если true - 1 месяц
+
     Auth:
         Этот запрос публичный.
     """,
@@ -235,12 +240,13 @@ verify: Docs = {
     "summary": "Проверка валидности accessToken.",
     "description": """
     ```
-    Auth:
-        Этот запрос требует авторизации любого типа пользователей.
+    Request Body:
+        accessToken - access токен авторизации.
+                      (uuid)
 
-    P.S.
-        accessToken передаётся в хедере - Authorization: Bearer <accessToken>,
-        как и во всех запросах, требующих авторизации.
+    Auth:
+        Этот запрос публичный.
+
     """,
     "responses": {
         200: {

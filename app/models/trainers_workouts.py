@@ -1,12 +1,12 @@
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base_class import Base
 from app.db.mixins import UUIDAsIDMixin
 
-from .workouts_statuses import WorkoutsStatuses
+# from .workouts_statuses import WorkoutsStatuses
 
 
 class TrainersWorkouts(Base, UUIDAsIDMixin):
@@ -24,14 +24,14 @@ class TrainersWorkouts(Base, UUIDAsIDMixin):
             ondelete="CASCADE",
         )
     )
-    status_id: Mapped[UUID] = mapped_column(
-        ForeignKey(
-            column="workouts_statuses.id",
-            ondelete="CASCADE",
-        )
-    )
+    # status_id: Mapped[UUID] = mapped_column(
+    #     ForeignKey(
+    #         column="workouts_statuses.id",
+    #         ondelete="CASCADE",
+    #     )
+    # )
 
-    status: Mapped[WorkoutsStatuses] = relationship(
-        lazy="immediate",
-        viewonly=True,
-    )
+    # status: Mapped[WorkoutsStatuses] = relationship(
+    #     lazy="immediate",
+    #     viewonly=True,
+    # )

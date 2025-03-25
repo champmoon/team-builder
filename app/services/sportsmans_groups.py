@@ -38,3 +38,13 @@ class SportsmansGroupsService:
         self, schema_in: schemas.DeleteSportsmanGroupIn
     ) -> SportsmansGroups:
         return await self.repository.delete(schema_in=schema_in)
+
+    async def merge(
+        self,
+        local_sportsman_id: UUID,
+        true_sportsman_id: UUID,
+    ) -> None:
+        return await self.repository.merge(
+            local_sportsman_id=local_sportsman_id,
+            true_sportsman_id=true_sportsman_id,
+        )

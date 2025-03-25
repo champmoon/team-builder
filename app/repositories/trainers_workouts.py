@@ -3,11 +3,11 @@ from typing import Callable, Sequence, Type
 from uuid import UUID
 
 from pydantic import NaiveDatetime
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import TrainersWorkouts
-from app.schemas import CreateTrainerWorkoutIn, UpdateTrainerWorkoutIn
+from app.schemas import CreateTrainerWorkoutIn
 
 from .workouts import Workouts
 
@@ -79,34 +79,32 @@ class TrainersWorkoutsRepository:
 
         return getted.scalars().first()
 
-    async def create(
-        self, schema_in: CreateTrainerWorkoutIn, status_id: UUID
-    ) -> TrainersWorkouts:
+    async def create(self, schema_in: CreateTrainerWorkoutIn) -> TrainersWorkouts:
         async with self.session_factory() as session:
             created_trainer_workout = await session.execute(
                 insert(self.model)
-                .values(**schema_in.model_dump(), status_id=status_id)
+                .values(**schema_in.model_dump())
                 .returning(self.model)
             )
             await session.commit()
 
         return created_trainer_workout.scalars().one()
 
-    async def update_status(
-        self, schema_in: UpdateTrainerWorkoutIn, status_id: UUID
-    ) -> TrainersWorkouts:
-        stmt = (
-            update(self.model)
-            .where(
-                self.model.trainer_id == schema_in.trainer_id,
-                self.model.workout_id == schema_in.workout_id,
-            )
-            .values(status_id=status_id)
-            .returning(self.model)
-        )
+    # async def update_status(
+    #     self, schema_in: UpdateTrainerWorkoutIn, status_id: UUID
+    # ) -> TrainersWorkouts:
+    #     stmt = (
+    #         update(self.model)
+    #         .where(
+    #             self.model.trainer_id == schema_in.trainer_id,
+    #             self.model.workout_id == schema_in.workout_id,
+    #         )
+    #         .values(status_id=status_id)
+    #         .returning(self.model)
+    #     )
 
-        async with self.session_factory() as session:
-            updated_sportsman = await session.execute(stmt)
-            await session.commit()
+    #     async with self.session_factory() as session:
+    #         updated_sportsman = await session.execute(stmt)
+    #         await session.commit()
 
-        return updated_sportsman.scalars().one()
+    #     return updated_sportsman.scalars().one()

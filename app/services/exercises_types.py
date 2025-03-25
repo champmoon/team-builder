@@ -11,7 +11,10 @@ class ExercisesTypesService:
         self.repository = repository
 
     async def get_by_type(self, type: int, trainer_id: UUID) -> ExercisesTypes | None:
-        return await self.repository.get_by_type(type=type, trainer_id=trainer_id)
+        return await self.repository.get_by_type(
+            type=type,  # type: ignore[arg-type]
+            trainer_id=trainer_id,
+        )
 
     async def get_all(self, trainer_id: UUID) -> Sequence[ExercisesTypes]:
         return await self.repository.get_all(trainer_id=trainer_id)
@@ -27,7 +30,10 @@ class ExercisesTypesService:
         return await self.repository.update(schema_in=schema_in, trainer_id=trainer_id)
 
     async def delete(self, type: int, trainer_id: UUID) -> ExercisesTypes:
-        return await self.repository.delete(type=type, trainer_id=trainer_id)
+        return await self.repository.delete(
+            type=type,  # type: ignore[arg-type]
+            trainer_id=trainer_id,
+        )
 
     async def delete_by_trainer_id(self, trainer_id: UUID) -> None:
         await self.repository.delete_by_trainer_id(trainer_id=trainer_id)
@@ -44,7 +50,7 @@ class ExercisesTypesService:
                 schema_in=schemas.CreateExercisesTypeIn(
                     type=exercises_type,
                     description=consts.EXERCISES_TYPES_DESC[exercises_type],
-                    is_basic=exercises_type in list(consts.BasicExercisesTypesEnum),
+                    is_basic=exercises_type in list(consts.BasicExercisesTypesEnum),  # type: ignore[comparison-overlap]  # noqa: E501
                 ),
                 trainer_id=trainer_id,
             )

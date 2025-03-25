@@ -2,7 +2,7 @@ import datetime
 from typing import Self
 from uuid import UUID
 
-from pydantic import EmailStr, Field, NaiveDatetime, model_validator
+from pydantic import Field, NaiveDatetime, model_validator
 
 from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
@@ -24,17 +24,18 @@ class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
+    repeat_id: UUID | None = None
 
 
 class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
-    sportsman_email: EmailStr
-    date: NaiveDatetime
+    sportsman_id: UUID
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -43,17 +44,34 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
+        return self
+
+
+class RepeatWorkoutForSportsmanIn(BaseSchema):
+    workout_id: UUID
+    sportsman_id: UUID
+    dates: list[NaiveDatetime]
+
+    @model_validator(mode="after")
+    def check_date(self) -> Self:
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
 class CreateWorkoutForGroupIn(BaseSchema):
     workout_pool_id: UUID
     group_id: UUID
-    date: NaiveDatetime
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -62,16 +80,33 @@ class CreateWorkoutForGroupIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
+        return self
+
+
+class RepeatWorkoutForGroupIn(BaseSchema):
+    workout_id: UUID
+    group_id: UUID
+    dates: list[NaiveDatetime]
+
+    @model_validator(mode="after")
+    def check_date(self) -> Self:
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
 class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
-    date: NaiveDatetime
+    dates: list[NaiveDatetime]
     rest_time: int = Field(..., ge=0)
-    stress_questionnaire_time: int = Field(..., ge=1)
+    price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -80,8 +115,24 @@ class CreateWorkoutForTeamIn(BaseSchema):
         now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
             tzinfo=None
         )
-        if self.date <= now:
-            raise ValueError(f"date - {self.date} less then now - {now}")
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
+        return self
+
+
+class RepeatWorkoutForTeamIn(BaseSchema):
+    workout_id: UUID
+    dates: list[NaiveDatetime]
+
+    @model_validator(mode="after")
+    def check_date(self) -> Self:
+        now = datetime.timedelta(hours=3) + datetime.datetime.now(datetime.UTC).replace(
+            tzinfo=None
+        )
+        for date in self.dates:
+            if date <= now:
+                raise ValueError(f"date - {date} less then now - {now}")
         return self
 
 
@@ -100,7 +151,7 @@ class UpdateWorkoutPoolIn(BaseSchema):
 class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
     rest_time: int | None = Field(None, ge=0)
-    stress_questionnaire_time: int | None = Field(None, ge=1)
+    price: int | None = Field(None, ge=0)
     comment: str | None = None
     goal: str | None = None
 
@@ -112,13 +163,13 @@ class UpdateWorkoutIn(BaseSchema):
         if self.date and self.date <= now:
             raise ValueError(f"date - {self.date} less then now - {now}")
 
-        if not any((
-            self.date is None,
-            self.rest_time is None,
-            self.stress_questionnaire_time is None,
-            self.comment is None,
-            self.goal is None,
-        )):
+        if (
+            self.date is None
+            and self.rest_time is None
+            and self.price is None
+            and self.comment is None
+            and self.goal is None
+        ):
             raise ValueError("at least not null")
 
         return self

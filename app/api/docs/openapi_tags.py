@@ -1,9 +1,12 @@
 tags_mapper = {
     "general_auth": "Авторизация",
+    "general_registration": "Регистрация",
+    "general_password": "Сброс пароля",
     "general_exercises": "Типы упражнения",
     "general_workouts_statuses": "Cтатусы тренировок",
     #
-    "trainers_auth": "Тренеры → Регистрация",
+    # "trainers_auth": "Тренеры → Регистрация",
+    "trainers_local_sportsmans": "Тренеры → Локальные спортсмены",
     "trainers_profile": "Тренеры → Профиль",
     "trainers_surveys": "Тренеры → Анкета",
     "trainers_teams": "Тренеры → Команда",
@@ -15,7 +18,7 @@ tags_mapper = {
     "trainers_stress_questionnaires": "Тренеры → Опросник по нагрузке",
     "trainers_health_questionnaires": "Тренеры → Опросник по здоровью",
     #
-    "sportsmans_auth": "Спортсмены → Регистрация",
+    # "sportsmans_auth": "Спортсмены → Регистрация",
     "sportsmans_profile": "Спортсмены → Профиль",
     "sportsmans_surveys": "Спортсмены → Анкета",
     "sportsmans_teams": "Спортсмены → Команда",

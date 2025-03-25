@@ -15,5 +15,6 @@ class Sessions(Base, UUIDAsIDMixin):
     user_id: Mapped[UUID]
     refresh_token: Mapped[UUID]
     user_type: Mapped[UsersTypes]
+    remember_me: Mapped[bool]
 
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())

@@ -1,4 +1,3 @@
-import asyncio
 from typing import Any
 
 from fastapi import FastAPI, Request, applications
@@ -9,7 +8,6 @@ from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
 
 from .api.urls import urls_router
-from .cache.listener import listen_redis_key_expired
 from .conf.settings import settings
 from .containers import wire_containers
 from .docs import app_docs
@@ -80,10 +78,10 @@ if not settings.DEBUG:
     fastapi_logger.setLevel(gunicorn_logger.level)
 
 
-@app.on_event("startup")
-async def startup_event() -> None:
-    loop = asyncio.get_event_loop()
-    loop.create_task(listen_redis_key_expired())
+# @app.on_event("startup")
+# async def startup_event() -> None:
+#     loop = asyncio.get_event_loop()
+#     loop.create_task(listen_redis_key_expired())
 
 
 def swagger_monkey_patch(*args: Any, **kwargs: Any) -> Any:

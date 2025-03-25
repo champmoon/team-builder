@@ -34,9 +34,10 @@ class Workouts(Base, UUIDAsIDMixin):
     date: Mapped[datetime]
     is_visible: Mapped[bool] = mapped_column(default=True)
     rest_time: Mapped[int]
-    stress_questionnaire_time: Mapped[int]
+    price: Mapped[int]
     comment: Mapped[str | None]
     goal: Mapped[str | None]
+    repeat_id: Mapped[UUID] = mapped_column(server_default=func.gen_random_uuid())
 
     workout_pool_id: Mapped[UUID] = mapped_column(
         ForeignKey(

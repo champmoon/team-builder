@@ -19,4 +19,9 @@ class CheckConfirmEmailAction(BaseAction[CheckConfirmEmailData]):
 
     async def is_confirmed(self) -> bool:
         check_confirm_email_data = await self.get()
-        return bool(check_confirm_email_data)
+        if check_confirm_email_data:
+            return check_confirm_email_data.is_confirmed
+        return False
+
+    async def reset(self) -> None:
+        await self.set(self.action_data(is_confirmed=False))

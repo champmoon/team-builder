@@ -20,10 +20,6 @@ register_trainer: Docs = {
         last_name - отчество тренера.
                (string)(required=False)
 
-        teamName - имя команды.(string)
-
-        sportType - вид спорта.(string)
-
     Auth:
         Этот запрос публичный.
     """,
@@ -102,11 +98,6 @@ confirm_trainer_email: Docs = {
                 "application/json": {
                     "example": {
                         "email": "trainer@trainer.com",
-                        "firstName?": "string",
-                        "middleName?": "string",
-                        "lastName?": "string",
-                        "sportType": "rugby",
-                        "teamName": "string",
                     }
                 }
             },
@@ -152,22 +143,7 @@ send_confirm_trainer_email: Docs = {
         email - почта тренера.
                 (string)
 
-        first_name - имя тренера.
-               (string)(required=False)
-
-        middle_name - фамилия тренера.
-               (string)(required=False)
-
-        last_name - отчество тренера.
-               (string)(required=False)
-
-        teamName - имя команды.(string)
-
-        sportType - вид спорта.(string)
-
     P.S.:
-        Этот запрос доступен только АДМИНАМ.
-
         Перед началом регистрации пользователю необходимо подтвердить свою почту.
 
         Этот запрос служит для отправки подтверждающей ссылки пользователю.

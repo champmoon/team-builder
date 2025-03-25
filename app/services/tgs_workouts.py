@@ -35,3 +35,13 @@ class TGSWorkoutsService:
 
     async def get_future_team_workouts_ids(self, team_id: UUID) -> Sequence[UUID]:
         return await self.repository.get_future_team_workouts_ids(team_id=team_id)
+
+    async def merge(
+        self,
+        local_sportsman_id: UUID,
+        true_sportsman_id: UUID,
+    ) -> None:
+        return await self.repository.merge(
+            local_sportsman_id=local_sportsman_id,
+            true_sportsman_id=true_sportsman_id,
+        )

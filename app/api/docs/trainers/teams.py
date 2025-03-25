@@ -19,7 +19,6 @@ get_self_team: Docs = {
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "email": "first@sportsman.com",
                             "name": "first",
-                            "sportType": "rugby",
                         }],
                     }
                 },
@@ -37,74 +36,123 @@ get_self_team: Docs = {
 }
 
 
-add_sportsman_to_team: Docs = {
-    "summary": "Добавление спортсмена в команду",
+send_invite_sportsman_to_team: Docs = {
+    "summary": "Отправка на почту спортсмена ссылки на команду",
     "description": """
     ```
     Request Body:
-        sportsmanEmail - почта спортсмена.
-                         (string)
+        email - почта спортсмена.
+                (string)
+
+        localSportsmanId - это id локального спортмена.
+                           (UUID)(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
+    P.S
+        На почту спортсмена прилетит ссылка на добавление в команду.
+        Если указать localSportsmanId, то когда спортсмен добавится в команду,
+        он смерджится с добавленным.
+
+        Ссылка активна 5 минут, после этого она протухает.
+
+        expire - время, через которое ссылка протухнет(секунды).
+
+    DEBUG:
+        Для DEBUG версии ссылка будет возвращатсья в запросе, на почту ничего
+        отправлять не будет. Пример можно посмотреть ниже.
     """,
     "responses": {
-        200: {
-            "description": "Получена обновлённая команда тренера",
+        202: {
+            "description": "Письмо на `email` успешно отправлено.",
             "content": {
                 "application/json": {
-                    "example": {
-                        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportType": "rugby",
-                        "sportsmans": [
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "first@sportsman.com",
-                                "name": "first",
+                    "examples": {
+                        "not_debug": {
+                            "summary": "Запрос с отправлением на `email`",
+                            "description": "Этот запрос отправляет письмо на почту",
+                            "value": {"expire": 300},
+                        },
+                        "debug": {
+                            "summary": "DEBUG версия",
+                            "description": (
+                                "Этот запрос сразу возвращает `uri` на подтверждение"
+                            ),
+                            "value": {
+                                "uri": "http://192.168.22.169:9000/register?confirm_token=7a32cb4c-ed9b-41c3-a8e1-7a95ab074e94",
+                                "expire": 300,
                             },
-                            {
-                                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                "email": "second@sportsman.com",
-                                "name": "second",
-                            },
-                        ],
+                        },
                     }
-                },
+                }
             },
         },
-        401: {
-            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
-            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
-        },
         403: {
-            "description": "Пользователь не является тренером.",
-            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+            "description": (
+                "Письмо на `email` уже было отправлено, следующая отправка доступна"
+                " через `time` секунд."
+            ),
+            "content": {
+                "application/json": {
+                    "example": {"detail": {"detail": "email", "expire": 295}}
+                }
+            },
         },
         404: {
-            "description": "Добавляемый спортсмен не найден.",
-            "content": {"application/json": {"example": {"detail": "sportsman"}}},
+            "description": "Спортсмена нет",
+            "content": {"application/json": {"example": {}}},
         },
         409: {
-            "description": (
-                "Добавляемый спортсмен уже состоит в какой-то команде(в этой же или"
-                " другой)."
-            ),
-            "content": {"application/json": {"example": {"detail": "sportsman"}}},
+            "description": "Спортсмен уже в другой команде",
+            "content": {"application/json": {"example": {}}},
         },
         422: {
-            "description": "Ошибка валидации, какой-то параметр невалидный.",
+            "description": "Ошибка валидации.",
             "content": {
                 "application/json": {
                     "example": {
                         "detail": [{
-                            "type": "string_type",
-                            "loc": ["body", "name"],
-                            "msg": "Input should be a valid string",
-                            "input": 1,
+                            "type": "value_error",
+                            "loc": ["body", "email"],
+                            "msg": (
+                                "value is not a valid email address: The part after"
+                                " the @-sign is not valid. It should have a period."
+                            ),
+                            "input": "invalid@example",
+                            "ctx": {
+                                "reason": (
+                                    "The part after the @-sign is not valid. It"
+                                    " should have a period."
+                                )
+                            },
                         }]
                     }
                 }
+            },
+        },
+    },
+}
+
+
+create_invite_link: Docs = {
+    "summary": "Создать ссылку приглашения в команду",
+    "description": """
+    ```
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    P.S
+        Ссылка активна 5 минут, после этого она протухает.
+    """,
+    "responses": {
+        200: {
+            "description": "Ссылка на команду",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "link": "http://localhost:5000/invite?confirm_token=c8909c00-66e4-405f-bd57-9942512b3d19"
+                    }
+                },
             },
         },
     },
@@ -274,7 +322,6 @@ kicks_sportsmans_off_team: Docs = {
                     "example": {
                         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                         "trainerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "sportType": "rugby",
                         "sportsmans": [],
                     }
                 },

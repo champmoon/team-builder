@@ -45,6 +45,21 @@ class WorkoutsRepository:
 
         return getted.scalars().all()
 
+    async def get_by_repeat_id(self, repeat_id: UUID) -> Sequence[Workouts]:
+        stmt = (
+            select(self.model)
+            .where(
+                self.model.repeat_id == repeat_id,
+                self.model.is_visible == True,  # noqa
+            )
+            .order_by(self.model.date)
+        )
+
+        async with self.session_factory() as session:
+            getted = await session.execute(stmt)
+
+        return getted.scalars().all()
+
     async def create(self, schema_in: schemas.CreateWorkoutInDB) -> Workouts:
         async with self.session_factory() as session:
             created_workout = await session.execute(

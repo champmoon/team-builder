@@ -10,6 +10,7 @@ from app.containers import Containers
 from app.models import Admins, Sportsmans, Trainers
 from app.services import Services
 from app.utils import UsersScope
+from app.utils.jwt import JWTManager
 from app.utils.router import EndPointRouter
 
 router = EndPointRouter()
@@ -57,14 +58,13 @@ async def login(
 
     is_match_passwords = await auth_service.is_match_passwords(
         login_password=login_in.password,
-        hashed_password=user_out.hashed_password,
+        hashed_password=user_out.hashed_password,  # type:ignore[arg-type]
     )
     if not is_match_passwords:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user")
 
     session_out = await session_service.create(
-        user_id=user_out.id,
-        user_type=user_type,
+        user_id=user_out.id, user_type=user_type, remember_me=login_in.remember_me
     )
     return await auth_service.create_tokens(
         tokens_data=schemas.TokensEncodedSchema(
@@ -122,7 +122,10 @@ async def refresh(
         refresh_token=session_out.refresh_token
     )
 
-    if session_service.is_refresh_token_expired(created_at=session_out.created_at):
+    if session_service.is_refresh_token_expired(
+        created_at=session_out.created_at,
+        remember_me=session_out.remember_me,
+    ):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="refresh_token",
@@ -131,6 +134,7 @@ async def refresh(
     new_session_out = await session_service.create(
         user_id=session_out.user_id,
         user_type=session_out.user_type,
+        remember_me=session_out.remember_me,
     )
 
     return await auth_service.create_tokens(
@@ -144,8 +148,16 @@ async def refresh(
 
 @router(
     status_code=status.HTTP_200_OK,
+    response_model=schemas.VerifyResponse,
 )
-@deps.auth_required(users=UsersScope.all())
+# @deps.auth_required(users=UsersScope.all())
 @inject
-async def verify() -> Response:
-    return Response(status_code=status.HTTP_200_OK)
+async def verify(
+    access_data_in: schemas.AccessTokenIn,
+) -> Any:
+    jwt_manager = JWTManager()
+    token_data = jwt_manager.decode_access_token(access_data_in.access_token)
+    if not token_data:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    return schemas.VerifyResponse(user_type=token_data.user_type)

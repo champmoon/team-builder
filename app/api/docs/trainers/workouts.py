@@ -15,13 +15,15 @@ get_workouts_for_team: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
+                            "comment": "comment or none",
+                            "goal": "goal or none",
                             "exercises": [
                                 {
                                     "type": {
@@ -73,12 +75,11 @@ get_workouts_for_team: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "e32cb56e-28a7-4abe-89de-b4b4d5b76e9b",
                         },
@@ -106,14 +107,20 @@ create_workout_for_team: Docs = {
         workoutPoolId - ID тренировки из пула.
                (uuid)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                (int)(>=0)
+
+        comment - комментарий к тренировке.
+                  (str)(required=false)
+
+        goal - цель тренировки.
+               (str)(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -123,15 +130,17 @@ create_workout_for_team: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
-                        "status": {"status": 1, "description": "Запланирована"},
+                        "price": 321,
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
+                        "comment": "comment or none",
+                        "goal": "goal or none",
                         "exercises": [
                             {
                                 "type": {
@@ -178,8 +187,8 @@ create_workout_for_team: Docs = {
                         ],
                         "workoutType": "Командная",
                         "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
-                },
+                    }]
+                }
             },
         },
         401: {
@@ -197,6 +206,55 @@ create_workout_for_team: Docs = {
         409: {
             "description": "Пустая команды",
             "content": {"application/json": {"example": {"detail": "team"}}},
+        },
+        422: {
+            "description": "Ошибка валидации, какой-то параметр невалидный.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
+                    }
+                }
+            },
+        },
+    },
+}
+
+repeat_workout_for_team: Docs = {
+    "summary": "Дублирование тренировки для команды по датам",
+    "description": """
+    ```
+    Request Body:
+        workoutId - ID тренировки.
+               (uuid)
+
+        dates - время начала тренировки.
+               (list[datetime])
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка  не найдена",
+            "content": {"application/json": {"example": {}}},
+        },
+        409: {
+            "description": "Пустая команды",
+            "content": {"application/json": {"example": {}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр невалидный.",
@@ -236,13 +294,15 @@ get_workouts_for_group: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
+                            "comment": "comm",
+                            "goal": "glo",
                             "exercises": [
                                 {
                                     "type": {
@@ -294,12 +354,11 @@ get_workouts_for_group: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Групповая",
                             "groupId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -333,14 +392,20 @@ create_workout_for_group: Docs = {
 
         groupId - ID группы.(uuid)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                (int)(>=0)
+
+        comment - комментарий к тренировке.
+                  (str)(required=false)
+
+        goal - цель тренировки.
+               (str)(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -350,15 +415,17 @@ create_workout_for_group: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
-                        "status": {"status": 1, "description": "Запланирована"},
+                        "price": 321,
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
+                        "comment": "comm or none",
+                        "goal": "goal or none",
                         "exercises": [
                             {
                                 "type": {
@@ -405,7 +472,7 @@ create_workout_for_group: Docs = {
                         ],
                         "workoutType": "Групповая",
                         "groupId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
+                    }],
                 },
             },
         },
@@ -458,13 +525,65 @@ create_workout_for_group: Docs = {
     },
 }
 
+repeat_workout_for_group: Docs = {
+    "summary": "Дублирование тренировки для группы по датам",
+    "description": """
+    ```
+    Request Body:
+        workoutId - ID тренировки.
+               (uuid)
+
+        groupId - ID группы.
+               (uuid)
+
+        dates - время начала тренировки.
+               (list[datetime])
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка/группа  не найдена",
+            "content": {"application/json": {"example": {}}},
+        },
+        409: {
+            "description": "Пустая группа",
+            "content": {"application/json": {"example": {}}},
+        },
+        422: {
+            "description": "Ошибка валидации, какой-то параметр невалидный.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
+                    }
+                }
+            },
+        },
+    },
+}
+
 
 get_workouts_for_sportsman: Docs = {
     "summary": "Получение всех тренировок спортсмена тренера",
     "description": """
     ```
     Query params:
-        email - email спортсмена.(str)
+        id - id спортсмена.(UUID)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -478,13 +597,15 @@ get_workouts_for_sportsman: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
+                            "comment": "coomm",
+                            "goal": "goalôœ",
                             "exercises": [
                                 {
                                     "type": {
@@ -536,12 +657,11 @@ get_workouts_for_sportsman: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -549,12 +669,11 @@ get_workouts_for_sportsman: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -586,16 +705,22 @@ create_workout_for_sportsman: Docs = {
         workoutPoolId - ID тренировки из пула.
                (uuid)
 
-        sportsmanEmail - email спортсмена.(str)
+        sportsmanId - id спортсмена.(UUID)
 
-        date - время начала тренировки.
-               (datetime)
+        dates - время начала тренировки.
+               (list[datetime])
 
         restTime - время отдыха после тренировки(в сек).
                    (int)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int)(>0)
+        price - цена тренировки.
+                (int)(>=0)
+
+        comment - комментарий к тренировке.
+                  (str)(required=false)
+
+        goal - цель тренировки.
+               (str)(required=false)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -605,15 +730,17 @@ create_workout_for_sportsman: Docs = {
             "description": "Тренировка успешно создана",
             "content": {
                 "application/json": {
-                    "example": {
+                    "example": [{
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
-                        "status": {"status": 1, "description": "Запланирована"},
+                        "price": 321,
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
+                        "comment": "comment or none",
+                        "goal": "goal or none",
                         "exercises": [
                             {
                                 "type": {
@@ -660,7 +787,7 @@ create_workout_for_sportsman: Docs = {
                         ],
                         "workoutType": "Индивидуальная",
                         "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
-                    }
+                    }]
                 },
             },
         },
@@ -710,6 +837,54 @@ create_workout_for_sportsman: Docs = {
 }
 
 
+repeat_workout_for_sportsman: Docs = {
+    "summary": "Дублирование тренировки для cпортсмена по датам",
+    "description": """
+    ```
+    Request Body:
+        workoutId - ID тренировки.
+               (uuid)
+
+        sportsmanId - ID спортсмена.
+               (uuid)
+
+        dates - время начала тренировки.
+               (list[datetime])
+
+    Auth:
+        Этот запрос доступен только тренерам.
+    """,
+    "responses": {
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка/спортсмен не найдена",
+            "content": {"application/json": {"example": {}}},
+        },
+        422: {
+            "description": "Ошибка валидации, какой-то параметр невалидный.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": [{
+                            "type": "string_type",
+                            "loc": ["body", "name"],
+                            "msg": "Input should be a valid string",
+                            "input": 1,
+                        }]
+                    }
+                }
+            },
+        },
+    },
+}
+
 get_workouts: Docs = {
     "summary": "Получение всех тренировок",
     "description": """
@@ -737,13 +912,15 @@ get_workouts: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
+                            "comment": "comm",
+                            "goal": "goal",
                             "exercises": [
                                 {
                                     "type": {
@@ -795,12 +972,11 @@ get_workouts: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -808,12 +984,11 @@ get_workouts: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -856,13 +1031,15 @@ get_workouts_by_pool_id: Docs = {
                     "example": [
                         {
                             "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                            "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                             "name": "string",
                             "estimatedTime": 3635,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2023-11-26T15:59:16.358000",
                             "createdAt": "2023-11-26T12:00:53.249510",
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
+                            "comment": "comm",
+                            "goal": "goal",
                             "exercises": [
                                 {
                                     "type": {
@@ -914,12 +1091,11 @@ get_workouts_by_pool_id: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Командная",
                             "teamId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -927,12 +1103,11 @@ get_workouts_by_pool_id: Docs = {
                             "id": "633d5492-d5ca-4928-ab14-654b7d88445d",
                             "name": "14234234",
                             "estimatedTime": 0,
-                            "status": {"status": 1, "description": "Запланирована"},
                             "date": "2024-11-26T12:45:39.760000",
                             "createdAt": "2023-11-26T12:46:05.658562",
                             "exercises": [],
                             "restTime": 123,
-                            "stressQuestionnaireTime": 321,
+                            "price": 321,
                             "workoutType": "Индивидуальная",
                             "sportsmanId": "f69103e0-faf5-48a9-b3b6-197be69965ba",
                         },
@@ -969,8 +1144,8 @@ update_workout: Docs = {
         restTime - время отдыха после тренировки(в сек).
                    (int|null)(>0)
 
-        stressQuestionnaireTime - время для нагрузочного опросника(в сек).
-                                  (int|null)(>0)
+        price - цена тренировки.
+                                  (int|null)(>=0)
 
     Auth:
         Этот запрос доступен только тренерам.
@@ -983,13 +1158,15 @@ update_workout: Docs = {
                 "application/json": {
                     "example": {
                         "id": "30cf6ca9-f944-448a-a479-0926eb75e24e",
+                        "repeatId": "e408c370-75fa-4eb5-a2ee-1c0bbee62667",
                         "name": "string",
                         "estimatedTime": 3635,
-                        "status": {"status": 1, "description": "Запланирована"},
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
+                        "comment": "comm",
+                        "goal": "123",
                         "exercises": [
                             {
                                 "type": {
@@ -1077,6 +1254,43 @@ delete_workout: Docs = {
         400: {
             "description": "Нельзя удалить прошедшую тренировку",
             "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+        401: {
+            "description": "Пользователь не авторизан, или `accessToken` просрочен.",
+            "content": {"application/json": {"example": {"detail": "Unauthorized"}}},
+        },
+        403: {
+            "description": "Пользователь не является тренером.",
+            "content": {"application/json": {"example": {"detail": "Forbidden"}}},
+        },
+        404: {
+            "description": "Тренировка не найдена",
+            "content": {"application/json": {"example": {"detail": "workout"}}},
+        },
+    },
+}
+
+
+delete_workout_repeat: Docs = {
+    "summary": "Удаление тренировки",
+    "description": """
+    ```
+    Query params:
+        id - ID тренировки.(uuid)
+
+    Auth:
+        Этот запрос доступен только тренерам.
+
+    P.S
+        Удаляет все будущие тренировки с repeatId,
+        который берется у тренировки по его переданному id.
+    """,
+    "responses": {
+        204: {
+            "description": "Удаление успешно",
+            "content": {
+                "application/json": {"example": {}},
+            },
         },
         401: {
             "description": "Пользователь не авторизан, или `accessToken` просрочен.",

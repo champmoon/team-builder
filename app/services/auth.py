@@ -17,26 +17,24 @@ class AuthService:
     def __init__(
         self,
         limit_login_action_part: Callable[[str], acts.Actions.limit_login],
-        confirm_trainer_email_action_part: Callable[
-            [str], acts.Actions.confirm_trainer_email
-        ],
-        confirm_sportsman_email_action_part: Callable[
-            [str], acts.Actions.confirm_sportsman_email
-        ],
+        confirm_email_action_part: Callable[[str], acts.Actions.confirm_email],
+        get_confirm_email_action_part: Callable[[str], acts.Actions.get_confirm_email],
         check_confirm_email_action_part: Callable[
             [str], acts.Actions.check_confirm_email
         ],
         limit_email_action_part: Callable[[str], acts.Actions.limit_email],
         reset_email_action_part: Callable[[str], acts.Actions.reset_email],
         reset_password_action_part: Callable[[str], acts.Actions.reset_password],
+        invite_action_part: Callable[[str], acts.Actions.invite],
     ) -> None:
         self.limit_login_action_part = limit_login_action_part
-        self.confirm_trainer_email_action_part = confirm_trainer_email_action_part
-        self.confirm_sportsman_email_action_part = confirm_sportsman_email_action_part
+        self.confirm_email_action_part = confirm_email_action_part
+        self.get_confirm_email_action_part = get_confirm_email_action_part
         self.check_confirm_email_action_part = check_confirm_email_action_part
         self.limit_email_action_part = limit_email_action_part
         self.reset_email_action_part = reset_email_action_part
         self.reset_password_action_part = reset_password_action_part
+        self.invite_action_part = invite_action_part
 
     async def create_tokens(
         self,
@@ -75,96 +73,43 @@ class AuthService:
     async def get_limit_timer(self, email: str) -> int:
         return await self.limit_login_action_part(email).ttl()
 
-    async def create_trainer_confirmation_uri(
-        self, confirm_data: schemas.SendTrainerEmailIn
-    ) -> str:
+    async def create_confirmation_url(self, confirm_data: schemas.SendEmailIn) -> str:
         confirm_token = uuid4()
         confirm_email_uri = (
             f"{settings.CONFIRM_URL}/register?confirm_token={confirm_token}"
         )
 
-        confirm_email_action = self.confirm_trainer_email_action_part(
-            str(confirm_token)
-        )
+        confirm_email_action = self.confirm_email_action_part(str(confirm_token))
         await confirm_email_action.set(
-            acts.ConfirmTrainerEmailData(
+            acts.ConfirmEmailData(
                 email=confirm_data.email,
-                first_name=confirm_data.first_name,
-                middle_name=confirm_data.middle_name,
-                last_name=confirm_data.last_name,
-                team_name=confirm_data.team_name,
-                sport_type=confirm_data.sport_type,
+                user_type=confirm_data.user_type,
             )
         )
         return confirm_email_uri
 
-    async def create_sportsman_confirmation_uri(
-        self, confirm_data: schemas.InnerSendSportsmanEmailIn
-    ) -> str:
+    async def create_reset_password_uri(self, email: str) -> str:
         confirm_token = uuid4()
-        confirm_email_uri = (
-            f"{settings.CONFIRM_URL}/register?confirm_token={confirm_token}"
+        reset_password_uri = (
+            f"{settings.CONFIRM_URL}/reset-password?confirm_token={confirm_token}"
         )
-
-        confirm_email_action = self.confirm_sportsman_email_action_part(
-            str(confirm_token)
-        )
-        await confirm_email_action.set(
-            acts.ConfirmSportsmanEmailData(
-                email=confirm_data.email,
-                sport_type=confirm_data.sport_type,
-                trainer_id=confirm_data.trainer_id,
-            )
-        )
-        return confirm_email_uri
-
-    async def create_reset_email_uri(self, email: str, user_id: UUID) -> str:
-        confirm_token = uuid4()
-        change_email_uri = f"{settings.CONFIRM_URL}/reset?email={confirm_token}"
-
-        reset_email_action = self.reset_email_action_part(str(confirm_token))
-        await reset_email_action.set(acts.ResetEmailData(email=email, user_id=user_id))
-
-        return change_email_uri
-
-    async def create_reset_password_uri(self, user_id: UUID) -> str:
-        confirm_token = uuid4()
-        reset_password_uri = f"{settings.CONFIRM_URL}/reset?password={confirm_token}"
 
         reset_password_action = self.reset_password_action_part(str(confirm_token))
-        await reset_password_action.set(acts.ResetPasswordData(user_id=user_id))
+        await reset_password_action.set(acts.ResetPasswordData(email=email))
 
         return reset_password_uri
 
-    async def send_trainer_confirmation_email(
-        self, confirm_data: schemas.SendTrainerEmailIn
-    ) -> None:
-        confirm_email_uri = await self.create_trainer_confirmation_uri(
-            confirm_data=confirm_data
-        )
-        await self.send_email(
-            to_email=confirm_data.email, confirm_email_uri=confirm_email_uri
-        )
-
-    async def send_sportsman_confirmation_email(
-        self, confirm_data: schemas.InnerSendSportsmanEmailIn
-    ) -> None:
-        confirm_email_uri = await self.create_sportsman_confirmation_uri(
-            confirm_data=confirm_data
-        )
-        await self.send_email(
-            to_email=confirm_data.email, confirm_email_uri=confirm_email_uri
-        )
-
-    async def send_reset_email(self, email: str, user_id: UUID) -> None:
-        reset_email_uri = await self.create_reset_email_uri(
-            email=email, user_id=user_id
-        )
-        await self.send_email(to_email=email, confirm_email_uri=reset_email_uri)
-
-    async def send_reset_password_email(self, email: str, user_id: UUID) -> None:
-        reset_password_uri = await self.create_reset_password_uri(user_id=user_id)
+    async def send_reset_password(self, email: str) -> None:
+        reset_password_uri = await self.create_reset_password_uri(email=email)
         await self.send_email(to_email=email, confirm_email_uri=reset_password_uri)
+
+    async def send_confirmation_email(self, confirm_data: schemas.SendEmailIn) -> None:
+        confirm_email_uri = await self.create_confirmation_url(
+            confirm_data=confirm_data
+        )
+        await self.send_email(
+            to_email=confirm_data.email, confirm_email_uri=confirm_email_uri
+        )
 
     async def send_email(self, to_email: str, confirm_email_uri: str) -> None:
         try:
@@ -173,10 +118,10 @@ class AuthService:
         except ConnectionRefusedError as e:
             logger.warning(f"Email exception - {e}")
 
-    async def get_trainer_data_by_confirm_token(
+    async def get_data_by_confirm_token(
         self, confirm_token: str
-    ) -> acts.ConfirmTrainerEmailData | None:
-        confirm_email_action = self.confirm_trainer_email_action_part(confirm_token)
+    ) -> acts.ConfirmEmailData | None:
+        confirm_email_action = self.confirm_email_action_part(confirm_token)
         confirm_email_data = await confirm_email_action.get()
 
         if not confirm_email_data:
@@ -184,12 +129,17 @@ class AuthService:
 
         await confirm_email_action.rmv()
 
+        get_confirm_email_action = self.get_confirm_email_action_part(
+            confirm_email_data.email
+        )
+        await get_confirm_email_action.set(confirm_email_data)
+
         return confirm_email_data
 
-    async def get_sportsman_data_by_confirm_token(
-        self, confirm_token: str
-    ) -> acts.ConfirmSportsmanEmailData | None:
-        confirm_email_action = self.confirm_sportsman_email_action_part(confirm_token)
+    async def get_get_data_by_confirm_token(
+        self, email: str
+    ) -> acts.ConfirmEmailData | None:
+        confirm_email_action = self.get_confirm_email_action_part(email)
         confirm_email_data = await confirm_email_action.get()
 
         if not confirm_email_data:
@@ -225,6 +175,39 @@ class AuthService:
 
         return reset_password_data
 
+    async def create_invite_url(
+        self, team_id: UUID, fake_id: UUID | None = None
+    ) -> str:
+        confirm_token = uuid4()
+        confirm_email_uri = (
+            f"{settings.CONFIRM_URL}/invite?confirm_token={confirm_token}"
+        )
+
+        invite_action = self.invite_action_part(str(confirm_token))
+        await invite_action.set(acts.InviteData(team_id=team_id, fake_id=fake_id))
+        return confirm_email_uri
+
+    async def send_invite_email(
+        self, team_id: UUID, sportsman_email: str, fake_id: UUID | None = None
+    ) -> None:
+        confirm_email_uri = await self.create_invite_url(
+            team_id=team_id, fake_id=fake_id
+        )
+        await self.send_email(
+            to_email=sportsman_email, confirm_email_uri=confirm_email_uri
+        )
+
+    async def get_invite_data_by_confirm_token(
+        self, confirm_token: str
+    ) -> acts.InviteData | None:
+        invite_action = self.invite_action_part(confirm_token)
+        invite_data = await invite_action.get()
+
+        if not invite_data:
+            return None
+
+        return invite_data
+
     async def is_email_sended(self, email: str) -> bool:
         return await self.limit_email_action_part(email).is_blocked()
 
@@ -239,6 +222,9 @@ class AuthService:
 
     async def is_email_confirmed(self, email: str) -> bool:
         return await self.check_confirm_email_action_part(email).is_confirmed()
+
+    async def reset_email_confirm(self, email: str) -> None:
+        return await self.check_confirm_email_action_part(email).reset()
 
     async def set_check_confirm_email(self, email: str) -> None:
         return await self.check_confirm_email_action_part(email).set_confirm_flag()

@@ -18,8 +18,8 @@ class Sportsmans(Base, UUIDAsIDMixin):
         nullable=True,
         default=None,
     )
-    email: Mapped[str]
-    hashed_password: Mapped[str]
+    email: Mapped[str | None]
+    hashed_password: Mapped[str | None]
 
     first_name: Mapped[str | None]
     middle_name: Mapped[str | None]

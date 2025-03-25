@@ -1,11 +1,12 @@
 from typing import TypeAlias
 
+from app.cache.actions.auth.invite import InviteAction, InviteData
+
 from .auth.check_confirm_email import CheckConfirmEmailAction, CheckConfirmEmailData
 from .auth.confirm_email import (
-    ConfirmSportsmanEmailAction,
-    ConfirmSportsmanEmailData,
-    ConfirmTrainerEmailAction,
-    ConfirmTrainerEmailData,
+    ConfirmEmailAction,
+    ConfirmEmailData,
+    GetConfirmEmailAction,
 )
 from .auth.limit_email import LimitEmailAction, LimitEmailData
 from .auth.limit_login import (
@@ -24,11 +25,12 @@ from .workouts.workout_status import WorkoutStatusAction
 class Actions:
     limit_login: TypeAlias = LimitLoginAction
     check_confirm_email: TypeAlias = CheckConfirmEmailAction
-    confirm_trainer_email: TypeAlias = ConfirmTrainerEmailAction
-    confirm_sportsman_email: TypeAlias = ConfirmSportsmanEmailAction
+    confirm_email: TypeAlias = ConfirmEmailAction
+    get_confirm_email: TypeAlias = GetConfirmEmailAction
     reset_email: TypeAlias = ResetEmailAction
     limit_email: TypeAlias = LimitEmailAction
     reset_password: TypeAlias = ResetPasswordAction
+    invite: TypeAlias = InviteAction
 
     stress_questionnaire: TypeAlias = StressQuestionnaireAction
     health_questionnaire: TypeAlias = HealthQuestionnaireAction
@@ -39,8 +41,9 @@ class Actions:
 class Data:
     limit_login: TypeAlias = LimitLoginData
     check_confirm_email: TypeAlias = CheckConfirmEmailData
-    confirm_trainer_email: TypeAlias = ConfirmTrainerEmailData
-    confirm_sportsman_email: TypeAlias = ConfirmSportsmanEmailData
+    confirm_email: TypeAlias = ConfirmEmailData
+    get_confirm_email: TypeAlias = GetConfirmEmailAction
     limit_email: TypeAlias = LimitEmailData
     reset_email: TypeAlias = ResetEmailData
     reset_password: TypeAlias = ResetPasswordData
+    invite: TypeAlias = InviteData

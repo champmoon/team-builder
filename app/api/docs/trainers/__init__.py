@@ -20,6 +20,13 @@ from .health_questionnaires import (
     get_all_health_questionnaires_by_sportsman,
     get_health_questionnaire,
 )
+from .local_sportsmans import (
+    create_local_sportsmans,
+    delete_local_sportsmans,
+    get_local_sportsmans,
+    merge_local_sportsman,
+    update_local_sportsman,
+)
 from .profile import get_profile, update_profile, upload_avatar
 from .stress_questionnaires import (
     get_all_stress_questionnaires_by_sportsman,
@@ -35,22 +42,27 @@ from .surveys import (
     update_survey,
 )
 from .teams import (
-    add_sportsman_to_team,
     adds_sportsmans_to_team,
+    create_invite_link,
     get_self_team,
     kick_sportsman_off_team,
     kicks_sportsmans_off_team,
+    send_invite_sportsman_to_team,
 )
 from .workouts import (
     create_workout_for_group,
     create_workout_for_sportsman,
     create_workout_for_team,
     delete_workout,
+    delete_workout_repeat,
     get_workouts,
     get_workouts_by_pool_id,
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,
+    repeat_workout_for_group,
+    repeat_workout_for_sportsman,
+    repeat_workout_for_team,
     update_workout,
 )
 from .workouts_management import (
@@ -58,7 +70,12 @@ from .workouts_management import (
     cancel_workout_for_sportsmans,
     complete_workout,
     complete_workout_for_sportsmans,
+    get_stats,
     get_workout_statuses,
+    set_attend_no,
+    set_attend_yes,
+    set_paid_no,
+    set_paid_yes,
     start_workout,
     start_workout_for_sportsmans,
 )

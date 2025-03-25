@@ -35,3 +35,11 @@ class TrainerOut(BaseSchemaFromDB):
     middle_name: str | None = None
     last_name: str | None = None
     avatar_uri: str | None = None
+
+
+class UpdateTrainerPasswordIn(BaseSchema):
+    password: str
+
+
+class InnerUpdateTrainerPasswordIn(BaseSchema):
+    hashed_password: str

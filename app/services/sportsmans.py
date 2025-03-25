@@ -32,10 +32,32 @@ class SportsmansService:
             )
         )
 
+    async def create_local(
+        self, team_id: UUID, schema_in: schemas.CreateLocalSportsmanIn
+    ) -> Sportsmans:
+        return await self.repository.create(
+            schema_in=schemas.CreateLocalSportsmanInDB(
+                team_id=team_id,
+                first_name=schema_in.first_name,
+                middle_name=schema_in.middle_name,
+                last_name=schema_in.last_name,
+            )
+        )
+
     async def update(
         self, id: UUID, schema_in: schemas.UpdateSportsmanIn
     ) -> Sportsmans:
         return await self.repository.update(id=id, schema_in=schema_in)
+
+    async def update_password(
+        self, id: UUID, schema_in: schemas.UpdateSportsmanPasswordIn
+    ) -> Sportsmans:
+        return await self.repository.update(
+            id=id,
+            schema_in=schemas.InnerUpdateSportsmanPasswordIn(
+                hashed_password=Hasher(secret=schema_in.password).hash()
+            ),
+        )
 
     async def update_avatar(self, id: UUID, avatar_uri: str) -> Sportsmans:
         return await self.repository.update_avatar(id=id, avatar_uri=avatar_uri)
@@ -45,3 +67,6 @@ class SportsmansService:
 
     async def kick_off_team(self, sportsman_id: UUID) -> Sportsmans:
         return await self.repository.kick_off_team(id=sportsman_id)
+
+    async def delete(self, id: UUID) -> Sportsmans:
+        return await self.repository.delete(id=id)

@@ -23,7 +23,7 @@ start_workout: Docs = {
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "exercises": [
                             {
                                 "type": {
@@ -117,7 +117,7 @@ complete_workout: Docs = {
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "exercises": [
                             {
                                 "type": {
@@ -210,7 +210,7 @@ cancel_workout: Docs = {
                         "date": "2023-11-26T15:59:16.358000",
                         "createdAt": "2023-11-26T12:00:53.249510",
                         "restTime": 123,
-                        "stressQuestionnaireTime": 321,
+                        "price": 321,
                         "exercises": [
                             {
                                 "type": {

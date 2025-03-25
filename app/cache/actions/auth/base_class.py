@@ -9,12 +9,15 @@ from redis.asyncio import Redis as AIORedis
 
 class ActionTypes(StrEnum):
     CHECK_CONFIRM_EMAIL = "check_confirm_email"
-    CONFIRM_TRAINER_EMAIL = "confirm_trainer_email"
-    CONFIRM_SPORTSMAN_EMAIL = "confirm_sportsman_email"
+    # CONFIRM_TRAINER_EMAIL = "confirm_trainer_email"
+    # CONFIRM_SPORTSMAN_EMAIL = "confirm_sportsman_email"
+    CONFIRM_EMAIL = "confirm_email"
+    GET_CONFIRM_EMAIL = "get_confirm_email"
     LIMIT_EMAIL = "limit_email"
     LIMIT_LOGIN = "limit_login"
     RESET_EMAIL = "reset_email"
     RESET_PASSWORD = "reset_password"
+    INVITE = "invite"
 
 
 class BaseActionData(BaseModel): ...

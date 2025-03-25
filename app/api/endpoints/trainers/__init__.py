@@ -1,4 +1,4 @@
-from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
+# from .auth import confirm_trainer_email, register_trainer, send_confirm_trainer_email
 from .exercises_types import (
     create_exercise_type,
     delete_exercise_type,
@@ -19,6 +19,13 @@ from .health_questionnaires import (
     get_all_health_questionnaires_by_sportsman,
     get_health_questionnaire,
 )
+from .local_sportsmans import (
+    create_local_sportsmans,
+    delete_local_sportsmans,
+    get_local_sportsmans,
+    merge_local_sportsman,
+    update_local_sportsman,
+)
 from .profile import get_profile, update_profile, upload_avatar
 from .stress_questionnaires import (
     get_all_stress_questionnaires_by_sportsman,
@@ -33,11 +40,18 @@ from .surveys import (
     set_update_team_survey,
     update_survey,
 )
-from .teams import get_self_team, update_team_name
+from .teams import (
+    create_invite_link,
+    get_self_team,
+    kicks_sportsmans_off_team,
+    send_invite_sportsman_to_team,
+    update_team_name,
+)
 from .workouts import (
     create_workout_for_group,
     create_workout_for_sportsman,
     create_workout_for_team,
+    delete_repeat_workout,
     delete_workout,
     get_workout,
     get_workouts,
@@ -45,16 +59,17 @@ from .workouts import (
     get_workouts_for_group,
     get_workouts_for_sportsman,
     get_workouts_for_team,
+    repeat_workout_for_group,
+    repeat_workout_for_sportsman,
+    repeat_workout_for_team,
     update_workout,
 )
 from .workouts_management import (
-    cancel_workout,
-    cancel_workout_for_sportsmans,
-    complete_workout,
-    complete_workout_for_sportsmans,
-    get_workout_statuses,
-    start_workout,
-    start_workout_for_sportsmans,
+    get_stats,
+    set_attend_no,
+    set_attend_yes,
+    set_paid_no,
+    set_paid_yes,
 )
 from .workouts_pool import (
     create_workout_pool,

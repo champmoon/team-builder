@@ -20,6 +20,7 @@ router = EndPointRouter()
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.TeamSurveysOut,
+    deprecated=True,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
@@ -52,6 +53,7 @@ async def get_survey(
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.TeamSurveysOut,
+    deprecated=True,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
@@ -84,9 +86,7 @@ async def update_survey(
     )
 
 
-@router(
-    status_code=status.HTTP_200_OK,
-)
+@router(status_code=status.HTTP_200_OK, deprecated=True)
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def set_update_sportsman_survey(
@@ -121,9 +121,7 @@ async def set_update_sportsman_survey(
     return Response(status_code=status.HTTP_200_OK)
 
 
-@router(
-    status_code=status.HTTP_200_OK,
-)
+@router(status_code=status.HTTP_200_OK, deprecated=True)
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
 async def set_update_team_survey(
@@ -155,6 +153,7 @@ async def set_update_team_survey(
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.SportsmanSurveysOut,
+    deprecated=True,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
@@ -199,6 +198,7 @@ async def get_sportsman_survey(
 @router(
     status_code=status.HTTP_200_OK,
     response_model=schemas.SportsmanSurveysOut,
+    deprecated=True,
 )
 @deps.auth_required(users=[UsersTypes.TRAINER])
 @inject
