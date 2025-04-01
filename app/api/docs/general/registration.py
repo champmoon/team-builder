@@ -34,9 +34,7 @@ register: Docs = {
         },
         410: {
             "description": "Протух",
-            "content": {
-                "application/json": {"example": {}}
-            },
+            "content": {"application/json": {"example": {}}},
         },
         422: {
             "description": "Ошибка валидации, какой-то параметр был передан неверно.",

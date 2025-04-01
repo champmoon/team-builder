@@ -103,3 +103,22 @@ async def self_sportsman(
     if sportsman_out:
         return sportsman_out
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+
+
+@inject
+async def self_user(
+    token_data: schemas.TokensDecodedSchema = Depends(get_authorization_data),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service]
+    ),
+    trainers_service: Services.trainers = Depends(
+        Provide[Containers.trainers.service],
+    ),
+) -> Trainers | Sportsmans:
+    sportsman_out = await sportsmans_service.get_by_id(id=UUID(token_data.user_id))
+    if sportsman_out:
+        return sportsman_out
+    trainer_out = await trainers_service.get_by_id(id=UUID(token_data.user_id))
+    if trainer_out:
+        return trainer_out
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)

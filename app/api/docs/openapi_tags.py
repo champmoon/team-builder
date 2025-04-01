@@ -2,6 +2,7 @@ tags_mapper = {
     "general_auth": "Авторизация",
     "general_registration": "Регистрация",
     "general_password": "Сброс пароля",
+    "general_workouts": "Тренировки",
     "general_exercises": "Типы упражнения",
     "general_workouts_statuses": "Cтатусы тренировок",
     #

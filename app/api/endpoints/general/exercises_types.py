@@ -21,17 +21,19 @@ async def get_self_trainer_id(
     teams_service: Services.teams = Depends(
         Provide[Containers.teams.service],
     ),
-) -> UUID:
+) -> UUID | None:
     if not sportsman_out.team_id:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="sportsman_team"
-        )
+        # raise HTTPException(
+        #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="sportsman_team"
+        # )
+        return None
 
     team_out = await teams_service.get_by_id(id=sportsman_out.team_id)
     if not team_out:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="sportsman_team"
-        )
+        # raise HTTPException(
+        #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="sportsman_team"
+        # )
+        return None
     return team_out.trainer_id
 
 
@@ -59,9 +61,18 @@ async def get_exercises_types(
         if not sportsman_out:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
-        return await exercises_types_service.get_all(
-            trainer_id=await get_self_trainer_id(sportsman_out=sportsman_out)
-        )
+        trainer_id = await get_self_trainer_id(sportsman_out=sportsman_out)
+        if trainer_id:
+            return await exercises_types_service.get_all(trainer_id=trainer_id)
+
+        return [
+            schemas.CreateExercisesTypeIn(
+                type=exercises_type,
+                description=consts.EXERCISES_TYPES_DESC[exercises_type],
+                is_basic=exercises_type in list(consts.BasicExercisesTypesEnum),  # type: ignore[comparison-overlap]  # noqa: E501
+            )
+            for exercises_type in consts.ExercisesTypesEnum
+        ]
 
     if token.user_type == consts.UsersTypes.TRAINER:
         trainer_out = await trainers_service.get_by_id(id=user_id)
