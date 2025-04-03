@@ -164,6 +164,7 @@ class WorkoutsPoolRepository:
         return getted.scalars().first()
 
     async def create(self, schema_in: schemas.CreateWorkoutPoolInDB) -> WorkoutsPool:
+        print(f"{schema_in.model_dump()=}")
         async with self.session_factory() as session:
             created_workout = await session.execute(
                 insert(self.model)

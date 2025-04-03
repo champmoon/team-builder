@@ -1,19 +1,18 @@
-"""asd
+"""all
 
-Revision ID: 3e51fc17f612
-Revises:
-Create Date: 2024-12-03 18:11:17.918662
+Revision ID: a4a0473311e1
+Revises: 
+Create Date: 2025-04-03 19:51:19.622486
 
 """
-
 from typing import Sequence, Union
 
-import sqlalchemy as sa
 from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = "3e51fc17f612"
+revision: str = "a4a0473311e1"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -39,6 +38,7 @@ def upgrade() -> None:
             sa.Enum("TRAINER", "SPORTSMAN", "ADMIN", name="userstypes"),
             nullable=False,
         ),
+        sa.Column("remember_me", sa.Boolean(), nullable=False),
         sa.Column(
             "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
         ),
@@ -93,8 +93,6 @@ def upgrade() -> None:
     op.create_table(
         "teams",
         sa.Column("trainer_id", sa.UUID(), nullable=False),
-        sa.Column("name", sa.String(), nullable=False),
-        sa.Column("sport_type", sa.String(), nullable=False),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
         ),
@@ -104,7 +102,7 @@ def upgrade() -> None:
     op.create_table(
         "workouts_pool",
         sa.Column("name", sa.String(), nullable=False),
-        sa.Column("estimated_time", sa.Float(), nullable=False),
+        sa.Column("estimated_time", sa.JSON(), nullable=False),
         sa.Column(
             "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
         ),
@@ -139,8 +137,8 @@ def upgrade() -> None:
     op.create_table(
         "sportsmans",
         sa.Column("team_id", sa.UUID(), nullable=True),
-        sa.Column("email", sa.String(), nullable=False),
-        sa.Column("hashed_password", sa.String(), nullable=False),
+        sa.Column("email", sa.String(), nullable=True),
+        sa.Column("hashed_password", sa.String(), nullable=True),
         sa.Column("first_name", sa.String(), nullable=True),
         sa.Column("middle_name", sa.String(), nullable=True),
         sa.Column("last_name", sa.String(), nullable=True),
@@ -176,10 +174,16 @@ def upgrade() -> None:
         "workouts",
         sa.Column("date", sa.DateTime(), nullable=False),
         sa.Column("is_visible", sa.Boolean(), nullable=False),
-        sa.Column("rest_time", sa.Integer(), nullable=False),
-        sa.Column("stress_questionnaire_time", sa.Integer(), nullable=False),
+        sa.Column("rest_time", sa.JSON(), nullable=False),
+        sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("comment", sa.String(), nullable=True),
         sa.Column("goal", sa.String(), nullable=True),
+        sa.Column(
+            "repeat_id",
+            sa.Uuid(),
+            server_default=sa.text("gen_random_uuid()"),
+            nullable=False,
+        ),
         sa.Column("workout_pool_id", sa.UUID(), nullable=False),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
@@ -239,16 +243,14 @@ def upgrade() -> None:
         "sportsmans_workouts",
         sa.Column("sportsman_id", sa.UUID(), nullable=False),
         sa.Column("workout_id", sa.UUID(), nullable=False),
-        sa.Column("status_id", sa.UUID(), nullable=False),
+        sa.Column("is_paid", sa.Boolean(), nullable=False),
+        sa.Column("is_attend", sa.Boolean(), nullable=False),
         sa.Column("execution_time", sa.Float(), nullable=True),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
         ),
         sa.ForeignKeyConstraint(
             ["sportsman_id"], ["sportsmans.id"], ondelete="CASCADE"
-        ),
-        sa.ForeignKeyConstraint(
-            ["status_id"], ["workouts_statuses.id"], ondelete="CASCADE"
         ),
         sa.ForeignKeyConstraint(["workout_id"], ["workouts.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
@@ -292,12 +294,8 @@ def upgrade() -> None:
         "trainers_workouts",
         sa.Column("trainer_id", sa.UUID(), nullable=False),
         sa.Column("workout_id", sa.UUID(), nullable=False),
-        sa.Column("status_id", sa.UUID(), nullable=False),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
-        ),
-        sa.ForeignKeyConstraint(
-            ["status_id"], ["workouts_statuses.id"], ondelete="CASCADE"
         ),
         sa.ForeignKeyConstraint(["trainer_id"], ["trainers.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["workout_id"], ["workouts.id"], ondelete="CASCADE"),

@@ -4,6 +4,8 @@ from uuid import UUID
 
 from pydantic import Field, NaiveDatetime, model_validator
 
+from app.schemas.utils import TimeFormat
+
 from .base_class import BaseSchema
 from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
 
@@ -11,19 +13,19 @@ from .exercises import CreateBasicExerciseIn, CreateSupportExerciseIn
 class CreateWorkoutPoolInDB(BaseSchema):
     name: str
     trainer_id: UUID
-    estimated_time: float
+    estimated_time: TimeFormat
 
 
 class CreateWorkoutPoolIn(BaseSchema):
     name: str
-    estimated_time: float
+    estimated_time: TimeFormat
     exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn]
 
 
 class CreateWorkoutInDB(BaseSchema):
     workout_pool_id: UUID
     date: NaiveDatetime
-    rest_time: int = Field(..., ge=0)
+    rest_time: TimeFormat
     price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
@@ -34,7 +36,7 @@ class CreateWorkoutForSportsmanIn(BaseSchema):
     workout_pool_id: UUID
     sportsman_id: UUID
     dates: list[NaiveDatetime]
-    rest_time: int = Field(..., ge=0)
+    rest_time: TimeFormat
     price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
@@ -70,7 +72,7 @@ class CreateWorkoutForGroupIn(BaseSchema):
     workout_pool_id: UUID
     group_id: UUID
     dates: list[NaiveDatetime]
-    rest_time: int = Field(..., ge=0)
+    rest_time: TimeFormat
     price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
@@ -105,7 +107,7 @@ class RepeatWorkoutForGroupIn(BaseSchema):
 class CreateWorkoutForTeamIn(BaseSchema):
     workout_pool_id: UUID
     dates: list[NaiveDatetime]
-    rest_time: int = Field(..., ge=0)
+    rest_time: TimeFormat
     price: int = Field(..., ge=0)
     comment: str | None = None
     goal: str | None = None
@@ -138,7 +140,7 @@ class RepeatWorkoutForTeamIn(BaseSchema):
 
 class UpdateWorkoutPoolIn(BaseSchema):
     name: str | None = None
-    estimated_time: float | None = None
+    estimated_time: TimeFormat | None = None
     exercises: list[CreateBasicExerciseIn | CreateSupportExerciseIn] | None = None
 
     @model_validator(mode="after")
@@ -150,7 +152,7 @@ class UpdateWorkoutPoolIn(BaseSchema):
 
 class UpdateWorkoutIn(BaseSchema):
     date: NaiveDatetime | None = None
-    rest_time: int | None = Field(None, ge=0)
+    rest_time: TimeFormat | None
     price: int | None = Field(None, ge=0)
     comment: str | None = None
     goal: str | None = None
