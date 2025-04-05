@@ -190,6 +190,7 @@ async def update_workout_pool(
             estimated_time=(
                 update_workout_pool_in.estimated_time or workout_pool_out.estimated_time
             ),
+            created_at=workout_pool_out.created_at,
         )
     )
 

@@ -144,6 +144,7 @@ class WorkoutsPoolRepository:
                 self.model.trainer_id == trainer_id,
                 self.model.is_visible == True,  # noqa
             )
+            .order_by(self.model.created_at)
             .options(subqueryload(self.model.exercises))
         )
 

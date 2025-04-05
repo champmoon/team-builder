@@ -14,6 +14,7 @@ class CreateWorkoutPoolInDB(BaseSchema):
     name: str
     trainer_id: UUID
     estimated_time: TimeFormat
+    created_at: NaiveDatetime | None = None
 
 
 class CreateWorkoutPoolIn(BaseSchema):
