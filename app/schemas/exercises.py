@@ -26,7 +26,7 @@ class BasicExerciseOut(BaseSchemaFromDB):
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
     rest: float | None = Field(..., gt=0)
-    order: int
+    # order: int
 
 
 class CreateSupportExerciseIn(BaseSchema):
@@ -38,7 +38,7 @@ class SupportExerciseOut(BaseSchemaFromDB):
     id: UUID
     type: ExercisesTypesOut
     time: int = Field(..., gt=0)
-    order: int
+    # order: int
 
 
 class CreateExerciseInDB(BaseSchema):
