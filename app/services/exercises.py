@@ -48,7 +48,7 @@ class ExercisesService:
     ) -> None:
         for exercise_in in exercises_in:
             exercise_type_out = await self.exercises_types_service.get_by_type(
-                type=exercise_in.type,
+                type=exercise_in.type.type,
                 trainer_id=trainer_id,
             )
             if not exercise_type_out:
@@ -79,11 +79,11 @@ class ExercisesService:
     ) -> None:
         for order, exercise_in in enumerate(exercises_in):
             exercise_type_out = await self.exercises_types_service.get_by_type(
-                type=exercise_in.type,
+                type=exercise_in.type.type,
                 trainer_id=trainer_id,
             )
             if not exercise_type_out:
-                raise ExercisesTypesNotFoundException(type=exercise_in.type)
+                raise ExercisesTypesNotFoundException(type=exercise_in.type.type)
 
             if isinstance(exercise_in, schemas.CreateBasicExerciseIn):
                 new_schema_in = schemas.CreateExerciseInDB(

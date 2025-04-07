@@ -8,7 +8,7 @@ from .exercises_types import ExercisesTypesOut
 
 
 class CreateBasicExerciseIn(BaseSchema):
-    type: int
+    type: ExercisesTypesOut
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
     rest: float | None = Field(..., gt=0)
@@ -30,7 +30,7 @@ class BasicExerciseOut(BaseSchemaFromDB):
 
 
 class CreateSupportExerciseIn(BaseSchema):
-    type: int
+    type: ExercisesTypesOut
     time: int = Field(..., gt=0)
 
 
