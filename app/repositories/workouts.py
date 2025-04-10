@@ -2,7 +2,7 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Sequence, Type
 from uuid import UUID
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import delete, desc, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import subqueryload
 
@@ -37,7 +37,7 @@ class WorkoutsRepository:
                 self.model.workout_pool_id == pool_id,
                 self.model.is_visible == True,  # noqa
             )
-            .order_by(self.model.date)
+            .order_by(desc(self.model.date))
         )
 
         async with self.session_factory() as session:
@@ -52,7 +52,7 @@ class WorkoutsRepository:
                 self.model.repeat_id == repeat_id,
                 self.model.is_visible == True,  # noqa
             )
-            .order_by(self.model.date)
+            .order_by(desc(self.model.date))
         )
 
         async with self.session_factory() as session:
@@ -144,7 +144,7 @@ class WorkoutsPoolRepository:
                 self.model.trainer_id == trainer_id,
                 self.model.is_visible == True,  # noqa
             )
-            .order_by(self.model.created_at)
+            .order_by(desc(self.model.created_at))
             .options(subqueryload(self.model.exercises))
         )
 

@@ -3,6 +3,8 @@ from uuid import UUID
 
 from pydantic import Field, model_validator
 
+from app.schemas.utils import TimeFormat
+
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .exercises_types import ExercisesTypesOut
 
@@ -11,7 +13,7 @@ class CreateBasicExerciseIn(BaseSchema):
     type: ExercisesTypesOut
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
-    rest: float | None = Field(..., gt=0)
+    rest: TimeFormat | None
 
     @model_validator(mode="after")
     def check_sets_rest(self) -> Self:
@@ -25,19 +27,19 @@ class BasicExerciseOut(BaseSchemaFromDB):
     type: ExercisesTypesOut
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
-    rest: float | None = Field(..., gt=0)
+    rest: TimeFormat | None
     # order: int
 
 
 class CreateSupportExerciseIn(BaseSchema):
     type: ExercisesTypesOut
-    time: int = Field(..., gt=0)
+    time: TimeFormat
 
 
 class SupportExerciseOut(BaseSchemaFromDB):
     id: UUID
     type: ExercisesTypesOut
-    time: int = Field(..., gt=0)
+    time: TimeFormat
     # order: int
 
 
@@ -46,6 +48,6 @@ class CreateExerciseInDB(BaseSchema):
     type_id: UUID
     reps: int | None = None
     sets: int | None = None
-    rest: float | None = None
-    time: int | None = None
+    rest: TimeFormat | None = None
+    time: TimeFormat | None = None
     order: int
