@@ -1,8 +1,8 @@
 """all
 
-Revision ID: a4a0473311e1
+Revision ID: 3371f7fc4ef9
 Revises: 
-Create Date: 2025-04-03 19:51:19.622486
+Create Date: 2025-04-10 16:17:17.774044
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = "a4a0473311e1"
+revision: str = "3371f7fc4ef9"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -120,8 +120,8 @@ def upgrade() -> None:
         sa.Column("type_id", sa.UUID(), nullable=False),
         sa.Column("reps", sa.Integer(), nullable=True),
         sa.Column("sets", sa.Integer(), nullable=True),
-        sa.Column("rest", sa.Float(), nullable=True),
-        sa.Column("time", sa.Integer(), nullable=True),
+        sa.Column("rest", sa.JSON(), nullable=True),
+        sa.Column("time", sa.JSON(), nullable=True),
         sa.Column("order", sa.Integer(), nullable=False),
         sa.Column(
             "id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False
