@@ -7,6 +7,8 @@ from pydantic import ValidationError
 from app import consts, schemas
 from app.models import Exercises
 from app.repositories import ExercisesRepository
+from app.schemas.exercises_types import ExercisesTypesOut
+from app.schemas.utils import TimeFormat
 
 from .exercises_types import ExercisesTypesService
 
@@ -115,15 +117,32 @@ class ExercisesService:
         for exercise_out in exercises_out:
             try:
                 exercise_schema = schemas.CreateBasicExerciseIn(
-                    type=consts.BasicExercisesTypesEnum(exercise_out.type.type),
+                    type=ExercisesTypesOut(
+                        type=exercise_out.type.type,
+                        description=exercise_out.type.description,
+                        is_basic=exercise_out.type.is_basic,
+                    ),
                     reps=exercise_out.reps,
                     sets=exercise_out.sets,
-                    rest=exercise_out.rest,
+                    rest=TimeFormat(
+                        hour=exercise_out.rest["hour"],
+                        minute=exercise_out.rest["minute"],
+                        second=exercise_out.rest["second"],
+                    ),
                 )
-            except (ValidationError, ValueError):
+            except (ValidationError, ValueError, TypeError) as e:
+                print(e)
                 exercise_schema = schemas.CreateSupportExerciseIn(
-                    type=consts.SupportExercisesTypesEnum(exercise_out.type.type),
-                    time=exercise_out.time,
+                    type=ExercisesTypesOut(
+                        type=exercise_out.type.type,
+                        description=exercise_out.type.description,
+                        is_basic=exercise_out.type.is_basic,
+                    ),
+                    time=TimeFormat(
+                        hour=exercise_out.time["hour"],
+                        minute=exercise_out.time["minute"],
+                        second=exercise_out.time["second"],
+                    ),
                 )
             exercises_schemas.append(exercise_schema)
 
