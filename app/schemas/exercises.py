@@ -13,13 +13,13 @@ class CreateBasicExerciseIn(BaseSchema):
     type: ExercisesTypesOut
     reps: int = Field(..., gt=0)
     sets: int = Field(..., gt=0)
-    rest: TimeFormat | None
+    rest: TimeFormat | None = None
 
-    @model_validator(mode="after")
-    def check_sets_rest(self) -> Self:
-        if self.sets == 1 and self.rest is not None:
-            raise ValueError("because sets - 1, rest must be unset")
-        return self
+    # @model_validator(mode="after")
+    # def check_sets_rest(self) -> Self:
+    #     if self.sets == 1 and self.rest is not None:
+    #         raise ValueError("because sets - 1, rest must be unset")
+    #     return self
 
 
 class BasicExerciseOut(BaseSchemaFromDB):

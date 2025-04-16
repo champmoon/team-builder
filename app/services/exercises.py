@@ -116,6 +116,7 @@ class ExercisesService:
         exercise_schema: schemas.CreateBasicExerciseIn | schemas.CreateSupportExerciseIn
         for exercise_out in exercises_out:
             try:
+                assert exercise_out.rest
                 exercise_schema = schemas.CreateBasicExerciseIn(
                     type=ExercisesTypesOut(
                         type=exercise_out.type.type,
@@ -131,7 +132,7 @@ class ExercisesService:
                     ),
                 )
             except (ValidationError, ValueError, TypeError) as e:
-                print(e)
+                assert exercise_out.time
                 exercise_schema = schemas.CreateSupportExerciseIn(
                     type=ExercisesTypesOut(
                         type=exercise_out.type.type,

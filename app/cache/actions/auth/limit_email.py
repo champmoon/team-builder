@@ -9,7 +9,8 @@ class LimitEmailData(BaseActionData):
 
 
 class LimitEmailAction(BaseAction[LimitEmailData]):
-    timeout = 300
+    # timeout = 300
+    timeout = 5
 
     action_type = ActionTypes.LIMIT_EMAIL
     action_data = LimitEmailData
