@@ -98,20 +98,22 @@ class SportsmansWorkoutsRepository:
         is_attend: bool | None = None,
         is_paid: bool | None = None,
     ) -> Sequence[SportsmansWorkouts]:
-        if is_attend:
+        if isinstance(is_attend, bool):
             stmt = (
                 update(self.model)
                 .where(self.model.sportsman_id.in_(ids))
                 .values(is_attend=is_attend)
                 .returning(self.model)
             )
-        else:
+        elif isinstance(is_paid, bool):
             stmt = (
                 update(self.model)
                 .where(self.model.sportsman_id.in_(ids))
                 .values(is_paid=is_paid)
                 .returning(self.model)
             )
+        else:
+            raise ValueError
 
         async with self.session_factory() as session:
             updated_workout = await session.execute(stmt)
@@ -148,13 +150,15 @@ class SportsmansWorkoutsRepository:
 
         async with self.session_factory() as session:
             await session.execute(
-                insert(self.model).values([
-                    {
-                        "workout_id": workout_id,
-                        "sportsman_id": sportsman_id,
-                    }
-                    for workout_id in workouts_ids
-                ])
+                insert(self.model).values(
+                    [
+                        {
+                            "workout_id": workout_id,
+                            "sportsman_id": sportsman_id,
+                        }
+                        for workout_id in workouts_ids
+                    ]
+                )
             )
             await session.commit()
 
