@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
@@ -15,7 +16,7 @@ class WorkoutsPool(Base, UUIDAsIDMixin):
     __tablename__ = "workouts_pool"
 
     name: Mapped[str]
-    estimated_time: Mapped[float]
+    estimated_time: Mapped[dict[str, Any]]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     is_visible: Mapped[bool] = mapped_column(default=True)
 
@@ -33,7 +34,7 @@ class Workouts(Base, UUIDAsIDMixin):
 
     date: Mapped[datetime]
     is_visible: Mapped[bool] = mapped_column(default=True)
-    rest_time: Mapped[int]
+    rest_time: Mapped[dict[str, Any]]
     price: Mapped[int]
     comment: Mapped[str | None]
     goal: Mapped[str | None]

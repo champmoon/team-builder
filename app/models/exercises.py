@@ -1,3 +1,4 @@
+from typing import Any
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
@@ -26,8 +27,8 @@ class Exercises(Base, UUIDAsIDMixin):
     )
     reps: Mapped[int | None]
     sets: Mapped[int | None]
-    rest: Mapped[float | None]
-    time: Mapped[int | None]
+    rest: Mapped[dict[str, Any] | None]
+    time: Mapped[dict[str, Any] | None]
     order: Mapped[int]
 
     type: Mapped[ExercisesTypes] = relationship(

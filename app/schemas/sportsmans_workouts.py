@@ -3,6 +3,7 @@ from uuid import UUID
 from pydantic import NaiveDatetime
 
 from app import consts
+from app.schemas.utils import TimeFormat
 
 from .base_class import BaseSchema, BaseSchemaFromDB
 from .exercises import BasicExerciseOut, SupportExerciseOut
@@ -23,8 +24,8 @@ class SportsmansWorkoutOut(BaseSchemaFromDB):
     id: UUID
     repeat_id: UUID
     name: str
-    estimated_time: float
-    rest_time: int
+    estimated_time: TimeFormat
+    rest_time: TimeFormat
     price: int
     date: NaiveDatetime
     created_at: NaiveDatetime
