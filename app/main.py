@@ -51,18 +51,17 @@ app.middleware(middleware_type="http")(log_middleware)
 
 @app.middleware("http")
 async def add_version_header(request: Request, call_next: Any) -> Any:
-    if any(
-        (
-            "api" in request["path"],
-            "static" in request["path"],
-            "assets" in request["path"],
-            "icons" in request["path"],
-            "files" in request["path"],
-            "docs" in request["path"],
-            "redoc" in request["path"],
-            "openapi.json" in request["path"],
-        )
-    ):
+    if any((
+        "api" in request["path"],
+        "static" in request["path"],
+        "assets" in request["path"],
+        "icons" in request["path"],
+        "files" in request["path"],
+        "docs" in request["path"],
+        "redoc" in request["path"],
+        "openapi.json" in request["path"],
+        "images" in request["path"],
+    )):
         return await call_next(request)
 
     return FileResponse("spa/index.html")
