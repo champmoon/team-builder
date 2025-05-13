@@ -1,0 +1,21 @@
+{
+  "name": "TBuilder",
+  "short_name": "TBuilder",
+  "description": "Приложение для тренировок",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "logo-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "scope": "/"
+}
