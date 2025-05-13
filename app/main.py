@@ -61,6 +61,7 @@ async def add_version_header(request: Request, call_next: Any) -> Any:
         "redoc" in request["path"],
         "openapi.json" in request["path"],
         "images" in request["path"],
+        "logo" in request["path"],
     )):
         return await call_next(request)
 
