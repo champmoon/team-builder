@@ -63,7 +63,7 @@ services:
     image: docker.io/certbot/certbot
     restart: "no"
     entrypoint: /bin/sh
-    command: -c 'test -d /etc/letsencrypt/live/tbuilder.pro || certbot certonly --standalone --register-unsafely-without-email -d "tbuilder.pro,sub1.tbuilder.pro" --rsa-key-size ${rsa_key_size:-2048} --agree-tos --force-renewal'
+    command: -c 'test -d /etc/letsencrypt/live/tbuilder.pro || certbot certonly --standalone --register-unsafely-without-email -d "tbuilder.pro" --rsa-key-size ${rsa_key_size:-2048} --agree-tos --force-renewal'
     ports:
       - 80:80
     volumes:
