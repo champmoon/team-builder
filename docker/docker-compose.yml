@@ -53,9 +53,8 @@ services:
       - tb_network
 
   nginx:
-    # build:
-    #   context: ../nginx
-    image: nginx:1.23.3 
+    build:
+      context: ../nginx
     container_name: tb_nginx
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -77,6 +76,8 @@ services:
       - ../nginx/:/etc/nginx/
     build:
       context: ../certbot
+    networks:
+      - tb_network
 
 volumes:
   tb_postgres_data:
