@@ -55,6 +55,7 @@ services:
   nginx:
     # build:
     #   context: ../nginx
+    image: nginx:1.23.3 
     container_name: tb_nginx
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
