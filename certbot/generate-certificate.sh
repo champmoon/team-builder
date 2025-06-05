@@ -2,7 +2,7 @@
 
 rm -rf /etc/letsencrypt/live/tbuilder.pro/*
 
-certbot certonly --standalone -d tbuilder.pro
+certbot certonly --standalone --email antipov8v@gmail.com -d tbuilder.pro --key-type rsa --agree-tos
 
 rm -rf /etc/nginx/cert.pem
 rm -rf /etc/nginx/key.pem
