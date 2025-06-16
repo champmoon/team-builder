@@ -1,0 +1,1 @@
+import{i as e}from"./useId-BmxNeisE.js";import{r as a,a as i}from"./index-CE0I8MDv.js";function f(t){const r=e({nonce:a()});return i(()=>{var o;return(t==null?void 0:t.value)||((o=r.nonce)==null?void 0:o.value)})}export{f as u};
