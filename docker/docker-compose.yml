@@ -135,10 +135,6 @@ configs:
         location / {
           proxy_pass http://tb_server;
         }
-        
-        location /.well-known {
-          root /usr/share/nginx/html;
-        }
 
         location /well-known/licence {
           index licence.docx;
@@ -149,6 +145,11 @@ configs:
           index policy.docx;
           alias /usr/share/nginx/html/policy.docx;
         }
+
+        location /.well-known {
+          root /usr/share/nginx/html;
+        }
+
       }
 
       server {
