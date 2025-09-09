@@ -9,5 +9,5 @@ FROM nginx:1.23.3
 
 COPY assetlinks.json /usr/share/nginx/html/.well-known/assetlinks.json
 
-COPY license.docx /usr/share/nginx/html/license.docx
-COPY policy.docx /usr/share/nginx/html/policy.docx
+COPY license.pdf /usr/share/nginx/html/license.pdf
+COPY policy.pdf /usr/share/nginx/html/policy.pdf
