@@ -141,13 +141,13 @@ configs:
         }
 
         location /well-known/licence {
-          index licence.docx
-          alias /usr/share/nginx/html/licence.docx
+          index licence.docx;
+          alias /usr/share/nginx/html/licence.docx;
         }
 
         location /well-known/policy {
-          index policy.docx
-          alias /usr/share/nginx/html/policy.docx
+          index policy.docx;
+          alias /usr/share/nginx/html/policy.docx;
         }
       }
 
