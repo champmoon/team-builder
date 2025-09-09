@@ -133,11 +133,21 @@ configs:
         ssl_certificate_key /etc/letsencrypt/live/tbuilder.pro/privkey.pem;
 
         location / {
-            proxy_pass http://tb_server;
+          proxy_pass http://tb_server;
         }
         
         location /.well-known {
-            root /usr/share/nginx/html;
+          root /usr/share/nginx/html;
+        }
+
+        location /well-known/licence {
+          index licence.docx
+          alias /usr/share/nginx/html/licence.docx
+        }
+
+        location /well-known/policy {
+          index policy.docx
+          alias /usr/share/nginx/html/policy.docx
         }
       }
 
