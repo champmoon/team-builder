@@ -42,3 +42,6 @@ class TrainersService:
 
     async def update_avatar(self, id: UUID, avatar_uri: str) -> Trainers:
         return await self.repository.update_avatar(id=id, avatar_uri=avatar_uri)
+
+    async def delete(self, id: UUID) -> Trainers:
+        return await self.repository.delete(id=id)

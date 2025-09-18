@@ -9,6 +9,7 @@ url.POST("    /auth/login                                        ", endpoint=end
 url.POST("    /auth/logout                                       ", endpoint=endpoints.general.logout, docs=docs.general.logout)
 url.POST("    /auth/refresh                                      ", endpoint=endpoints.general.refresh, docs=docs.general.refresh)
 url.POST("    /auth/verify                                       ", endpoint=endpoints.general.verify, docs=docs.general.verify)
+url.DELETE("  /auth/delete                                       ", endpoint=endpoints.general.delete)
 
 # General Registration
 url.POST("    /auth/register                                     ", endpoint=endpoints.general.register, docs=docs.general.register)
