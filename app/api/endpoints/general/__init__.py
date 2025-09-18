@@ -3,6 +3,7 @@ from .auth import (
     logout,
     refresh,
     verify,
+    delete
 )
 from .exercises_types import get_exercises_types
 from .password import confirm_password, reset_password, send_confirm_password

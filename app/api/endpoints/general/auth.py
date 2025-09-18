@@ -161,3 +161,23 @@ async def verify(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     return schemas.VerifyResponse(user_type=token_data.user_type)
+
+
+@router(
+    response_model=schemas.TrainerOut | schemas.SportsmanOut,
+    status_code=status.HTTP_200_OK,
+)
+@deps.auth_required(users=[UsersTypes.TRAINER, UsersTypes.SPORTSMAN])
+@inject
+async def delete(
+    self_user: Trainers | Sportsmans = Depends(deps.self_user),
+    trainers_service: Services.trainers = Depends(
+        Provide[Containers.trainers.service],
+    ),
+    sportsmans_service: Services.sportsmans = Depends(
+        Provide[Containers.sportsmans.service],
+    ),
+) -> Any:
+    if isinstance(self_user, Trainers):
+        return await trainers_service.delete(id=self_user.id)
+    return await sportsmans_service.delete(id=self_user.id)
